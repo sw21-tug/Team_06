@@ -1,4 +1,9 @@
 # Team_06
+
+## FocusWork
+
+<img src="https://martinsackl.dev/wp-content/uploads/2021/03/mobile-phone-31.png" width="350">
+
 The mobile application „FocusWork“ makes it possible, to let workers (like programmers) manage their working times and breaks accordingly. 
 
 The app provides functionality to create, edit and delete time intervals and offers the user to start them whenever he wants or whenever he has set the starting time. After the specified time, which can always be shown to the user, a sound or push notification will notify the user to have a break or to finish his task. 
@@ -28,6 +33,8 @@ While this application is planned to be a local app, in a later stage it will al
 
 
 ## Features
+| Title |
+| ----  |
 | None so far |
 
 
