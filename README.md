@@ -18,13 +18,12 @@ While this application is planned to be a local app, in a later stage it will al
 | Role | Name |
 | ---- | ---- |
 | **Product Owner** | Sackl Martin |
-| **Scrum Master** |  |
+| **Scrum Master** | Nagler Gabriel |
 | **Developer** | Egger David |
 | **Developer** | Glawogger Florian |
 | **Developer** | Hoffmann Jan |
 | **Developer** | Högler Stefan |
 | **Developer** | Leitner Hagen |
-| **Developer** | Nagler Gabriel |
 | **Developer** | Pichler Anna Maria |
 | **Developer** | Resch Jonathan |
 | **Developer** | Schreilechner Lukas Marcellus |
