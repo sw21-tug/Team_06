@@ -19,7 +19,7 @@ While this application is planned to be a local app, in a later stage it will al
 | ---- | ---- |
 | **Product Owner** | Sackl Martin |
 | **Scrum Master** | Nagler Gabriel |
-| **Developer** | Egger David |
+| **Senior Developer** | Egger David |
 | **Developer** | Glawogger Florian |
 | **Developer** | Hoffmann Jan |
 | **Developer** | Högler Stefan |
