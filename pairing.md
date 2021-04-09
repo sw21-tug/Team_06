@@ -1,12 +1,13 @@
 ### Pairing Matrix
-Dev 1: Name <br/>
-Dev 2: Name <br/>
-Dev 3: Name <br/>
-Dev 4: Name <br/>
-Dev 5: Name <br/>
-Dev 6: Name <br/>
-Dev 7: Name <br/>
-Dev 8: Name <br/>
+Dev 1: Egger David <br/>
+Dev 2: Glawogger Florian <br/>
+Dev 3: Hoffmann Jan <br/>
+Dev 4: Högler Stefan <br/>
+Dev 5: Leitner Hagen <br/>
+Dev 6: Pichler Anna Maria <br/>
+Dev 7: Resch Jonathan <br/>
+Dev 8: Schreilechner Lukas Marcellus <br/>
+
 
 | Syntax      | Dev 1   	  | Dev 2   	  | Dev 3   	  | Dev 4   	  | Dev 5   	  | Dev 6   	  | Dev 7   	  | Dev 8   	  |
 | :---        |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |
