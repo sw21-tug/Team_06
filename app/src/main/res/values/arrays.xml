@@ -1,0 +1,48 @@
+<resources>
+    <!-- Notifation Sound Preference -->
+    <string-array name="notification_sound_entries">
+        <item>Classic</item>
+        <item>Funky</item>
+    </string-array>
+
+    <string-array name="notification_sound_values">
+        <item>classic</item>
+        <item>funky</item>
+    </string-array>
+
+    <!-- Color Background Theme Preference -->
+    <string-array name="color_background_entries">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="color_background_values">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+    <!-- Color Accent Theme Preference -->
+    <string-array name="color_accent_entries">
+        <item>Blue</item>
+        <item>Red</item>
+    </string-array>
+
+    <string-array name="color_accent_values">
+        <item>blue</item>
+        <item>red</item>
+    </string-array>
+
+    <!-- Overview Time Frame Preference -->
+    <string-array name="overview_time_frame_entries">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
+    <string-array name="overview_time_frame_values">
+        <item>day</item>
+        <item>week</item>
+        <item>month</item>
+    </string-array>
+
+</resources>
