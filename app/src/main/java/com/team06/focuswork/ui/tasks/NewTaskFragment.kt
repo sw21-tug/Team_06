@@ -3,26 +3,25 @@ package com.team06.focuswork.ui.tasks
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.ui.util.DatePickerFragment
 import com.team06.focuswork.ui.util.TimePickerFragment
+import java.text.DateFormat
+import java.text.DateFormat.*
 import java.util.*
 
 class NewTaskFragment : Fragment() {
 
     private lateinit var workingTask: Task
-    private val dpf = DatePickerFragment()
-    private val tpf = TimePickerFragment()
+    private val startDatePicker = DatePickerFragment()
+    private val startTimePicker = TimePickerFragment()
+    private val endDatePicker = DatePickerFragment()
+    private val endTimePicker = TimePickerFragment()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -35,28 +34,51 @@ class NewTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val startDatePicker = view.findViewById<TextView>(R.id.taskStartDate)
-        val startTimePicker = view.findViewById<TextView>(R.id.taskStartTime)
+        val startDateTextView = view.findViewById<TextView>(R.id.taskStartDate)
+        val startTimeTextView = view.findViewById<TextView>(R.id.taskStartTime)
+        val endDateTextView = view.findViewById<TextView>(R.id.taskEndDate)
+        val endTimeTextView = view.findViewById<TextView>(R.id.taskEndTime)
+        val initialTime = Calendar.getInstance()
+        startDateTextView.text = formatDate(initialTime)
+        startTimeTextView.text = formatTime(initialTime)
+        initialTime.add(Calendar.HOUR, 1)
+        endDateTextView.text = formatDate(initialTime)
+        endTimeTextView.text = formatTime(initialTime)
 
-        startDatePicker.setOnClickListener{
-            dpf.show(
+        startDateTextView.setOnClickListener{
+            startDatePicker.show(
                     childFragmentManager, DatePickerFragment.TAG
             )
-            dpf.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            startDatePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                 val cal = it ?: return@Observer
-                startDatePicker.text = "".plus(cal.get(Calendar.DAY_OF_MONTH)).plus(". ")
-                        .plus(cal.get(Calendar.MONTH)+1).plus(". ")
-                        .plus(cal.get(Calendar.YEAR))
+                startDateTextView.text = formatDate(cal)
             })
         }
-        startTimePicker.setOnClickListener{
-            tpf.show(
+        startTimeTextView.setOnClickListener{
+            startTimePicker.show(
                     childFragmentManager, TimePickerFragment.TAG
             )
-            tpf.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            startTimePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                 val cal = it ?: return@Observer
-                startTimePicker.text = "".plus(cal.get(Calendar.HOUR)).plus(":")
-                        .plus(cal.get(Calendar.MINUTE))
+                startTimeTextView.text = formatTime(cal)
+            })
+        }
+        endDateTextView.setOnClickListener{
+            endDatePicker.show(
+                    childFragmentManager, DatePickerFragment.TAG
+            )
+            endDatePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                val cal = it ?: return@Observer
+                endDateTextView.text = formatDate(cal)
+            })
+        }
+        endTimeTextView.setOnClickListener{
+            endTimePicker.show(
+                    childFragmentManager, TimePickerFragment.TAG
+            )
+            endTimePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                val cal = it ?: return@Observer
+                endTimeTextView.text = formatTime(cal)
             })
         }
 
@@ -64,11 +86,18 @@ class NewTaskFragment : Fragment() {
         //val passwordEditText = view.findViewById<EditText>(R.id.taskDescription)
         //val loginButton = view.findViewById<Button>(R.id.login)
         //val loadingProgressBar = view.findViewById<ProgressBar>(R.id.loading)
-
-
-
     }
-
+    private fun formatDate(cal: Calendar): String {
+        return getDateInstance(MEDIUM).format(cal.time)
+        /*return "".plus(cal.get(Calendar.DAY_OF_MONTH)).plus(". ")
+                 .plus(cal.get(Calendar.MONTH)+1).plus(". ")
+                 .plus(cal.get(Calendar.YEAR))*/
+    }
+    private fun formatTime(cal: Calendar): String {
+        return getTimeInstance(SHORT).format(cal.time)
+        /*return "".plus(cal.get(Calendar.HOUR_OF_DAY)).plus(":")
+                 .plus(cal.get(Calendar.MINUTE))*/
+    }
     private fun updateUiWithUser(model: Task) {
         val welcome = getString(R.string.welcome)
         // TODO : initiate successful logged in experience

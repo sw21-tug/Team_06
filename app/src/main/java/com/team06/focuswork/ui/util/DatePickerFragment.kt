@@ -24,7 +24,7 @@ import java.util.*
  */
 class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val liveDataLoc = MutableLiveData<Calendar>()
+    private val liveDataLoc = MutableLiveData<Calendar>(Calendar.getInstance())
     val liveData: LiveData<Calendar> = liveDataLoc
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
