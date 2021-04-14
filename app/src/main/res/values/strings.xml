@@ -26,4 +26,21 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
 
+    <string name="menu_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="overview_header">Overview</string>
+    <string name="sounds_header">Sounds</string>
+    <string name="visuals_header">Visuals</string>
+
+    <!-- Overview Preferences -->
+    <string name="overviewTimeFrame_title">Overview time frame</string>
+
+    <!-- Sounds Preferences -->
+    <string name="notificationSound_title">Notification sound</string>
+
+    <!-- Visual Preferences -->
+    <string name="colorBackground_title">Background color</string>
+    <string name="colorAccent_title">Accent color</string>
+
 </resources>
