@@ -32,9 +32,9 @@ While this application is planned to be a local app, in a later stage it will al
 
 
 ## Features
-| Title |
-| ----  |
-| None so far |
+| Title | Short Description |
+| ---- | ---- |
+| FW-001 Start application #1 | User can start the app and sees the Home View. |
 
 
 
