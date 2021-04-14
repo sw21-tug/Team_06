@@ -15,10 +15,11 @@
     <string name="prompt_task_name">Task Name</string>
     <string name="prompt_task_description">Task Description</string>
     <string name="prompt_task_start">Task Start</string>
+    <string name="prompt_task_start_date">01.01.1970</string>
+    <string name="prompt_task_start_time">00:00</string>
+    <string name="task_start_date_and_time">Task Start</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+
 </resources>
