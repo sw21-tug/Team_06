@@ -26,6 +26,16 @@ class TaskdetailsFragment : Fragment() {
         taskdetailsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
+        val titleView: TextView = root.findViewById(R.id.title_of_taskdetails)
+        taskdetailsViewModel.title.observe(viewLifecycleOwner, Observer {
+            titleView.text = it
+        })
+
+        val descriptionView: TextView = root.findViewById(R.id.description_of_taskdetails)
+        taskdetailsViewModel.description.observe(viewLifecycleOwner, Observer {
+            descriptionView.text = it
+        })
         return root
     }
 }
