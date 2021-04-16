@@ -22,10 +22,6 @@ class TaskdetailsFragment : Fragment() {
         taskdetailsViewModel =
                 ViewModelProvider(this).get(TaskdetailsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_taskdetails, container, false)
-        val textView: TextView = root.findViewById(R.id.text_taskdetails)
-        taskdetailsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
 
         val titleView: TextView = root.findViewById(R.id.title_of_taskdetails)
         taskdetailsViewModel.title.observe(viewLifecycleOwner, Observer {
@@ -36,6 +32,17 @@ class TaskdetailsFragment : Fragment() {
         taskdetailsViewModel.description.observe(viewLifecycleOwner, Observer {
             descriptionView.text = it
         })
+
+        val starttimeView: TextView = root.findViewById(R.id.starttime_of_taskdetails)
+        taskdetailsViewModel.starttime.observe(viewLifecycleOwner, Observer {
+            starttimeView.text = it
+        })
+
+        val durationView: TextView = root.findViewById(R.id.duration_of_taskdetails)
+        taskdetailsViewModel.duration.observe(viewLifecycleOwner, Observer {
+            durationView.text = it
+        })
+
         return root
     }
 }
