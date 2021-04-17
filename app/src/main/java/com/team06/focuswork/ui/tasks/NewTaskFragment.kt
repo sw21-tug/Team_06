@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.widget.doAfterTextChanged
+import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.ui.util.DatePickerFragment
@@ -171,34 +172,19 @@ class NewTaskFragment : Fragment() {
 
         val createButton = view.findViewById<Button>(R.id.taskCreate)
         createButton.setOnClickListener{
-
+            val navController = findNavController()
+            navController.navigate(R.id.nav_home)
         }
     }
     private fun formatDate(cal: Calendar): String {
         return getDateInstance(MEDIUM).format(cal.time)
-        /*return "".plus(cal.get(Calendar.DAY_OF_MONTH)).plus(". ")
-                 .plus(cal.get(Calendar.MONTH)+1).plus(". ")
-                 .plus(cal.get(Calendar.YEAR))*/
     }
     private fun formatTime(cal: Calendar): String {
         return getTimeInstance(SHORT).format(cal.time)
-        /*return "".plus(cal.get(Calendar.HOUR_OF_DAY)).plus(":")
-                 .plus(cal.get(Calendar.MINUTE))*/
     }
     private fun checkTextFilled(view: View) {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
                 !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
                 view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
-    }
-    private fun updateUiWithUser(model: Task) {
-        val welcome = getString(R.string.welcome)
-        // TODO : initiate successful logged in experience
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }
 }

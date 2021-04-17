@@ -31,6 +31,6 @@
     <fragment
         android:id="@+id/nav_new_task"
         android:name="com.team06.focuswork.ui.tasks.NewTaskFragment"
-        android:label="fragment_new_task"
+        android:label="@string/menu_new_task"
         tools:layout="@layout/fragment_new_task" />
 </navigation>
