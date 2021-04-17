@@ -13,8 +13,8 @@ Dev 8: Schreilechner Lukas Marcellus <br/>
 | :---        |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |
 | Dev 1       | X           | HH:MM       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | 03:30       | HH:MM       |
 | Dev 2       | HH:MM       | X           | HH:MM       | HH:MM       | 01:45       | HH:MM       | HH:MM       | HH:MM       |
-| Dev 3       | HH:MM       | HH:MM       | X           | 03:30       | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
-| Dev 4       | HH:MM       | HH:MM       | 03:30       | X           | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
+| Dev 3       | HH:MM       | HH:MM       | X           | 07:00       | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
+| Dev 4       | HH:MM       | HH:MM       | 07:00       | X           | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
 | Dev 5       | HH:MM       | 01:45       | HH:MM       | HH:MM       | X           | HH:MM       | HH:MM       | HH:MM       |
 | Dev 6       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | X           | HH:MM       | 03:30       |
 | Dev 7       | 03:30       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | X           | HH:MM       |
