@@ -12,6 +12,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_new_task">New Task</string>
     <!-- Strings related to new task fragment -->
+    <string name="prompt_title">Create New Task</string>
     <string name="prompt_task_name">Task Name</string>
     <string name="prompt_task_description">Task Description</string>
     <string name="prompt_task_start">Task Start</string>
@@ -22,7 +23,11 @@
     <string name="prompt_task_end_date">01.01.1970</string>
     <string name="prompt_task_end_time">00:00</string>
     <string name="task_end_date_and_time">Task End</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="task_illegal_start_date_toast">The task start date must not be in the past!</string>
+    <string name="task_illegal_start_time_toast">The task start time must not be in the past!</string>
+    <string name="task_illegal_end_date_toast">The task end date must be after the task start date!</string>
+    <string name="task_illegal_end_time_toast">The task end time must be after the task start date!</string>
+    <string name="action_create_task">Create Task</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
 

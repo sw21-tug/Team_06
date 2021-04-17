@@ -24,15 +24,16 @@ import java.util.*
  */
 class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val liveDataLoc = MutableLiveData<Calendar>(Calendar.getInstance())
+    private val liveDataLoc = MutableLiveData<Calendar>()
     val liveData: LiveData<Calendar> = liveDataLoc
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Fetch current Day/month/year
+        val arg = arguments
+
         val cal = Calendar.getInstance()
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val year = arg?.getInt("YEAR") ?: cal.get(Calendar.YEAR)
+        val month = arg?.getInt("MONTH") ?: cal.get(Calendar.MONTH)
+        val day = arg?.getInt("DAY") ?: cal.get(Calendar.DAY_OF_MONTH)
 
         return DatePickerDialog(requireContext(), this, year, month, day)
     }
