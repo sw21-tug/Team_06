@@ -28,4 +28,9 @@
         android:name="com.team06.focuswork.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/nav_new_task"
+        android:name="com.team06.focuswork.ui.tasks.NewTaskFragment"
+        android:label="@string/menu_new_task"
+        tools:layout="@layout/fragment_new_task" />
 </navigation>
