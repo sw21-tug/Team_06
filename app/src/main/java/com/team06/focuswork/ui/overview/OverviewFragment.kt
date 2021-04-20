@@ -29,7 +29,7 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.recyclerView
-        recyclerView.adapter = TaskAdapter()
+        recyclerView.adapter = TaskAdapter(requireContext())
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 }
