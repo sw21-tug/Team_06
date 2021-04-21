@@ -1,16 +1,12 @@
 package com.team06.focuswork
 
-import android.app.Application
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.test.core.content.pm.ApplicationInfoBuilder
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.PickerActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.contrib.DrawerActions
+import androidx.test.espresso.contrib.NavigationViewActions
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -30,7 +26,15 @@ class NewTaskInstrumentedTest {
 
     @Before
     fun init() {
-        launchFragmentInContainer<NewTaskFragment>()
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open())
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_new_task))
+
+        // Wait short amount of time to ensure everything has loaded
+        Thread.sleep(200)
+        onView(withId(R.id.containerCreateTask))
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -44,6 +48,8 @@ class NewTaskInstrumentedTest {
                 .perform(typeText("TaskName"))
         onView(withId(R.id.taskDescription))
                 .perform(typeText("Task Description"))
+        onView(isRoot())
+            .perform(closeSoftKeyboard())
 
         // Set Start and End
         /*
@@ -61,20 +67,13 @@ class NewTaskInstrumentedTest {
                 .perform(PickerActions.setTime(13, 45))
         */
 
-        onView(isRoot())
-                .perform(closeSoftKeyboard())
-
         // Task Create Button should now be enabled
         onView(withId(R.id.taskCreate))
                 .check(matches(isEnabled()))
                 .perform(click())
 
-
         // After click, overview should be shown again
-        onView(withId(R.id.nav_new_task))
-                .check(matches(not(isDisplayed())))
-        onView(withId(R.id.nav_overview))
-                .check(matches(isDisplayed()))
-
+        onView(withId(R.id.frame_layout_overview))
+            .check(matches(isDisplayed()))
     }
 }
