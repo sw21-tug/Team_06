@@ -3,8 +3,9 @@ package com.team06.focuswork.ui.overview
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.databinding.FragmentOverviewBinding
+
 
 class OverviewFragment : Fragment() {
 
@@ -59,7 +61,7 @@ class OverviewFragment : Fragment() {
                 description = descriptionText;
             }
             val notificationManager = getSystemService(requireContext(),
-                                        NotificationManager::class.java) as NotificationManager
+                    NotificationManager::class.java) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -74,6 +76,8 @@ class OverviewFragment : Fragment() {
         val pendingIntent: PendingIntent =
                 PendingIntent.getActivity(requireContext(), 0, intent, 0)
 
+        val notificationSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager
+                .TYPE_NOTIFICATION)
 
         val builder = NotificationCompat.Builder(requireContext(), "TIMER_NOTIF_ID")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -82,6 +86,7 @@ class OverviewFragment : Fragment() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText("This text is so much longer than the original message."))
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSound(notificationSound)
 
         with(NotificationManagerCompat.from(requireContext())) {
             notify(101, builder.build())
