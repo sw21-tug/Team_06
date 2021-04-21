@@ -28,11 +28,13 @@ class NewTaskInstrumentedTest {
 
     @Before
     fun init() {
-        onView(withId(R.id.drawer_layout))
+        /*onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open())
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_new_task))
-
+*/
+        onView(withId(R.id.fab))
+                .perform(click())
         // Wait short amount of time to ensure everything has loaded
         Thread.sleep(400)
         onView(withId(R.id.containerCreateTask))
