@@ -49,8 +49,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_overview, R.id.nav_new_task, R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        createNotifChannel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,49 +61,4 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-    fun startTimer (view: View) {
-       sendNotif()
-    }
-    private fun createNotifChannel() {
-        // based off this tutorial
-        // https://www.youtube.com/watch?v=B5dgmvbrHgs
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Timer finished"
-            val descriptionText = "The timer for your task has finished."
-            val important = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("TIMER_NOTIF_ID", name, important).apply {
-                description = descriptionText;
-            }
-            val notificationManager: NotificationManager =
-                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private fun sendNotif() {
-        // based off this tutorial
-        // out first notification, navigates back to app by clicking on it
-        // https://www.youtube.com/watch?v=B5dgmvbrHgs
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent: PendingIntent =
-                PendingIntent.getActivity(this, 0, intent, 0)
-
-
-        val builder = NotificationCompat.Builder(this, "TIMER_NOTIF_ID")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Your task has finished!")
-            .setContentText("The task {...} you have set has finished.")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("This text is so much longer than the original message."))
-            .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(this)) {
-            notify(101, builder.build())
-        }
-    }
-
-
 }
