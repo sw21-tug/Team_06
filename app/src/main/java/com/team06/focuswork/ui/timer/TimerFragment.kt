@@ -36,6 +36,7 @@ class TimerFragment : Fragment() {
     }
 
     private var selectedTask : Task? = null
+    private var selectedTaskTimer : CountDownTimer? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +51,7 @@ class TimerFragment : Fragment() {
             val duration = selectedTask!!.duration.timeInMillis -
                     selectedTask!!.startTime.timeInMillis
 
-            val timer = object: CountDownTimer(duration, 10 * 1000) {
+            selectedTaskTimer = object: CountDownTimer(duration, 10 * 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val hours = millisUntilFinished / (60 * 60 * 1000)
                     val minutes = millisUntilFinished / (60 * 1000) % (60)
@@ -60,8 +61,7 @@ class TimerFragment : Fragment() {
                 override fun onFinish() {
                     showToast(getString(R.string.timer_finished))
                 }
-            }
-            timer.start()
+            }.start()
         }
     }
 
@@ -143,10 +143,14 @@ class TimerFragment : Fragment() {
                 position: Int, id: Long
             ) {
                 selectedTask = adapter.getItem(position)
+                selectedTaskTimer?.cancel()
+                binding.taskTimer.text = "0:00"
             }
 
             override fun onNothingSelected(adapter: AdapterView<*>?) {
                 selectedTask = null
+                selectedTaskTimer?.cancel()
+                binding.taskTimer.text = "0:00"
             }
         })
     }
