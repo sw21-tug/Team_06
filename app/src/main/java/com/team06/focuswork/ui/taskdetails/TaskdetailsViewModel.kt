@@ -24,12 +24,12 @@ class TaskdetailsViewModel : ViewModel() {
     val description: LiveData<String> = _description
 
     private val _starttime = MutableLiveData<String>().apply {
-        value = "This is the start time"
+        value = "15 Uhr"
     }
     val starttime: LiveData<String> = _starttime
 
     private val _duration = MutableLiveData<String>().apply {
-        value = "this is the duration"
+        value = "17 Uhr"
     }
     val duration: LiveData<String> = _duration
 }
