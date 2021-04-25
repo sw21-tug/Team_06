@@ -42,7 +42,7 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.recyclerView
-        recyclerView.adapter = TaskAdapter(requireContext())
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         createNotifChannel()
         binding.notifButton.setOnClickListener(this::sendNotif)

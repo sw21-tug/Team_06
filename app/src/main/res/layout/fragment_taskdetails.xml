@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.taskdetails.TaskdetailsFragment">
+    tools:context=".ui.taskdetails.TaskdetailsFragment"
+    android:id="@+id/fragment_container_taskdetails">
 
     <TextView
         android:id="@+id/title_of_taskdetails"
