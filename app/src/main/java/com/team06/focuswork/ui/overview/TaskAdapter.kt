@@ -1,8 +1,6 @@
 package com.team06.focuswork.ui.overview
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
-import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,19 +9,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
-import com.team06.focuswork.ui.taskdetails.TaskdetailsFragment
 import java.util.*
 
 
-class TaskAdapter(private val context: Context, private val overviewFragment: Fragment)
+class TaskAdapter(private val context: Context, private val overviewFragment: OverviewFragment)
     : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val list = mutableListOf<Task>()
@@ -100,7 +93,7 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Fr
         val startTimeText : TextView = holder.taskItem.findViewById(R.id.task_item_start_time)
         startTimeText.text = dateFormat?.format(item.startTime.time)
         val endTimeTextView : TextView = holder.taskItem.findViewById(R.id.task_item_end_time)
-        endTimeTextView.text = dateFormat?.format(item.duration.time)
+        endTimeTextView.text = dateFormat?.format(item.endTime.time)
 
         holder.taskItem.background = if (position % 2 == 0)
             ResourcesCompat.getDrawable(
@@ -122,17 +115,8 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Fr
                 item.taskName + ": " + item.taskDescription,
                 Toast.LENGTH_LONG
             ).show()
+            overviewFragment.onClickTaskItem(item)
 
-            val ft: FragmentTransaction =
-                overviewFragment.childFragmentManager.beginTransaction()
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            val fragment2 = TaskdetailsFragment()
-            val bundle = Bundle()
-                bundle.putSerializable("task", item)
-                fragment2.arguments = bundle
-                ft.replace(R.id.fragment_container_taskdetails, fragment2)
-                ft.addToBackStack(null)
-                ft.commit()
 
             /*holder.view.findNavController().navigate(
                 R.id.action_nav_overview_to_nav_taskdetails,

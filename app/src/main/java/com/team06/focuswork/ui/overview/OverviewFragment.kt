@@ -15,12 +15,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentOverviewBinding
+import com.team06.focuswork.ui.taskdetails.TaskdetailsFragment
 
 
 class OverviewFragment : Fragment() {
@@ -91,5 +94,13 @@ class OverviewFragment : Fragment() {
         with(NotificationManagerCompat.from(requireContext())) {
             notify(101, builder.build())
         }
+    }
+
+    fun onClickTaskItem(task: Task) {
+        val fragment2 = TaskdetailsFragment()
+        val bundle = Bundle()
+        bundle.putSerializable("task", task)
+        fragment2.arguments = bundle
+        (activity as MainActivity).switchFragments(fragment2, R.id.fragment_container_overview)
     }
 }

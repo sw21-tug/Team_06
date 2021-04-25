@@ -24,6 +24,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import com.team06.focuswork.ui.taskdetails.TaskdetailsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,5 +62,13 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun switchFragments(fragmentToShow : Fragment, fragmentToReplaceId : Int) {
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        ft.replace(fragmentToReplaceId, fragmentToShow)
+        ft.addToBackStack(null)
+        ft.commit()
     }
 }

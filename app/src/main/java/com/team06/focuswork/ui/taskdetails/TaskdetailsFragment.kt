@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.team06.focuswork.R
+import com.team06.focuswork.data.Task
 
 class TaskdetailsFragment : Fragment() {
 
@@ -21,6 +22,7 @@ class TaskdetailsFragment : Fragment() {
     ): View? {
         taskdetailsViewModel =
                 ViewModelProvider(this).get(TaskdetailsViewModel::class.java)
+        taskdetailsViewModel.setAll(requireArguments().get("task") as Task, context)
         val root = inflater.inflate(R.layout.fragment_taskdetails, container, false)
 
         val titleView: TextView = root.findViewById(R.id.title_of_taskdetails)
@@ -39,7 +41,7 @@ class TaskdetailsFragment : Fragment() {
         })
 
         val durationView: TextView = root.findViewById(R.id.duration_of_taskdetails)
-        taskdetailsViewModel.duration.observe(viewLifecycleOwner, Observer {
+        taskdetailsViewModel.endTime.observe(viewLifecycleOwner, Observer {
             durationView.text = it
         })
 
