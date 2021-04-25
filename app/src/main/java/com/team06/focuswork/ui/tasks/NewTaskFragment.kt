@@ -1,6 +1,5 @@
 package com.team06.focuswork.ui.tasks
 
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
@@ -16,6 +18,7 @@ import com.team06.focuswork.ui.util.DatePickerFragment
 import com.team06.focuswork.ui.util.TimePickerFragment
 import java.text.DateFormat.*
 import java.util.*
+
 
 class NewTaskFragment : Fragment() {
 
@@ -52,7 +55,23 @@ class NewTaskFragment : Fragment() {
         prepareEndDateTextView(binding.taskEndDate)
         prepareEndTimeTextView(binding.taskEndTime)
 
-        binding.taskCreate.setOnClickListener { findNavController().navigate(R.id.nav_overview) }
+        binding.taskCreate.setOnClickListener {
+            saveTask()
+            findNavController().navigate(R.id.nav_overview)
+        }
+    }
+
+    private fun saveTask() {
+        val db = FirebaseFirestore.getInstance()
+        val task: MutableMap<String, Any> = HashMap()
+        task["description"] = "My description"
+        task["name"] = "Go drinking"
+        task["startTime"] = Timestamp(Date())
+        task["endTime"] = Timestamp(Date())
+        db.collection("User").
+        document("dggkbNlMM7QqSWjj8Nii").
+        collection("Task").
+        add(task)
     }
 
     private fun prepareStartDateTextView(taskStartDate: TextView) {

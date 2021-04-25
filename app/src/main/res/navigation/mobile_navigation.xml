@@ -27,4 +27,9 @@
         android:name="com.team06.focuswork.ui.timer.TimerFragment"
         android:label="@string/menu_timer"
         tools:layout="@layout/fragment_timer" />
+    <fragment
+        android:id="@+id/nav_taskdetails"
+        android:name="com.team06.focuswork.ui.taskdetails.TaskdetailsFragment"
+        android:label="Taskdetails"
+        tools:layout="@layout/fragment_taskdetails" />
 </navigation>
