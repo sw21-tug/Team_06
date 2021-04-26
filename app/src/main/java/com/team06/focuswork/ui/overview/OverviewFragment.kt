@@ -16,6 +16,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team06.focuswork.MainActivity
@@ -96,8 +97,7 @@ class OverviewFragment : Fragment() {
     }
 
     fun onClickTaskItem(task: Task) {
-        val taskdetailsFragment = TaskdetailsFragment()
         tasksViewModel.setSelectedTask(task, requireContext())
-        (activity as MainActivity).switchFragments(taskdetailsFragment, R.id.fragment_container_overview)
+        findNavController().navigate(R.id.action_nav_overview_to_nav_taskdetails)
     }
 }

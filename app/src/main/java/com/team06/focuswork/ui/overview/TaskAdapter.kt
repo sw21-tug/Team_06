@@ -38,38 +38,7 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
                 Calendar.getInstance()
             )
         )
-        list.add(
-            Task(
-                "Dritte Aufgabe",
-                "Dies ist noch eine Aufgabenbeschr.",
-                Calendar.getInstance(),
-                Calendar.getInstance()
-            )
-        )
-        list.add(
-            Task(
-                "Vierte Aufgabe",
-                "Dies ist auch eine Aufgabenbeschr.",
-                Calendar.getInstance(),
-                Calendar.getInstance()
-            )
-        )
-        list.add(
-            Task(
-                "Fuenfte Aufgabe",
-                "Dies ist eine tolle Aufgabenbeschr.",
-                Calendar.getInstance(),
-                Calendar.getInstance()
-            )
-        )
-        list.add(
-            Task(
-                "Sechste Aufgabe",
-                "Dies ist eine tolle Aufgabenbeschr.",
-                Calendar.getInstance(),
-                Calendar.getInstance()
-            )
-        )
+
 
         Log.d("TaskAdapter", list.toString())
     }

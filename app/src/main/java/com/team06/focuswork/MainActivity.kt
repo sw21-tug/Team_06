@@ -59,11 +59,4 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun switchFragments(fragmentToShow : Fragment, fragmentToReplaceId : Int) {
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ft.replace(fragmentToReplaceId, fragmentToShow)
-        ft.addToBackStack(null)
-        ft.commit()
-    }
 }
