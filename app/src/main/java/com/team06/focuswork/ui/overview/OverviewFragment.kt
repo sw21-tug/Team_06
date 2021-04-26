@@ -15,17 +15,19 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentOverviewBinding
-
+import com.team06.focuswork.model.TasksViewModel
 
 class OverviewFragment : Fragment() {
 
-    private lateinit var overviewModel: OverviewModel
+    private val tasksViewModel: TasksViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var binding: FragmentOverviewBinding
 
@@ -33,8 +35,7 @@ class OverviewFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        overviewModel = ViewModelProvider(this).get(OverviewModel::class.java)
+    ): View {
         binding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -42,7 +43,7 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.recyclerView
-        recyclerView.adapter = TaskAdapter(requireContext())
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         createNotifChannel()
         binding.notifButton.setOnClickListener(this::sendNotif)
@@ -92,4 +93,12 @@ class OverviewFragment : Fragment() {
             notify(101, builder.build())
         }
     }
+
+    fun onClickTaskItem(task: Task) {
+        tasksViewModel.setSelectedTask(task, requireContext())
+        findNavController().navigate(R.id.action_nav_overview_to_nav_taskdetails)
+    }
+
+    fun getAllTasks() : List<Task> = tasksViewModel.allTasks.value?: listOf()
+
 }

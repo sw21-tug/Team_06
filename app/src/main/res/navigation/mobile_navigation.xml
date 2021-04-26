@@ -9,7 +9,11 @@
         android:id="@+id/nav_overview"
         android:name="com.team06.focuswork.ui.overview.OverviewFragment"
         android:label="@string/menu_overview"
-        tools:layout="@layout/fragment_overview" />
+        tools:layout="@layout/fragment_overview" >
+        <action
+            android:id="@+id/action_nav_overview_to_nav_taskdetails"
+            app:destination="@id/nav_taskdetails"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
