@@ -64,10 +64,10 @@ class NewTaskFragment : Fragment() {
     private fun saveTask() {
         val db = FirebaseFirestore.getInstance()
         val task: MutableMap<String, Any> = HashMap()
-        task["description"] = "My description"
-        task["name"] = "Go drinking"
-        task["startTime"] = Timestamp(Date())
-        task["endTime"] = Timestamp(Date())
+        task["name"] = binding.taskName.text
+        task["description"] = binding.taskDescription.text
+        task["startTime"] = Timestamp(Date(startCal.timeInMillis))
+        task["endTime"] = Timestamp(Date(endCal.timeInMillis))
         db.collection("User").
         document("dggkbNlMM7QqSWjj8Nii").
         collection("Task").
