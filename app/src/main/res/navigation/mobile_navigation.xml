@@ -35,9 +35,5 @@
         android:id="@+id/nav_taskdetails"
         android:name="com.team06.focuswork.ui.taskdetails.TaskdetailsFragment"
         android:label="Taskdetails"
-        tools:layout="@layout/fragment_taskdetails" >
-        <argument
-            android:name="task"
-            app:argType="com.team06.focuswork.data.Task" />
-    </fragment>
+        tools:layout="@layout/fragment_taskdetails" />
 </navigation>

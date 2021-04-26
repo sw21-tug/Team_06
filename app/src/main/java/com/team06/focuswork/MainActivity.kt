@@ -1,16 +1,7 @@
 package com.team06.focuswork
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -22,21 +13,25 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.team06.focuswork.ui.taskdetails.TaskdetailsFragment
+import androidx.lifecycle.ViewModelProvider
+import com.team06.focuswork.model.TasksViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var tasksViewModel: TasksViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        tasksViewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
+        //TODO: load tasks from db into viewmodel after login
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { _ ->
