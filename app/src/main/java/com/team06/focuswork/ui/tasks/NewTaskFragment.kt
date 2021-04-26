@@ -68,10 +68,10 @@ class NewTaskFragment : Fragment() {
         task["description"] = binding.taskDescription.text.toString()
         task["startTime"] = Timestamp(Date(startCal.timeInMillis))
         task["endTime"] = Timestamp(Date(endCal.timeInMillis))
-        db.collection("User").
-        document("dggkbNlMM7QqSWjj8Nii").
-        collection("Task").
-        add(task)
+        db.collection("User")
+            .document("dggkbNlMM7QqSWjj8Nii")
+            .collection("Task")
+            .add(task)
     }
 
     private fun prepareStartDateTextView(taskStartDate: TextView) {
