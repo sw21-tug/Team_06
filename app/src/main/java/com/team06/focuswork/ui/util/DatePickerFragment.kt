@@ -34,8 +34,11 @@ class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListene
         val year = arg?.getInt("YEAR") ?: cal.get(Calendar.YEAR)
         val month = arg?.getInt("MONTH") ?: cal.get(Calendar.MONTH)
         val day = arg?.getInt("DAY") ?: cal.get(Calendar.DAY_OF_MONTH)
+        val minDate = arg?.getLong("MIN_DATE") ?: System.currentTimeMillis() - 1000
 
-        return DatePickerDialog(requireContext(), this, year, month, day)
+        val dialog = DatePickerDialog(requireContext(), this, year, month, day)
+        dialog.datePicker.minDate = minDate
+        return dialog
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
