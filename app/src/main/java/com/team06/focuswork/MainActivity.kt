@@ -16,7 +16,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.team06.focuswork.data.Task
 import com.team06.focuswork.model.TasksViewModel
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,12 +28,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tasksViewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
+        tasksViewModel.setTasks(
+            listOf(Task(
+                "Erste Aufgabe",
+                "Dies ist eine Aufgabenbeschr.",
+                Calendar.getInstance(),
+                Calendar.getInstance()
+            ), Task(
+                "Zweite Aufgabe",
+                "Dies ist weitere Aufgabenbeschr.",
+                Calendar.getInstance(),
+                Calendar.getInstance()
+            ))
+        ) //TODO: replace hardcoded values with loading tasks from db into viewmodel after login
+
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        tasksViewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
-        //TODO: load tasks from db into viewmodel after login
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { _ ->

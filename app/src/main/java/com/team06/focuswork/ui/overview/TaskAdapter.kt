@@ -13,33 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
+import com.team06.focuswork.model.TasksViewModel
 import java.util.*
 
 
 class TaskAdapter(private val context: Context, private val overviewFragment: OverviewFragment)
     : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private val list = mutableListOf<Task>()
+    private val list = overviewFragment.getAllTasks()
 
     init {
-        list.add(
-            Task(
-                "Erste Aufgabe",
-                "Dies ist eine Aufgabenbeschr.",
-                Calendar.getInstance(),
-                Calendar.getInstance()
-            )
-        )
-        list.add(
-            Task(
-                "Zweite Aufgabe",
-                "Dies ist weitere Aufgabenbeschr.",
-                Calendar.getInstance(),
-                Calendar.getInstance()
-            )
-        )
-
-
         Log.d("TaskAdapter", list.toString())
     }
 
@@ -55,6 +38,7 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+
         val item = list[position]
         val dateFormat: java.text.DateFormat? = DateFormat.getTimeFormat(holder.view.context)
 
@@ -69,9 +53,7 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
                 context.resources,
                 R.drawable.rectangle_rounded_corners_heavy,
                 null
-            )
-        else
-            ResourcesCompat.getDrawable(
+            ) else ResourcesCompat.getDrawable(
                 context.resources,
                 R.drawable.rectangle_rounded_corners_light,
                 null
@@ -85,15 +67,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
                 Toast.LENGTH_LONG
             ).show()
             overviewFragment.onClickTaskItem(item)
-
-
-            /*holder.view.findNavController().navigate(
-                R.id.action_nav_overview_to_nav_taskdetails,
-                item
-            )*/
-
-
-            //TODO: open new task fragment here
         }
     }
 

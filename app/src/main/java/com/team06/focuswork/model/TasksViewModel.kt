@@ -31,4 +31,8 @@ class TasksViewModel() : ViewModel() {
         _startTime.apply { value = dateFormat.format(task.startTime.time) }
         _endTime.apply { value = dateFormat.format(task.endTime.time) }
     }
+
+    fun setTasks(tasks: List<Task>) {
+        _allTasks.apply { value = tasks }
+    }
 }
