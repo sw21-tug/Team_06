@@ -21,6 +21,12 @@
         android:name="com.team06.focuswork.ui.tasks.NewTaskFragment"
         android:label="@string/menu_new_task"
         tools:layout="@layout/fragment_new_task" />
+
+    <fragment
+        android:id="@+id/nav_timer"
+        android:name="com.team06.focuswork.ui.timer.TimerFragment"
+        android:label="@string/menu_timer"
+        tools:layout="@layout/fragment_timer" />
     <fragment
         android:id="@+id/nav_taskdetails"
         android:name="com.team06.focuswork.ui.taskdetails.TaskdetailsFragment"
