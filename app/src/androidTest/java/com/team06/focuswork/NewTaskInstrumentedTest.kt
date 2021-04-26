@@ -42,9 +42,9 @@ class NewTaskInstrumentedTest {
     }
     private fun setupTaskStrings(taskName: String, taskDescription: String) {
         onView(withId(R.id.taskName))
-            .perform(typeText(taskName))
+            .perform(clearText(), typeText(taskName))
         onView(withId(R.id.taskDescription))
-            .perform(typeText(taskDescription))
+            .perform(clearText(), typeText(taskDescription))
         onView(isRoot())
             .perform(closeSoftKeyboard())
     }
@@ -82,7 +82,7 @@ class NewTaskInstrumentedTest {
         onView(withId(R.id.taskCreate))
                 .check(matches(not(isEnabled())))
 
-        setupTaskStrings("Task Name", "Task Description");
+        setupTaskStrings("createSimpleTask", "SimpleTaskDescription");
         setStartDateValues(2022, 10, 22)
         setStartTimeValues(10, 0)
         setEndDateValues(2022, 10, 22)
@@ -103,7 +103,7 @@ class NewTaskInstrumentedTest {
         onView(withId(R.id.taskCreate))
             .check(matches(not(isEnabled())))
 
-        setupTaskStrings("", "Task Description");
+        setupTaskStrings("", "namelessTask description");
         setStartDateValues(2022, 10, 22)
         setStartTimeValues(10, 0)
         setEndDateValues(2022, 10, 22)
