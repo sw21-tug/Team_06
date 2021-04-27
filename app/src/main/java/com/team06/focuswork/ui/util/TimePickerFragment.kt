@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.team06.focuswork.ui.tasks.NewTaskFragment
 import java.util.*
 
 /**
@@ -17,10 +18,7 @@ import java.util.*
  * Use the [DatePicker.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
-
-    private val liveDataLoc = MutableLiveData<Calendar>()
-    val liveData: LiveData<Calendar> = liveDataLoc
+class TimePickerFragment(private var newTaskFragment: NewTaskFragment, val startPicker: Boolean) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val arg = arguments
@@ -37,9 +35,16 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        cal.set(Calendar.MINUTE, minute)
-        liveDataLoc.value = cal
+        if(startPicker) {
+            val cal = newTaskFragment.startCalendar.value
+            cal?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            cal?.set(Calendar.MINUTE, minute)
+            newTaskFragment.startCalendar.value = cal
+        } else {
+            val cal = newTaskFragment.startCalendar.value
+            cal?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            cal?.set(Calendar.MINUTE, minute)
+            newTaskFragment.endCalendar.value = cal
+        }
     }
 }

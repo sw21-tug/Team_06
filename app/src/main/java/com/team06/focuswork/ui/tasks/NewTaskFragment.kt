@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,13 +24,13 @@ import java.util.*
 class NewTaskFragment : Fragment() {
 
     private lateinit var workingTask: Task
-    private val startDatePicker = DatePickerFragment()
-    private val startTimePicker = TimePickerFragment()
-    private val endDatePicker = DatePickerFragment()
-    private val endTimePicker = TimePickerFragment()
-    private val startCal = Calendar.getInstance()
-    private val endCal = Calendar.getInstance()
+    private val startDatePicker = DatePickerFragment(this, true)
+    private val startTimePicker = TimePickerFragment(this, true)
+    private val endDatePicker = DatePickerFragment(this, false)
+    private val endTimePicker = TimePickerFragment(this, false)
     private lateinit var binding: FragmentNewTaskBinding
+    var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+    var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,9 +52,10 @@ class NewTaskFragment : Fragment() {
 
         prepareStartDateTextView(binding.taskStartDate)
         prepareStartTimeTextView(binding.taskStartTime)
-        endCal.add(Calendar.HOUR, 1)
+        endCalendar.value?.add(Calendar.HOUR, 1);
         prepareEndDateTextView(binding.taskEndDate)
         prepareEndTimeTextView(binding.taskEndTime)
+        setupObserverCallbacks()
 
         binding.taskCreate.setOnClickListener {
             saveTask()
@@ -66,103 +68,93 @@ class NewTaskFragment : Fragment() {
         val task: MutableMap<String, Any> = HashMap()
         task["name"] = binding.taskName.text.toString()
         task["description"] = binding.taskDescription.text.toString()
-        task["startTime"] = Timestamp(startCal.time)
-        task["endTime"] = Timestamp(endCal.time)
+        task["startTime"] = Timestamp(startCalendar.value!!.time)
+        task["endTime"] = Timestamp(endCalendar.value!!.time)
         db.collection("User")
             .document("dggkbNlMM7QqSWjj8Nii")
             .collection("Task")
             .add(task)
     }
 
+    private fun prepareStartTimeTextView(startTimeTextView: TextView) {
+        startTimeTextView.text = formatTime(startCalendar.value)
+        startTimeTextView.setOnClickListener {
+            startTimePicker.arguments = createDateOrTimeBundle(isDate = false, startBundle = true)
+            startTimePicker.show(childFragmentManager, TimePickerFragment.TAG)
+        }
+    }
     private fun prepareStartDateTextView(taskStartDate: TextView) {
-        taskStartDate.text = formatDate(startCal)
+        taskStartDate.text = formatDate(startCalendar.value)
         taskStartDate.setOnClickListener {
-            startDatePicker.arguments = createDateOrTimeBundle(true)
-            val calBeforeDateDialog = Calendar.getInstance()
+            startDatePicker.arguments = createDateOrTimeBundle(isDate = true, startBundle = true)
             startDatePicker.show(childFragmentManager, DatePickerFragment.TAG)
-            startDatePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                val cal = it ?: return@Observer
-                if (cal < calBeforeDateDialog) {
-                    showToast(getString(R.string.task_illegal_start_date_toast))
-                } else {
-                    startCal.set(
-                        cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
-                        cal.get(Calendar.DAY_OF_MONTH)
-                    )
-                    taskStartDate.text = formatDate(cal)
-                }
-            })
         }
     }
 
     private fun prepareEndTimeTextView(endTimeTextView: TextView) {
-        endTimeTextView.text = formatTime(endCal)
+        endTimeTextView.text = formatTime(endCalendar.value)
         endTimeTextView.setOnClickListener {
-            endTimePicker.arguments = createDateOrTimeBundle(false)
+            endTimePicker.arguments = createDateOrTimeBundle(isDate = false, startBundle = false)
             endTimePicker.show(childFragmentManager, TimePickerFragment.TAG)
-            endTimePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                val cal = it ?: return@Observer
-                if (cal < startCal) {
-                    showToast(getString(R.string.task_illegal_end_time_toast))
-                } else {
-                    endCal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY))
-                    endCal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE))
-                    endTimeTextView.text = formatTime(cal)
-                }
-
-            })
         }
     }
 
     private fun prepareEndDateTextView(endDateTextView: TextView) {
-        endDateTextView.text = formatDate(endCal)
+        endDateTextView.text = formatDate(endCalendar.value)
         endDateTextView.setOnClickListener {
-            endDatePicker.arguments = createDateOrTimeBundle(true)
+            endDatePicker.arguments = createDateOrTimeBundle(isDate = true, startBundle = false)
             endDatePicker.show(childFragmentManager, DatePickerFragment.TAG)
-            endDatePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                val cal = it ?: return@Observer
-                if (cal < startCal) {
-                    showToast(getString(R.string.task_illegal_end_date_toast))
-                } else {
-                    endCal.set(
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
-                    )
-                    endDateTextView.text = formatDate(cal)
-                }
-            })
+
         }
     }
 
-    private fun prepareStartTimeTextView(startTimeTextView: TextView) {
-        startTimeTextView.text = formatTime(startCal)
-        startTimeTextView.setOnClickListener {
-            startTimePicker.arguments = createDateOrTimeBundle(false)
-            val calBeforeTimeDialog = Calendar.getInstance()
-            startTimePicker.show(childFragmentManager, TimePickerFragment.TAG)
-            startTimePicker.liveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                val cal = it ?: return@Observer
-                if (cal < calBeforeTimeDialog) {
-                    showToast(getString(R.string.task_illegal_start_time_toast))
-                } else {
-                    startCal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY))
-                    startCal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE))
-                    startTimeTextView.text = formatTime(cal)
-                }
-            })
-        }
+    private fun setupObserverCallbacks() {
+        startCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            val cal = it ?: return@Observer
+            val nowCal = Calendar.getInstance()
+            nowCal.add(Calendar.MINUTE, -1)
+            if(cal.before(nowCal)) {
+                cal.add(Calendar.DAY_OF_YEAR, 1)
+                startCalendar.value = cal
+            }
+            if(endCalendar.value?.before(cal)!!) {
+                val newEndCal = GregorianCalendar(
+                        startCalendar.value?.get(Calendar.YEAR)!!,
+                        startCalendar.value?.get(Calendar.MONTH)!!,
+                        startCalendar.value?.get(Calendar.DAY_OF_MONTH)!!,
+                        endCalendar.value?.get(Calendar.HOUR_OF_DAY)!!,
+                        endCalendar.value?.get(Calendar.MINUTE)!!)
+                endCalendar.value = newEndCal
+            }
+            binding.taskStartDate.text = formatDate(cal)
+            binding.taskStartTime.text = formatTime(cal)
+        })
+        endCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            val cal = it ?: return@Observer
+            if(cal.before(startCalendar.value)) {
+                val newEndCal = GregorianCalendar(
+                        startCalendar.value?.get(Calendar.YEAR)!!,
+                        startCalendar.value?.get(Calendar.MONTH)!!,
+                        startCalendar.value?.get(Calendar.DAY_OF_MONTH)!!,
+                        endCalendar.value?.get(Calendar.HOUR_OF_DAY)!!,
+                        endCalendar.value?.get(Calendar.MINUTE)!!)
+                endCalendar.value = newEndCal
+            }
+            binding.taskEndDate.text = formatDate(cal)
+            binding.taskEndTime.text = formatTime(cal)
+        })
     }
 
     private fun showToast(message: String) {
         Toast.makeText(context?.applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun formatDate(cal: Calendar): String {
-        return getDateInstance(MEDIUM).format(cal.time)
+    private fun formatDate(cal: Calendar?): String {
+        return getDateInstance(MEDIUM).format(cal!!.time)
     }
 
-    private fun formatTime(cal: Calendar): String {
-        return getTimeInstance(SHORT).format(cal.time)
+    private fun formatTime(cal: Calendar?): String {
+        return getTimeInstance(SHORT).format(cal!!.time)
     }
 
     private fun checkTextFilled(view: View) {
@@ -171,12 +163,19 @@ class NewTaskFragment : Fragment() {
                     view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
-    private fun createDateOrTimeBundle(isDate: Boolean) = if (isDate) bundleOf(
-        Pair("YEAR", endCal.get(Calendar.YEAR)),
-        Pair("MONTH", endCal.get(Calendar.MONTH)),
-        Pair("DAY", endCal.get(Calendar.DAY_OF_MONTH))
-    ) else bundleOf(
-        Pair("HOUR", endCal.get(Calendar.HOUR_OF_DAY)),
-        Pair("MINUTE", endCal.get(Calendar.MINUTE))
-    )
+    private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {
+        val cal = if(startBundle) startCalendar.value else endCalendar.value
+        return if (isDate) bundleOf(
+            Pair("YEAR", cal?.get(Calendar.YEAR)),
+            Pair("MONTH", cal?.get(Calendar.MONTH)),
+            Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
+            Pair("MIN_DATE",
+                    if(startBundle) System.currentTimeMillis() - 1000
+                    else startCalendar.value?.timeInMillis
+            )
+        ) else bundleOf(
+            Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
+            Pair("MINUTE", cal?.get(Calendar.MINUTE))
+        )
+    }
 }
