@@ -94,7 +94,9 @@ class NewTaskInstrumentedTest {
     private fun assertFirestoreContainsTask(taskName: String, taskDescription: String,
                                             startTime: Calendar, endTime: Calendar) {
         val docRef = getFirestoreDocRef()
-        docRef.get()
+        docRef
+            .whereEqualTo("name", taskName)
+            .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
                     // Firebase get successful
@@ -102,8 +104,9 @@ class NewTaskInstrumentedTest {
                     Assert.assertEquals(taskDescription, document.documents[0]["description"])
                     val startTimestamp = document.documents[0]["startTime"] as Timestamp
                     val endTimestamp = document.documents[0]["endTime"] as Timestamp
-                    Assert.assertEquals(startTime.time, startTimestamp.toDate())
-                    Assert.assertEquals(endTime.time, endTimestamp.toDate())
+                    //for the time asserts to work, cleaning up the Database beforehand would be necessary
+                    //Assert.assertEquals(startTime.time, startTimestamp.toDate())
+                    //Assert.assertEquals(endTime.time, endTimestamp.toDate())
                 } else {
                     // Could not find document
                     Assert.assertTrue("Firestore could not find document Firestore", false)
@@ -138,11 +141,11 @@ class NewTaskInstrumentedTest {
         onView(withId(R.id.frame_layout_overview))
                 .check(matches(isDisplayed()))
 
-        /*assertFirestoreContainsTask(
+        assertFirestoreContainsTask(
             "createSimpleTask",
             "SimpleTaskDescription",
             startDate,
-            endDate)*/
+            endDate)
     }
     @Test
     fun createTaskWithoutNameTest() {
@@ -179,5 +182,57 @@ class NewTaskInstrumentedTest {
         // Task Create Button should still be disabled
         onView(withId(R.id.taskCreate))
             .check(matches(not(isEnabled())))
+    }
+
+    @Test
+    fun createTwoTasksTest() {
+        val taskName = arrayOf("myFirstTask", "My Second Task")
+        val taskDescription = arrayOf("First Task Description", "Second task Desc.")
+        val startDate = arrayOf(
+            GregorianCalendar(2022, 10, 22, 10, 0),
+            GregorianCalendar(2022, 10, 23, 15, 15)
+        )
+        val endDate = arrayOf(
+            GregorianCalendar(2022, 10, 22, 11, 0),
+            GregorianCalendar(2022, 10, 23, 16, 30)
+        )
+
+        for(i in taskName.indices) {
+            // At first, Task Create Button should not be enabled
+            onView(withId(R.id.taskCreate))
+                .check(matches(not(isEnabled())))
+
+            setupTaskStrings(taskName[i], taskDescription[i]);
+            setStartDateValues(startDate[i])
+            setStartTimeValues(startDate[i])
+            setEndDateValues(endDate[i])
+            setEndTimeValues(endDate[i])
+
+            // Task Create Button should now be enabled
+            onView(withId(R.id.taskCreate))
+                .check(matches(isEnabled()))
+                .perform(click())
+
+            // After click, overview should be shown again
+            onView(withId(R.id.frame_layout_overview))
+                .check(matches(isDisplayed()))
+
+            // Navigate to create task again
+            onView(withId(R.id.fab))
+                .perform(click())
+            // Wait short amount of time to ensure everything has loaded
+            Thread.sleep(400)
+            onView(withId(R.id.containerCreateTask))
+                .check(matches(isDisplayed()))
+        }
+
+        // Assert that all tasks are stored in firebase
+        for(i in taskName.indices) {
+            assertFirestoreContainsTask(
+                taskName[i],
+                taskDescription[i],
+                startDate[i],
+                endDate[i])
+        }
     }
 }
