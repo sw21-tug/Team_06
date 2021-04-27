@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "59279541004",
+    "project_id": "focuswork-95b1e",
+    "storage_bucket": "focuswork-95b1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59279541004:android:3ee823f172469695027f29",
+        "android_client_info": {
+          "package_name": "com.team06.focuswork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59279541004-sfe8bmsdcgttuchllm9ifuvoq551jugr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfiUVABsf-ZVtkjsvCiunq-Lh3AdY-7Co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59279541004-sfe8bmsdcgttuchllm9ifuvoq551jugr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
