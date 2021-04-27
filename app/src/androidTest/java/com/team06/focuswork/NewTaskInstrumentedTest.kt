@@ -116,7 +116,7 @@ class NewTaskInstrumentedTest {
     }
     //endregion
     @Test
-    fun createSimpleTask() {
+    fun createSimpleTaskTest() {
         // At first, Task Create Button should not be enabled
         onView(withId(R.id.taskCreate))
                 .check(matches(not(isEnabled())))
@@ -145,12 +145,30 @@ class NewTaskInstrumentedTest {
             endDate)*/
     }
     @Test
-    fun namelessTask() {
+    fun createTaskWithoutNameTest() {
         // At first, Task Create Button should not be enabled
         onView(withId(R.id.taskCreate))
             .check(matches(not(isEnabled())))
 
         setupTaskStrings("", "namelessTask description");
+        val startDate = GregorianCalendar(2022, 10, 22, 10, 0)
+        val endDate = GregorianCalendar(2022, 10, 22, 11, 0)
+        setStartDateValues(startDate)
+        setStartTimeValues(startDate)
+        setEndDateValues(endDate)
+        setEndTimeValues(endDate)
+
+        // Task Create Button should still be disabled
+        onView(withId(R.id.taskCreate))
+            .check(matches(not(isEnabled())))
+    }
+    @Test
+    fun createTaskWithoutDescriptionTest() {
+        // At first, Task Create Button should not be enabled
+        onView(withId(R.id.taskCreate))
+            .check(matches(not(isEnabled())))
+
+        setupTaskStrings("TaskName no Desc", "");
         val startDate = GregorianCalendar(2022, 10, 22, 10, 0)
         val endDate = GregorianCalendar(2022, 10, 22, 11, 0)
         setStartDateValues(startDate)
