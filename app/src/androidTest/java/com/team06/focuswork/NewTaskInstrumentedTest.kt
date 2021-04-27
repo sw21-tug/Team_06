@@ -138,7 +138,7 @@ class NewTaskInstrumentedTest {
                 .perform(click())
 
         // After click, overview should be shown again
-        onView(withId(R.id.frame_layout_overview))
+        onView(withId(R.id.fragment_container_overview))
                 .check(matches(isDisplayed()))
 
         assertFirestoreContainsTask(
@@ -214,7 +214,7 @@ class NewTaskInstrumentedTest {
                 .perform(click())
 
             // After click, overview should be shown again
-            onView(withId(R.id.frame_layout_overview))
+            onView(withId(R.id.fragment_container_overview))
                 .check(matches(isDisplayed()))
 
             // Navigate to create task again
