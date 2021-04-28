@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
+import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import com.team06.focuswork.ui.util.DatePickerFragment
 import com.team06.focuswork.ui.util.TimePickerFragment
 import java.text.DateFormat.*
@@ -68,8 +69,8 @@ class NewTaskFragment : Fragment() {
         val task: MutableMap<String, Any> = HashMap()
         task["name"] = binding.taskName.text.toString()
         task["description"] = binding.taskDescription.text.toString()
-        task["startTime"] = Timestamp(startCalendar.value!!.time)
-        task["endTime"] = Timestamp(endCalendar.value!!.time)
+        task["startTime"] = CalendarTimestampUtil.toTimeStamp(startCalendar.value!!)
+        task["endTime"] = CalendarTimestampUtil.toTimeStamp(endCalendar.value!!)
         db.collection("User")
             .document("dggkbNlMM7QqSWjj8Nii")
             .collection("Task")

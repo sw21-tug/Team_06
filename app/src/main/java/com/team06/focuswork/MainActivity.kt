@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.model.TasksViewModel
 import java.util.*
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var tasksViewModel: TasksViewModel
-
+    lateinit var loginRepository: LoginRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
