@@ -16,7 +16,6 @@ jobs:
 
       - name: Make gradlew executable
         run: |
-          cd Team_06/
           chmod +x ./gradlew
 
       - name: Set up JDK 1.8
@@ -26,12 +25,10 @@ jobs:
       
       - name: Run Lint
         run: |
-          cd Team_06/
           ./gradlew lint
 
       - name: Run Unit Test
         run: |
-          cd Team_06/
           ./gradlew test
 
       - name: Android Test Report
@@ -53,13 +50,12 @@ jobs:
         java-version: 11
     - name: Make gradlew executable
       run: |
-        cd Team_06/
         chmod +x ./gradlew
         
     - name: Run Instrumentation tests
       uses: reactivecircus/android-emulator-runner@v2.15.0
       with:
-        working-directory: ./Team_06
+        working-directory: .
         api-level: 29
         script: ./gradlew connectedCheck
 
