@@ -9,6 +9,7 @@ object CalendarTimestampUtil {
         result.time = timestamp.toDate()
         return result
     }
+
     fun toTimeStamp(calendar: Calendar): Timestamp {
         return Timestamp(calendar.time)
     }

@@ -14,7 +14,7 @@ import java.util.*
  * Use the [DatePicker.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DatePickerFragment(private var newTaskFragment: NewTaskFragment, private val startPicker : Boolean) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerFragment(private var newTaskFragment: NewTaskFragment, private val startPicker: Boolean) : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val arg = arguments
@@ -30,7 +30,7 @@ class DatePickerFragment(private var newTaskFragment: NewTaskFragment, private v
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        if(startPicker) {
+        if (startPicker) {
             val cal = newTaskFragment.startCalendar.value
             cal?.set(year, month, dayOfMonth)
             newTaskFragment.startCalendar.value = cal

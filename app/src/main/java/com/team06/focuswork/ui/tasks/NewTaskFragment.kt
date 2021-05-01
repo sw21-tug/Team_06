@@ -34,9 +34,9 @@ class NewTaskFragment : Fragment() {
     var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         binding = FragmentNewTaskBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -72,9 +72,9 @@ class NewTaskFragment : Fragment() {
         task["startTime"] = CalendarTimestampUtil.toTimeStamp(startCalendar.value!!)
         task["endTime"] = CalendarTimestampUtil.toTimeStamp(endCalendar.value!!)
         db.collection("User")
-            .document("dggkbNlMM7QqSWjj8Nii")
-            .collection("Task")
-            .add(task)
+                .document("dggkbNlMM7QqSWjj8Nii")
+                .collection("Task")
+                .add(task)
     }
 
     private fun prepareStartTimeTextView(startTimeTextView: TextView) {
@@ -84,6 +84,7 @@ class NewTaskFragment : Fragment() {
             startTimePicker.show(childFragmentManager, TimePickerFragment.TAG)
         }
     }
+
     private fun prepareStartDateTextView(taskStartDate: TextView) {
         taskStartDate.text = formatDate(startCalendar.value)
         taskStartDate.setOnClickListener {
@@ -114,11 +115,11 @@ class NewTaskFragment : Fragment() {
             val cal = it ?: return@Observer
             val nowCal = Calendar.getInstance()
             nowCal.add(Calendar.MINUTE, -1)
-            if(cal.before(nowCal)) {
+            if (cal.before(nowCal)) {
                 cal.add(Calendar.DAY_OF_YEAR, 1)
                 startCalendar.value = cal
             }
-            if(endCalendar.value?.before(cal)!!) {
+            if (endCalendar.value?.before(cal)!!) {
                 val newEndCal = GregorianCalendar(
                         startCalendar.value?.get(Calendar.YEAR)!!,
                         startCalendar.value?.get(Calendar.MONTH)!!,
@@ -132,7 +133,7 @@ class NewTaskFragment : Fragment() {
         })
         endCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             val cal = it ?: return@Observer
-            if(cal.before(startCalendar.value)) {
+            if (cal.before(startCalendar.value)) {
                 val newEndCal = GregorianCalendar(
                         startCalendar.value?.get(Calendar.YEAR)!!,
                         startCalendar.value?.get(Calendar.MONTH)!!,
@@ -160,23 +161,23 @@ class NewTaskFragment : Fragment() {
 
     private fun checkTextFilled(view: View) {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
-            !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
-                    view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+                !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
+                        view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {
-        val cal = if(startBundle) startCalendar.value else endCalendar.value
+        val cal = if (startBundle) startCalendar.value else endCalendar.value
         return if (isDate) bundleOf(
-            Pair("YEAR", cal?.get(Calendar.YEAR)),
-            Pair("MONTH", cal?.get(Calendar.MONTH)),
-            Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
-            Pair("MIN_DATE",
-                    if(startBundle) System.currentTimeMillis() - 1000
-                    else startCalendar.value?.timeInMillis
-            )
+                Pair("YEAR", cal?.get(Calendar.YEAR)),
+                Pair("MONTH", cal?.get(Calendar.MONTH)),
+                Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
+                Pair("MIN_DATE",
+                        if (startBundle) System.currentTimeMillis() - 1000
+                        else startCalendar.value?.timeInMillis
+                )
         ) else bundleOf(
-            Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
-            Pair("MINUTE", cal?.get(Calendar.MINUTE))
+                Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
+                Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
     }
 }

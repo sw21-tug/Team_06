@@ -8,7 +8,8 @@ import com.team06.focuswork.model.LoggedInUser
  */
 
 object LoginRepository {
-    val dataSource: LoginDataSource = LoginDataSource()
+    private val dataSource: LoginDataSource = LoginDataSource()
+
     // in-memory cache of the loggedInUser object
     var user: LoggedInUser? = null
         private set
@@ -28,7 +29,6 @@ object LoginRepository {
     }
 
     fun login(username: String, password: String): Result<LoggedInUser> {
-        // handle login
         val result = dataSource.login(username, password)
 
         if (result is Result.Success) {
