@@ -12,7 +12,7 @@ import java.util.*
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 class LoginDataSource {
-    val TAG = "LOGIN_DATA_SOURCE"
+    private val TAG = "LOGIN_DATA_SOURCE"
     var firebaseStore = FirebaseFirestore.getInstance()
     fun login(username: String, password: String): Result<LoggedInUser> {
         try {
@@ -50,7 +50,7 @@ class LoginDataSource {
             }
 
             val user: MutableMap<String, Any> = HashMap()
-            user["name"] = username
+            user["email"] = username
             user["password"] = password
             val documents  = firebaseStore.collection("User").add(user)
             while(!documents.isComplete);

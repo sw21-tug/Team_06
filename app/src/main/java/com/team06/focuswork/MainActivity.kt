@@ -33,7 +33,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         tasksViewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
-        FirebaseFirestore.getInstance().collection("User" ).document(loginRepository.user!!.userId).collection("Task").get().addOnSuccessListener {tasks ->
+        FirebaseFirestore.getInstance()
+            .collection("User" )
+            .document(loginRepository.user!!.userId)
+            .collection("Task")
+            .get().addOnSuccessListener {tasks ->
             val taskList: MutableList<Task> = mutableListOf()
             tasks!!.forEach {
                 val workingTask = Task(
@@ -46,11 +50,6 @@ class MainActivity : AppCompatActivity() {
             }
             tasksViewModel.setTasks(taskList)
         }
-
-
-
-
-         //TODO: replace hardcoded values with loading tasks from db into viewmodel after login
 
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
