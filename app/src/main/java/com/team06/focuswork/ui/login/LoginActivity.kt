@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
+        val register = findViewById<Button>(R.id.register)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -42,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
             // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
+            register.isEnabled = login.isEnabled
 
             if (loginState.usernameError != null) {
                 username.error = getString(loginState.usernameError)
@@ -57,9 +59,10 @@ class LoginActivity : AppCompatActivity() {
             loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
+                return@Observer
             }
             if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
+                updateUiWithUser()
             }
             setResult(Activity.RESULT_OK)
 
@@ -97,10 +100,15 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+
+            register.setOnClickListener {
+                loading.visibility = View.VISIBLE
+                loginViewModel.register(username.text.toString(), password.text.toString())
+            }
         }
     }
 
-    private fun updateUiWithUser(model: TasksViewModel) {
+    private fun updateUiWithUser() {
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

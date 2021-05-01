@@ -43,4 +43,14 @@ object LoginRepository {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }
+
+    fun register(username: String, password: String): Result<LoggedInUser> {
+        val result = dataSource.register(username, password)
+
+        if (result is Result.Success) {
+            setLoggedInUser(result.data)
+        }
+
+        return result
+    }
 }

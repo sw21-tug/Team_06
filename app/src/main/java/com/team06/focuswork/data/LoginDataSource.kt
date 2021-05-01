@@ -1,12 +1,11 @@
 package com.team06.focuswork.data
 
 import android.util.Log
-import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import java.io.IOException
+import java.lang.Exception
 import java.util.*
 
 /**
@@ -23,17 +22,9 @@ class LoginDataSource {
                 .whereEqualTo("password", password)
                 .get()
             while(!asyncTask.isComplete);
-            val documents = asyncTask.result
-            val loggedInUser = LoggedInUser(username)
-            documents!!.forEach {
-                val workingTask = Task(
-                    it.getString("name")!!,
-                    it.getString("description")!!,
-                    CalendarTimestampUtil.toCalendar(it.getTimestamp("startTime")!!),
-                    CalendarTimestampUtil.toCalendar(it.getTimestamp("endTime")!!)
-                )
-                loggedInUser.tasks.add(workingTask)
-            }
+            val documents = asyncTask.result?.documents?.get(0)?.id
+            val loggedInUser = LoggedInUser(documents!!)
+
             return Result.Success(loggedInUser)
         } catch (e: Throwable) {
             Log.e(TAG, "Couldn't log in user $username")
@@ -44,5 +35,31 @@ class LoginDataSource {
 
     fun logout() {
         // TODO: revoke authentication
+    }
+
+    fun register(username: String, password: String): Result<LoggedInUser> {
+        try {
+            val asyncTask = firebaseStore
+                    .collection("User")
+                    .whereEqualTo("email", username)
+                    .get()
+            while(!asyncTask.isComplete);
+
+            if (asyncTask.result!!.documents.size > 0) {
+                return Result.Error(Exception("Error logging in"))
+            }
+
+            val user: MutableMap<String, Any> = HashMap()
+            user["name"] = username
+            user["password"] = password
+            val documents  = firebaseStore.collection("User").add(user)
+            while(!documents.isComplete);
+            val loggedInUser = LoggedInUser(documents.result!!.id)
+            return Result.Success(loggedInUser)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Couldn't log in user $username")
+            e.printStackTrace()
+            return Result.Error(IOException("Error logging in", e))
+        }
     }
 }
