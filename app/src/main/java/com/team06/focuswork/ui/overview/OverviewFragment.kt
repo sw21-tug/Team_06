@@ -82,9 +82,9 @@ class OverviewFragment : Fragment() {
 
         val builder = NotificationCompat.Builder(requireContext(), "TIMER_NOTIF_ID")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Your task has finished!")
+                .setContentTitle(getString(R.string.notification_title))
                 .setContentText("The task {...} you have set has finished.")
-                .setStyle(NotificationCompat.BigTextStyle().bigText("This text is so much longer than the original message."))
+                .setStyle(NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_message)))
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSound(notificationSound)

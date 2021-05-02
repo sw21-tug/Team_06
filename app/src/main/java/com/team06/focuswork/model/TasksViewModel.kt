@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.team06.focuswork.data.Task
 
-class TasksViewModel() : ViewModel() {
+class TasksViewModel : ViewModel() {
 
     private var _title = MutableLiveData<String>()
     val title: LiveData<String> = _title

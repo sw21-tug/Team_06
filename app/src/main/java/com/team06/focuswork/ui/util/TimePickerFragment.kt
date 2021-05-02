@@ -18,7 +18,7 @@ import java.util.*
  * Use the [DatePicker.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TimePickerFragment(private var newTaskFragment: NewTaskFragment, val startPicker: Boolean) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerFragment(private var newTaskFragment: NewTaskFragment, private val startPicker: Boolean) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val arg = arguments
@@ -35,7 +35,7 @@ class TimePickerFragment(private var newTaskFragment: NewTaskFragment, val start
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        if(startPicker) {
+        if (startPicker) {
             val cal = newTaskFragment.startCalendar.value
             cal?.set(Calendar.HOUR_OF_DAY, hourOfDay)
             cal?.set(Calendar.MINUTE, minute)
