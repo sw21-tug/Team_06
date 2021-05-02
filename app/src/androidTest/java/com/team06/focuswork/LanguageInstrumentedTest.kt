@@ -67,19 +67,8 @@ class LanguageInstrumentedTest {
         setLocale("zh", "CN")
 
         val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-        val vg: ViewGroup? =
-            getActivity(context)?.findViewById(R.id.fragment_container_overview)
-        vg?.invalidate()
 
         Assert.assertEquals(text, context.getString(R.string.menu_overview))
-        /*
-        onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open())
-        Thread.sleep(400)
-        onView(withId(R.id.nav_overview))
-                .check(matches(withText(text)))
-         */
-
     }
 
     @Test
@@ -90,11 +79,7 @@ class LanguageInstrumentedTest {
         setLocale("ru", "RU")
 
         val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-        val vg: ViewGroup? =
-                getActivity(context)?.findViewById(R.id.fragment_container_overview)
-        vg?.invalidate()
 
         Assert.assertEquals(text, context.getString(R.string.menu_overview))
-
     }
 }
