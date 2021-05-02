@@ -18,10 +18,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.internal.ContextUtils.getActivity
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import java.util.*
 
@@ -36,6 +33,12 @@ class LanguageInstrumentedTest {
     @Before
     fun init() {
 
+    }
+
+    @After
+    fun cleanUp() {
+        // reset the locale to English
+        setLocale("en", "US")
     }
 
     @Suppress("DEPRECATION")
