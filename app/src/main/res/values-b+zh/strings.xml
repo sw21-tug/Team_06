@@ -53,4 +53,16 @@
     <string name="colorBackground_title">背景颜色</string>
     <string name="colorAccent_title">口音颜色</string>
 
+    <!-- Login/Registration -->
+    <string name="title_activity_login">登录活动</string>
+    <string name="prompt_email">电子邮件</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登入</string>
+    <string name="action_register">登记</string>
+    <string name="invalid_username">无效的用户名</string>
+    <string name="invalid_password">密码必须大于5个字符</string>
+    <string name="login_failed">"登录失败"</string>
+
+    <string name="notification_title">您的任务已经完成！</string>
+    <string name="notification_message">该文本比原始消息长得多。</string>
 </resources>
