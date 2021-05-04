@@ -135,6 +135,7 @@ class LanguageInstrumentedTest {
             .perform(click());
 
         navigateToOverview()
+        Thread.sleep(400) //fix flaky test?
         onView(withId(R.id.toolbar))
             .check(matches(hasDescendant(withText("Overview"))))
     }
@@ -156,6 +157,7 @@ class LanguageInstrumentedTest {
             .perform(click());
 
         navigateToOverview()
+        Thread.sleep(400) //fix flaky test?
         onView(withId(R.id.toolbar))
             .check(matches(hasDescendant(withText("обзор"))))
     }
@@ -177,6 +179,7 @@ class LanguageInstrumentedTest {
             .perform(click());
 
         navigateToOverview()
+        Thread.sleep(400) //fix flaky test?
         onView(withId(R.id.toolbar))
             .check(matches(hasDescendant(withText("概述"))))
     }
