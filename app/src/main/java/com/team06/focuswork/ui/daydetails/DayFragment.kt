@@ -69,8 +69,8 @@ class DayFragment : Fragment() {
 
     fun populateList(list: List<Task>)
     {
-        //replace this with just list when the bloody stuff works
         /*
+        //replace this with just list when the bloody stuff works
         val localList: MutableList<Task> = mutableListOf()
         val cal = Calendar.getInstance()
         cal.add(Calendar.HOUR, 1)
@@ -171,8 +171,5 @@ class DayFragment : Fragment() {
             label.text = text
             return label
         }
-
-
-
     }
 }
