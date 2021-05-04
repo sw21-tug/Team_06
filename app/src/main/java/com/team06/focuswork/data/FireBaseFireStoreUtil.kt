@@ -71,5 +71,13 @@ class FireBaseFireStoreUtil {
         return LoggedInUser(result.id)
     }
 
-
+    fun saveTask(task : MutableMap<String, Any>) {
+        val db = FirebaseFirestore.getInstance()
+        LoginRepository.user?.userId?.let {
+            db.collection("User")
+                    .document(it)
+                    .collection("Task")
+                    .add(task)
+        }
+    }
 }

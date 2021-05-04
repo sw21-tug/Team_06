@@ -16,11 +16,13 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.model.TasksViewModel
@@ -30,6 +32,8 @@ class OverviewFragment : Fragment() {
     private val tasksViewModel: TasksViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var binding: FragmentOverviewBinding
+    private val fireStoreUtil = FireBaseFireStoreUtil()
+    private val currentTasks = mutableListOf<Task>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -42,11 +46,17 @@ class OverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fireStoreUtil.retrieveTasks(tasksViewModel::setTasks)
         recyclerView = binding.recyclerView
-        recyclerView.adapter = TaskAdapter(requireContext(), this)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
         createNotifChannel()
         binding.notifButton.setOnClickListener(this::sendNotif)
+        tasksViewModel.allTasks.observe(requireActivity(), Observer {
+            tasks -> currentTasks.removeAll(currentTasks)
+                currentTasks.addAll(tasks)
+            (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
+        })
 
     }
 
@@ -99,6 +109,5 @@ class OverviewFragment : Fragment() {
         findNavController().navigate(R.id.action_nav_overview_to_nav_taskdetails)
     }
 
-    fun getAllTasks() : List<Task> = tasksViewModel.allTasks.value?: listOf()
-
+    fun getAllTasks() : MutableList<Task> = currentTasks
 }
