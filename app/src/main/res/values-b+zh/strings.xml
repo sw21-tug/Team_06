@@ -42,6 +42,10 @@
     <string name="overview_header">概述</string>
     <string name="sounds_header">声音</string>
     <string name="visuals_header">视觉效果</string>
+    <string name="language_header">语言</string>
+
+    <!-- Language -->
+    <string name="language_title">应用程式语言</string>
 
     <!-- Overview Preferences -->
     <string name="overviewTimeFrame_title">概述时间范围</string>

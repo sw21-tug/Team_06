@@ -42,6 +42,10 @@
     <string name="overview_header">обзор</string>
     <string name="sounds_header">Звуки</string>
     <string name="visuals_header">Визуальные эффекты</string>
+    <string name="language_header">Язык</string>
+
+    <!-- Language -->
+    <string name="language_title">Язык приложения</string>
 
     <!-- Overview Preferences -->
     <string name="overviewTimeFrame_title">обзор временное ограничение</string>

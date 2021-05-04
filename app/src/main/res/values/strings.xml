@@ -48,6 +48,10 @@
     <string name="overview_header">Overview</string>
     <string name="sounds_header">Sounds</string>
     <string name="visuals_header">Visuals</string>
+    <string name="language_header">Language</string>
+
+    <!-- Language -->
+    <string name="language_title">App Language</string>
 
     <!-- Overview Preferences -->
     <string name="overviewTimeFrame_title">Overview time frame</string>
@@ -73,5 +77,6 @@
     <string name="notification_message">This text is so much longer than the original message.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>
