@@ -2,11 +2,9 @@ package com.team06.focuswork.ui.daydetails
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
@@ -14,10 +12,10 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentDayBinding
@@ -28,7 +26,7 @@ import java.util.*
 private lateinit var binding: FragmentDayBinding
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_DAY = "param1"
+private const val ARG_DAY = "day"
 
 /**
  * A simple [Fragment] subclass.
@@ -56,12 +54,14 @@ class DayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val kotlinIsHorrendous = day ?: Calendar.getInstance()
+        val cal = day ?: Calendar.getInstance()
 
-        val day_name = SimpleDateFormat("EEEE").format(kotlinIsHorrendous.time)
-        val text = SpannableString(String.format("Tasks for %s, %d.%d.",
-                day_name, kotlinIsHorrendous.get(Calendar.DAY_OF_MONTH), kotlinIsHorrendous.get(Calendar.MONTH) + 1))
-        text.setSpan(StyleSpan(Typeface.BOLD), 10, day_name.length + 11, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val day_name = SimpleDateFormat("EEEE").format(cal.time)
+        val text = SpannableString(String.format("%s %s, %d.%d.", getString(R.string.day_tasks_for), day_name,
+            cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1))
+        text.setSpan(StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length+1,
+            day_name.length + getString(R.string.day_tasks_for).length + 2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.textviewTitle.text = text
 
         FireBaseFireStoreUtil().retrieveTasks { tasks -> populateList(tasks) }
@@ -70,6 +70,7 @@ class DayFragment : Fragment() {
     fun populateList(list: List<Task>)
     {
         //replace this with just list when the bloody stuff works
+        /*
         val localList: MutableList<Task> = mutableListOf()
         val cal = Calendar.getInstance()
         cal.add(Calendar.HOUR, 1)
@@ -87,26 +88,31 @@ class DayFragment : Fragment() {
         localList.add(task)
         localList.add(task)
         localList.add(task)
+        */
 
-        val adapter = TaskAdapter(requireContext(), android.R.layout.simple_list_item_1, localList)
+        val adapter = TaskAdapter(requireContext(), android.R.layout.simple_list_item_1, list)
         binding.progressbar.visibility = View.GONE
         binding.listTasks.adapter = adapter
         binding.listTasks.setOnItemClickListener {
-            parent, view, position, id -> showTaskInfo(adapter.getItem(position))
+                parent, view, position, id -> showTaskInfo(adapter.getItem(position))
         }
     }
 
     fun showTaskInfo(task: Task){
         val alertDialog: AlertDialog = AlertDialog.Builder(requireContext()).create()
         alertDialog.setTitle(task.taskName)
-        alertDialog.setMessage(String.format("%s\n%d:%02d, %d.%d.%d - %d:%02d, %d.%d.%d",
-                task.taskDescription, task.startTime.get(Calendar.HOUR_OF_DAY), task.startTime.get(Calendar.MINUTE),
-                task.startTime.get(Calendar.DAY_OF_MONTH), task.startTime.get(Calendar.MONTH) + 1,
-                task.startTime.get(Calendar.YEAR), task.endTime.get(Calendar.HOUR_OF_DAY),
-                task.endTime.get(Calendar.MINUTE), task.endTime.get(Calendar.DAY_OF_MONTH),
-                task.endTime.get(Calendar.MONTH) + 1, task.endTime.get(Calendar.YEAR)))
+        alertDialog.setMessage(String.format("%s\n%s - %s",
+            task.taskDescription, getFormattedDate(task.startTime), getFormattedDate(task.endTime)))
         //alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK") { dialog, _ -> dialog.dismiss() }
         alertDialog.show()
+    }
+
+    companion object {
+        private fun getFormattedDate(cal: Calendar): String {
+            return String.format("%d:%02d, %d.%d.%d", cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE), cal.get(Calendar.DAY_OF_MONTH),
+                cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR))
+        }
     }
 
     class TaskAdapter(context: Context, textViewResourceId: Int, val data: List<Task>)
@@ -155,21 +161,18 @@ class DayFragment : Fragment() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var currentTask = tasks[position]
             val label = super.getView(position, convertView, parent) as TextView
-            label.typeface = Typeface.MONOSPACE
             label.setTextColor(Color.BLACK)
             label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20.0f)
-            val text = SpannableString(String.format("%s:\nFrom: %2d:%2d, %2d.%2d.%4d\n" +
-                    "To:   %2d:%02d, %2d.%2d.%4d", currentTask.taskName,
-                    currentTask.startTime.get(Calendar.HOUR_OF_DAY), currentTask.startTime.get(Calendar.MINUTE),
-                    currentTask.startTime.get(Calendar.DAY_OF_MONTH), currentTask.startTime.get(Calendar.MONTH) + 1,
-                    currentTask.startTime.get(Calendar.YEAR), currentTask.endTime.get(Calendar.HOUR_OF_DAY),
-                    currentTask.endTime.get(Calendar.MINUTE), currentTask.endTime.get(Calendar.DAY_OF_MONTH),
-                    currentTask.endTime.get(Calendar.MONTH) + 1, currentTask.endTime.get(Calendar.YEAR)))
+            val text = SpannableString(String.format("%s:\n%s %s\n%s %s", currentTask.taskName,
+                context.getString(R.string.day_from), getFormattedDate(currentTask.startTime),
+                context.getString(R.string.day_to), getFormattedDate(currentTask.endTime)))
 
             text.setSpan(StyleSpan(Typeface.BOLD), 0, currentTask.taskName.length + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             label.text = text
             return label
         }
+
+
 
     }
 }

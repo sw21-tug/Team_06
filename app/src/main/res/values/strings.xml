@@ -38,6 +38,9 @@
     <string name="no_task_selected">Please select a Task!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Tasks for Today</string>
+    <string name="day_from">From:</string>
+    <string name="day_to">To:</string>
+    <string name="day_tasks_for">Tasks for:</string>
 
     <string name="menu_settings">Settings</string>
 
