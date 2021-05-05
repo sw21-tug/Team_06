@@ -14,15 +14,15 @@
             android:title="@string/menu_settings" />
         <item
             android:id="@+id/nav_new_task"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_addtask"
             android:title="@string/menu_new_task" />
         <item
             android:id="@+id/nav_timer"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_timer"
             android:title="@string/menu_timer" />
         <item
             android:id="@+id/nav_day_overview"
-            android:icon="@drawable/ic_menu_overview"
+            android:icon="@drawable/ic_dayoverview"
             android:title="@string/menu_day_overview" />
     </group>
 </menu>
