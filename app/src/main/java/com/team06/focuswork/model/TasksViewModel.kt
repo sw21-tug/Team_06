@@ -14,7 +14,7 @@ class TasksViewModel : ViewModel() {
     private var _currentTask = MutableLiveData<Task>()
     val currentTask: LiveData<Task> = _currentTask
 
-    fun setSelectedTask(task: Task, context: Context) {
+    fun setSelectedTask(task: Task) {
         _currentTask.postValue(task)
     }
 
