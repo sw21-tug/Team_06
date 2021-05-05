@@ -58,6 +58,7 @@ class OverviewFragment : Fragment() {
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
 
+
     }
 
     private fun createNotifChannel() {

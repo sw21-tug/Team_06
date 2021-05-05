@@ -11,8 +11,8 @@ object LoginRepository {
     private val dataSource: LoginDataSource = LoginDataSource()
 
     // in-memory cache of the loggedInUser object
-    var user: LoggedInUser? = null
-        private set
+    private var user: LoggedInUser? = null
+    fun getUser(): LoggedInUser? = user
 
     val isLoggedIn: Boolean
         get() = user != null
