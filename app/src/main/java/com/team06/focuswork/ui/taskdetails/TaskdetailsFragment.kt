@@ -20,9 +20,9 @@ class TaskdetailsFragment : Fragment() {
     private lateinit var binding: FragmentTaskdetailsBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTaskdetailsBinding.inflate(inflater, container, false)
         return binding.root
