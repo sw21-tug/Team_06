@@ -9,7 +9,7 @@
         android:id="@+id/task_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:padding="8dp" >
 
         <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="15dp">
 
                 <TextView
                     android:id="@+id/task_item_title"

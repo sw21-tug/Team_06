@@ -2,18 +2,18 @@
     <!-- Base application theme. -->
     <style name="Theme.FocusWork" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorPrimaryVariant">@color/green_dark</item>
+        <item name="colorPrimary">#ED413E</item>
+        <item name="colorPrimaryVariant">#A11C1A</item>
         <item name="colorOnPrimary">@color/primary_text</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/brown_light</item>
-        <item name="colorSecondaryVariant">@color/brown_dark</item>
-        <item name="colorOnSecondary">@color/secondary_text</item>
+        <item name="colorSecondary">@color/divider</item>
+        <item name="colorSecondaryVariant">#269AED</item>
+        <item name="colorOnSecondary">#226CA1</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="divider">@color/divider</item>
-        <item name="icon">@color/orange_dark</item>
+        <item name="icon">@color/divider</item>
     </style>
 
     <style name="Theme.FocusWork.NoActionBar">
