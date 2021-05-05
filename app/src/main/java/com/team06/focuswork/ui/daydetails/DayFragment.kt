@@ -64,7 +64,7 @@ class DayFragment : Fragment() {
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.textviewTitle.text = text
 
-        FireBaseFireStoreUtil().retrieveTasks { tasks -> populateList(tasks) }
+        //FireBaseFireStoreUtil().retrieveTasks { tasks -> populateList(tasks) }
     }
 
     fun populateList(list: List<Task>)
@@ -88,7 +88,7 @@ class DayFragment : Fragment() {
         localList.add(task)
         localList.add(task)
         localList.add(task)
-        */
+
 
         val adapter = TaskAdapter(requireContext(), android.R.layout.simple_list_item_1, list)
         binding.progressbar.visibility = View.GONE
@@ -96,6 +96,8 @@ class DayFragment : Fragment() {
         binding.listTasks.setOnItemClickListener {
                 parent, view, position, id -> showTaskInfo(adapter.getItem(position))
         }
+
+         */
     }
 
     fun showTaskInfo(task: Task){
