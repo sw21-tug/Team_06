@@ -34,29 +34,6 @@ class LoginInstrumentedTest {
         Espresso.onView(ViewMatchers.withId(R.id.login))
                 .perform(ViewActions.click())
     }
-
-    private fun clickRegister() {
-        Espresso.onView(ViewMatchers.withId(R.id.register))
-                .perform(ViewActions.click())
-    }
-
-    private fun deleteUser(username: String) {
-        FirebaseFirestore.getInstance()
-                .collection("User")
-                .whereEqualTo("email", username)
-                .get().addOnSuccessListener { document ->
-                    assert(document.documents.size < 2)
-                    if (document.documents.isEmpty()) {
-                        return@addOnSuccessListener
-                    }
-                    FirebaseFirestore
-                            .getInstance()
-                            .collection("User")
-                            .document(document.documents[0].id)
-                            .delete()
-                }
-    }
-
     @Test
     fun basicLoginTest() {
         setLoginData("test@gmail.com", "password")
@@ -66,19 +43,8 @@ class LoginInstrumentedTest {
     }
 
     @Test
-    fun basicRegistrationTest() {
-        deleteUser("newTest@gmail.com")
-        setLoginData("newTest@gmail.com", "aosjkgaod")
-        clickRegister()
-        Espresso.onView(ViewMatchers.withId(R.id.recycler_view))
-                .check(matches(ViewMatchers.isDisplayed()))
-    }
-
-    @Test
     fun disabledButtonsTest() {
         setLoginData("akjfamfgaksja@casf", "lajksfaj")
-        Espresso.onView(ViewMatchers.withId(R.id.register))
-                .check(matches(not(ViewMatchers.isEnabled())))
         Espresso.onView(ViewMatchers.withId(R.id.login))
                 .check(matches(not(ViewMatchers.isEnabled())))
     }
@@ -91,11 +57,4 @@ class LoginInstrumentedTest {
                 .check(matches(ViewMatchers.isDisplayed()))
     }
 
-    @Test
-    fun failingRegistrationTest() {
-        setLoginData("newTest@gmail.com", "aosjkgaod")
-        clickRegister()
-        Espresso.onView(ViewMatchers.withId(R.id.login))
-                .check(matches(ViewMatchers.isDisplayed()))
-    }
 }
