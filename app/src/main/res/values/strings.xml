@@ -11,6 +11,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_new_task">New Task</string>
     <string name="menu_timer">Start Task Timer</string>
+    <string name="menu_day_overview">Day Overview</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_title">Create New Task</string>
     <string name="prompt_task_name">Task Name</string>
@@ -35,6 +36,11 @@
     <string name="timer_start_button">Start Timer</string>
     <string name="timer_finished">Timer has finished!</string>
     <string name="no_task_selected">Please select a Task!</string>
+    <!-- Strings related to Day Overview -->
+    <string name="day_title">Tasks for Today</string>
+    <string name="day_from">From:</string>
+    <string name="day_to">To:</string>
+    <string name="day_tasks_for">Tasks for:</string>
 
     <string name="menu_settings">Settings</string>
 
@@ -62,5 +68,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="notification_title">Your task has finished!</string>
     <string name="notification_message">This text is so much longer than the original message.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

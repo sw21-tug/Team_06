@@ -4,7 +4,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import java.util.HashMap
-import javax.security.auth.callback.Callback
 
 class FireBaseFireStoreUtil {
     private val fireBaseStore = FirebaseFirestore.getInstance()
@@ -28,7 +27,7 @@ class FireBaseFireStoreUtil {
     fun retrieveTasks(callback: (tasks: List<Task>) -> Unit) {
         val taskCollection = FirebaseFirestore.getInstance()
             .collection(userCollection)
-            .document((LoginRepository.user ?: return).userId)
+            .document((LoginRepository.getUser() ?: return).userId)
             .collection(taskCollection)
 
         taskCollection.get().addOnSuccessListener { tasks ->
@@ -71,5 +70,13 @@ class FireBaseFireStoreUtil {
         return LoggedInUser(result.id)
     }
 
-
+    fun saveTask(task: MutableMap<String, Any>) {
+        val db = FirebaseFirestore.getInstance()
+        LoginRepository.getUser()?.userId?.let {
+            db.collection("User")
+                .document(it)
+                .collection("Task")
+                .add(task)
+        }
+    }
 }

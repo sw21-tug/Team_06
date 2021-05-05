@@ -12,8 +12,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.team06.focuswork.data.LoginRepository
-import com.team06.focuswork.model.LoggedInUser
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
 import org.junit.Assert
@@ -36,7 +34,7 @@ class NewTaskInstrumentedTest {
                 .perform(click())
         // Wait short amount of time to ensure everything has loaded
         Thread.sleep(400)
-        onView(withId(R.id.containerCreateTask))
+        onView(withId(R.id.fragment_container_new_task))
                 .check(matches(isDisplayed()))
     }
 
@@ -231,7 +229,7 @@ class NewTaskInstrumentedTest {
                     .perform(click())
             // Wait short amount of time to ensure everything has loaded
             Thread.sleep(400)
-            onView(withId(R.id.containerCreateTask))
+            onView(withId(R.id.fragment_container_new_task))
                     .check(matches(isDisplayed()))
         }
 
