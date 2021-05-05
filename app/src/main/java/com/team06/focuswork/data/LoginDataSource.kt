@@ -26,9 +26,9 @@ class LoginDataSource {
         // TODO: revoke authentication
     }
 
-    fun register(username: String, password: String): Result<LoggedInUser> = try {
+    fun register(firstname: String, lastname: String, username: String, password: String): Result<LoggedInUser> = try {
         fireStoreUtil.checkForExistingUser(username)
-        val loggedInUser = fireStoreUtil.addUser(username, password)
+        val loggedInUser = fireStoreUtil.addUser(firstname, lastname, username, password)
         Result.Success(loggedInUser)
     } catch (e: Throwable) {
         Log.e(TAG, "Couldn't log in user $username")

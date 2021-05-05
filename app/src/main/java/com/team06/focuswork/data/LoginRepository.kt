@@ -44,8 +44,8 @@ object LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    fun register(username: String, password: String): Result<LoggedInUser> {
-        val result = dataSource.register(username, password)
+    fun register(firstname: String, lastname: String, username: String, password: String): Result<LoggedInUser> {
+        val result = dataSource.register(firstname, lastname, username, password)
 
         if (result is Result.Success) {
             setLoggedInUser(result.data)

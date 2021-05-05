@@ -65,11 +65,17 @@
     <string name="colorAccent_title">口音颜色</string>
 
     <!-- Login/Registration -->
+    <string name="prompt_first_name">名</string>
+    <string name="prompt_last_name">姓</string>
     <string name="title_activity_login">登录活动</string>
     <string name="prompt_email">电子邮件</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登入</string>
     <string name="action_register">登记</string>
+    <string name="sign_in_text_view">已经有帐号了？</string>
+    <string name="sign_up_text_view">还没有帐号吗？</string>
+    <string name="invalid_firstname">名不能为空</string>
+    <string name="invalid_lastname">姓氏不能为空</string>
     <string name="invalid_username">无效的用户名</string>
     <string name="invalid_password">密码必须大于5个字符</string>
     <string name="login_failed">"登录失败"</string>
