@@ -57,7 +57,10 @@ class NewTaskInstrumentedTest {
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)))
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 
     private fun setStartTimeValues(cal: Calendar) {
@@ -79,7 +82,10 @@ class NewTaskInstrumentedTest {
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)))
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 
     private fun setEndTimeValues(cal: Calendar) {

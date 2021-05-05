@@ -69,27 +69,6 @@ class DayFragment : Fragment() {
 
     fun populateList(list: List<Task>)
     {
-        /*
-        //replace this with just list when the bloody stuff works
-        val localList: MutableList<Task> = mutableListOf()
-        val cal = Calendar.getInstance()
-        cal.add(Calendar.HOUR, 1)
-        val cal2 = Calendar.getInstance()
-        cal2.add(Calendar.HOUR, 28)
-        val task = Task("Task 1", "Description of Task 1",
-                Calendar.getInstance(), cal)
-        localList.add(task)
-        localList.add(Task("Task 2", "Description of Task 2", cal, cal2))
-        localList.add(task)
-        localList.add(task)
-        localList.add(task)
-        localList.add(task)
-        localList.add(task)
-        localList.add(task)
-        localList.add(task)
-        localList.add(task)
-        */
-
         val adapter = TaskAdapter(requireContext(), android.R.layout.simple_list_item_1, list)
         binding.progressbar.visibility = View.GONE
         binding.listTasks.adapter = adapter
