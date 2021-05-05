@@ -17,12 +17,11 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.model.TasksViewModel
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var tasksViewModel: TasksViewModel
@@ -54,12 +53,15 @@ class MainActivity : AppCompatActivity() {
 
         // set listener for settings
         val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        preferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
-            if(key == "language") {
-                val languageValue: String = (sharedPreferences.getString(key, "en")).toString()
-                onChangedLanguage(languageValue);
-            }
-        }
+        preferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onDestroy() {
+        //Unregister settings listener
+        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        preferences.unregisterOnSharedPreferenceChangeListener(this)
+
+        super.onDestroy()
     }
 
     /**
@@ -95,6 +97,13 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key == "language") {
+            val languageValue: String = (sharedPreferences?.getString(key, "en")).toString()
+            onChangedLanguage(languageValue);
+        }
     }
 
 }
