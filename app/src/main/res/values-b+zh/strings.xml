@@ -11,6 +11,7 @@
     <string name="menu_slideshow">幻灯片放映</string>
     <string name="menu_new_task">新任务</string>
     <string name="menu_timer">启动任务计时器</string>
+    <string name="menu_day_overview">日概述</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_title">创建新任务</string>
     <string name="prompt_task_name">任务名称</string>
@@ -35,6 +36,12 @@
     <string name="timer_start_button">启动计时器</string>
     <string name="timer_finished">计时器已结束！</string>
     <string name="no_task_selected">请选择一个任务！</string>
+
+    <!-- Strings related to Day Overview -->
+    <string name="day_title">今天的任务</string>
+    <string name="day_from">从：</string>
+    <string name="day_to">至：</string>
+    <string name="day_tasks_for">任务：</string>
 
     <string name="menu_settings">设定值</string>
 
@@ -69,4 +76,6 @@
 
     <string name="notification_title">您的任务已经完成！</string>
     <string name="notification_message">该文本比原始消息长得多。</string>
+
+    <string name="hello_blank_fragment">你好空白片段</string>
 </resources>

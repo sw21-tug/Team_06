@@ -75,7 +75,7 @@
 
     <string name="notification_title">Your task has finished!</string>
     <string name="notification_message">This text is so much longer than the original message.</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 

@@ -11,6 +11,7 @@
     <string name="menu_slideshow">Слайд-шоу</string>
     <string name="menu_new_task">Новое задание</string>
     <string name="menu_timer">Таймер запуска задачи</string>
+    <string name="menu_day_overview">обзор дня</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_title">Создать новую задачу</string>
     <string name="prompt_task_name">Название задачи</string>
@@ -35,6 +36,11 @@
     <string name="timer_start_button">Таймер запуска</string>
     <string name="timer_finished">Таймер закончился!</string>
     <string name="no_task_selected">Выберите задачу!</string>
+    <!-- Strings related to Day Overview -->
+    <string name="day_title">Задачи на сегодня</string>
+    <string name="day_from">Из:</string>
+    <string name="day_to">К:</string>
+    <string name="day_tasks_for">Задачи для:</string>
 
     <string name="menu_settings">Настройки</string>
 
@@ -69,5 +75,7 @@
 
     <string name="notification_title">Ваша задача выполнена!</string>
     <string name="notification_message">Этот текст намного длиннее исходного сообщения.</string>
+
+    <string name="hello_blank_fragment">Привет пустой фрагмент</string>
 
 </resources>
