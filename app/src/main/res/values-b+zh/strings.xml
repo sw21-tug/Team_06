@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">专注工作</string>
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">导航标题</string>
+    <string name="action_settings">设定值</string>
+
+    <string name="menu_overview">概述</string>
+    <string name="menu_slideshow">幻灯片放映</string>
+    <string name="menu_new_task">新任务</string>
+    <string name="menu_timer">启动任务计时器</string>
+    <string name="menu_day_overview">日概述</string>
+    <!-- Strings related to new task fragment -->
+    <string name="prompt_title">创建新任务</string>
+    <string name="prompt_task_name">任务名称</string>
+    <string name="prompt_task_description">任务描述</string>
+    <string name="prompt_task_start">任务开始</string>
+    <string name="prompt_task_start_date">01.01.1970</string>
+    <string name="prompt_task_start_time">00:00</string>
+    <string name="task_start_date_and_time">任务开始</string>
+    <string name="prompt_task_end">任务结束</string>
+    <string name="prompt_task_end_date">01.01.1970</string>
+    <string name="prompt_task_end_time">00:00</string>
+    <string name="task_end_date_and_time">任务结束</string>
+    <string name="task_illegal_start_date_toast">任务开始日期不能是过去的日期！</string>
+    <string name="task_illegal_start_time_toast">任务开始时间不能是过去的时间！</string>
+    <string name="task_illegal_end_date_toast">任务结束日期必须晚于任务开始日期！</string>
+    <string name="task_illegal_end_time_toast">任务结束时间必须晚于任务开始日期！</string>
+    <string name="action_create_task">创建任务</string>
+    <string name="action_sign_in_short">登入</string>
+    <string name="welcome">"欢迎！"</string>
+    <!-- Strings related to Timer Fragment -->
+    <string name="timer_countdown">00:00</string>
+    <string name="timer_start_button">启动计时器</string>
+    <string name="timer_finished">计时器已结束！</string>
+    <string name="no_task_selected">请选择一个任务！</string>
+
+    <!-- Strings related to Day Overview -->
+    <string name="day_title">今天的任务</string>
+    <string name="day_from">从：</string>
+    <string name="day_to">至：</string>
+    <string name="day_tasks_for">任务：</string>
+
+    <string name="menu_settings">设定值</string>
+
+    <!-- Preference Titles -->
+    <string name="overview_header">概述</string>
+    <string name="sounds_header">声音</string>
+    <string name="visuals_header">视觉效果</string>
+    <string name="language_header">语言</string>
+
+    <!-- Language -->
+    <string name="language_title">应用程式语言</string>
+
+    <!-- Overview Preferences -->
+    <string name="overviewTimeFrame_title">概述时间范围</string>
+
+    <!-- Sounds Preferences -->
+    <string name="notificationSound_title">通知音</string>
+
+    <!-- Visual Preferences -->
+    <string name="colorBackground_title">背景颜色</string>
+    <string name="colorAccent_title">口音颜色</string>
+
+    <!-- Login/Registration -->
+    <string name="title_activity_login">登录活动</string>
+    <string name="prompt_email">电子邮件</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登入</string>
+    <string name="action_register">登记</string>
+    <string name="invalid_username">无效的用户名</string>
+    <string name="invalid_password">密码必须大于5个字符</string>
+    <string name="login_failed">"登录失败"</string>
+
+    <string name="notification_title">您的任务已经完成！</string>
+    <string name="notification_message">该文本比原始消息长得多。</string>
+
+    <string name="hello_blank_fragment">你好空白片段</string>
+</resources>
