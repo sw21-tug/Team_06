@@ -28,13 +28,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var tasksViewModel: TasksViewModel
-    private val fireStoreUtil = FireBaseFireStoreUtil()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tasksViewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
-        fireStoreUtil.retrieveTasks(tasksViewModel::setTasks)
 
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)

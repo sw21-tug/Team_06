@@ -33,6 +33,6 @@ class TasksViewModel : ViewModel() {
     }
 
     fun setTasks(tasks: List<Task>) {
-        _allTasks.apply { value = tasks }
+        _allTasks.postValue(tasks)
     }
 }

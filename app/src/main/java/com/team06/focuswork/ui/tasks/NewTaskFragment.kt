@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.R
+import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
@@ -30,6 +31,8 @@ class NewTaskFragment : Fragment() {
     private val endDatePicker = DatePickerFragment(this, false)
     private val endTimePicker = TimePickerFragment(this, false)
     private lateinit var binding: FragmentNewTaskBinding
+    private val fireBaseStore = FireBaseFireStoreUtil()
+
     var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
     var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
@@ -65,16 +68,12 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun saveTask() {
-        val db = FirebaseFirestore.getInstance()
         val task: MutableMap<String, Any> = HashMap()
         task["name"] = binding.taskName.text.toString()
         task["description"] = binding.taskDescription.text.toString()
         task["startTime"] = CalendarTimestampUtil.toTimeStamp(startCalendar.value!!)
         task["endTime"] = CalendarTimestampUtil.toTimeStamp(endCalendar.value!!)
-        db.collection("User")
-                .document("dggkbNlMM7QqSWjj8Nii")
-                .collection("Task")
-                .add(task)
+        fireBaseStore.saveTask(task)
     }
 
     private fun prepareStartTimeTextView(startTimeTextView: TextView) {
