@@ -48,6 +48,7 @@ class OverviewFragment : Fragment() {
     private lateinit var dynamicBinding: ViewBinding
     private val fireStoreUtil = FireBaseFireStoreUtil()
     private val currentTasks = mutableListOf<Task>()
+    private val allTasks = mutableListOf<Task>()
     private var filter: Filter = Filter.NONE
     private var selectedDay = Calendar.getInstance()
 
@@ -88,7 +89,7 @@ class OverviewFragment : Fragment() {
         createNotifChannel()
         binding.notifButton.setOnClickListener(this::sendNotif)
 
-        fireStoreUtil.retrieveTasks(tasksViewModel::setTasks, filter)
+        fireStoreUtil.retrieveTasks(this::setTasks, filter)
 
         when(filter){
             Filter.DAY -> initializeDayView()
@@ -99,20 +100,16 @@ class OverviewFragment : Fragment() {
         }
     }
 
+    private fun setTasks(tasks: List<Task>) {
+        allTasks.removeAll(allTasks)
+        allTasks.addAll(tasks)
+        tasksViewModel.setTasks(tasks)
+    }
+
     private fun initializeDayView(){
         var localBinding = dynamicBinding as FragmentDayBinding
 
-        val cal = Calendar.getInstance()
-
-        val dayName = SimpleDateFormat("EEEE").format(cal.time)
-        val text = SpannableString(String.format("%s %s, %d.%d.", getString(R.string.day_tasks_for),
-            dayName, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1))
-        text.setSpan(
-            StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length+1,
-            dayName.length + getString(R.string.day_tasks_for).length + 2,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        localBinding.textviewTitle.text = text
+        initDayUI(localBinding)
 
         recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -130,22 +127,56 @@ class OverviewFragment : Fragment() {
         })
     }
 
+    private fun initDayUI(binding: FragmentDayBinding){
+        val cal = Calendar.getInstance()
+
+        val dayName = SimpleDateFormat("EEEE").format(cal.time)
+        val text = SpannableString(String.format("%s %s, %d.%d.", getString(R.string.day_tasks_for),
+                dayName, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1))
+        text.setSpan(
+                StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length+1,
+                dayName.length + getString(R.string.day_tasks_for).length + 2,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        binding.textviewTitle.text = text
+    }
+
     private fun initializeWeekView(){
         var localBinding = dynamicBinding as FragmentWeekBinding
 
-        val cal_mon = Calendar.getInstance()
-        cal_mon.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        val monday = SimpleDateFormat("EEEE").format(cal_mon.time)
+        initWeekUI(localBinding)
+        initWeekButtons(localBinding)
 
-        val cal_sun = Calendar.getInstance()
-        cal_sun.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        cal_sun.add(Calendar.DATE, 6)
-        val sunday = SimpleDateFormat("EEEE").format(cal_sun.time)
+        recyclerView = localBinding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        localBinding.progressbar.visibility = View.GONE
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
+
+        tasksViewModel.allTasks.observe(requireActivity(), Observer {
+            tasks -> currentTasks.removeAll(currentTasks)
+            Log.d("Overview", "Entered Observer Function")
+            tasks.iterator().forEach {
+                if(filterForDay(selectedDay, it.startTime, it.endTime))
+                    currentTasks.add(it)
+            }
+            (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
+        })
+    }
+
+    private fun initWeekUI(binding: FragmentWeekBinding) {
+        val calMon = Calendar.getInstance()
+        setMonday(calMon)
+        val monday = SimpleDateFormat("EEEE").format(calMon.time)
+
+        val calSun = Calendar.getInstance()
+        setMonday(calSun)
+        calSun.add(Calendar.DATE, 6)
+        val sunday = SimpleDateFormat("EEEE").format(calSun.time)
 
 
         val text = SpannableString(String.format("%s, %2d.%2d.  -  %s, %2d.%2d.",
-                monday, cal_mon.get(Calendar.DAY_OF_MONTH), cal_mon.get(Calendar.MONTH) + 1,
-                sunday, cal_sun.get(Calendar.DAY_OF_MONTH), cal_sun.get(Calendar.MONTH) + 1)
+                monday, calMon.get(Calendar.DAY_OF_MONTH), calMon.get(Calendar.MONTH) + 1,
+                sunday, calSun.get(Calendar.DAY_OF_MONTH), calSun.get(Calendar.MONTH) + 1)
         )
 
         text.setSpan(
@@ -156,22 +187,61 @@ class OverviewFragment : Fragment() {
                 StyleSpan(Typeface.BOLD), monday.length + 13,
                 monday.length + sunday.length + 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        localBinding.textviewRange.text = text
+        binding.textviewRange.text = text
+    }
 
-        recyclerView = localBinding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    private fun initWeekButtons(binding: FragmentWeekBinding){
+        binding.buttonMonday.setOnClickListener {
+            setMonday(selectedDay)
+            tasksViewModel.setTasks(allTasks)
+        }
+        binding.buttonTuesday.setOnClickListener {
+            setMonday(selectedDay)
+            selectedDay.add(Calendar.DAY_OF_MONTH, 1)
+            tasksViewModel.setTasks(allTasks)
+        }
+        binding.buttonWednesday.setOnClickListener {
+            setMonday(selectedDay)
+            selectedDay.add(Calendar.DAY_OF_MONTH, 2)
+            tasksViewModel.setTasks(allTasks)
+        }
+        binding.buttonThursday.setOnClickListener {
+            setMonday(selectedDay)
+            selectedDay.add(Calendar.DAY_OF_MONTH, 3)
+            tasksViewModel.setTasks(allTasks)
+        }
+        binding.buttonFriday.setOnClickListener {
+            setMonday(selectedDay)
+            selectedDay.add(Calendar.DAY_OF_MONTH, 4)
+            tasksViewModel.setTasks(allTasks)
+        }
+        binding.buttonSaturday.setOnClickListener {
+            setMonday(selectedDay)
+            selectedDay.add(Calendar.DAY_OF_MONTH, 5)
+            tasksViewModel.setTasks(allTasks)
+        }
+        binding.buttonSunday.setOnClickListener {
+            setMonday(selectedDay)
+            selectedDay.add(Calendar.DAY_OF_MONTH, 6)
+            tasksViewModel.setTasks(allTasks)
+        }
+    }
 
-        localBinding.progressbar.visibility = View.GONE
-        recyclerView.adapter = TaskAdapter(requireContext(), this)
+    //This is needed because setting the field Calendar.DAY_OF_WEEK has flimsy behaviour
+    private fun setMonday(cal: Calendar): Calendar {
+        var delta = 0
+        when(cal.get(Calendar.DAY_OF_WEEK)){
+            Calendar.MONDAY -> delta = 0
+            Calendar.TUESDAY -> delta = -1
+            Calendar.WEDNESDAY -> delta = -2
+            Calendar.THURSDAY -> delta = -3
+            Calendar.FRIDAY -> delta = -4
+            Calendar.SATURDAY -> delta = -5
+            Calendar.SUNDAY -> delta = -6
+        }
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer {
-            tasks -> currentTasks.removeAll(currentTasks)
-            tasks.iterator().forEach {
-                if(filterForDay(selectedDay, it.startTime, it.endTime))
-                    currentTasks.add(it)
-            }
-            (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        })
+        cal.add(Calendar.DAY_OF_MONTH, delta)
+        return cal
     }
 
     private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
