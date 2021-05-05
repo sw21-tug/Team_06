@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //Load default values for settings in case user hasn't selected values yet
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
+
         checkLocale()
 
         // set listener for settings
