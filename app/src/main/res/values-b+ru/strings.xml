@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Сосредоточенная работа</string>
+    <string name="navigation_drawer_open">Открыть панель навигации</string>
+    <string name="navigation_drawer_close">Закрыть панель навигации</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Заголовок навигации</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="menu_overview">обзор</string>
+    <string name="menu_slideshow">Слайд-шоу</string>
+    <string name="menu_new_task">Новое задание</string>
+    <string name="menu_timer">Таймер запуска задачи</string>
+    <string name="menu_day_overview">обзор дня</string>
+    <!-- Strings related to new task fragment -->
+    <string name="prompt_title">Создать новую задачу</string>
+    <string name="prompt_task_name">Название задачи</string>
+    <string name="prompt_task_description">Описание задания</string>
+    <string name="prompt_task_start">Начало задачи</string>
+    <string name="prompt_task_start_date">01.01.1970</string>
+    <string name="prompt_task_start_time">00:00</string>
+    <string name="task_start_date_and_time">Начало задачи</string>
+    <string name="prompt_task_end">Конец задачи</string>
+    <string name="prompt_task_end_date">01.01.1970</string>
+    <string name="prompt_task_end_time">00:00</string>
+    <string name="task_end_date_and_time">Конец задачи</string>
+    <string name="task_illegal_start_date_toast">Дата начала задачи не должна быть в прошлом!</string>
+    <string name="task_illegal_start_time_toast">Время начала задачи не должно быть в прошлом!</string>
+    <string name="task_illegal_end_date_toast">Дата окончания задачи должна быть позже даты начала задачи!</string>
+    <string name="task_illegal_end_time_toast">Время завершения задачи должно быть позже даты начала задачи!</string>
+    <string name="action_create_task">Создать задачу</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="welcome">"Добро пожаловать!"</string>
+    <!-- Strings related to Timer Fragment -->
+    <string name="timer_countdown">00:00</string>
+    <string name="timer_start_button">Таймер запуска</string>
+    <string name="timer_finished">Таймер закончился!</string>
+    <string name="no_task_selected">Выберите задачу!</string>
+    <!-- Strings related to Day Overview -->
+    <string name="day_title">Задачи на сегодня</string>
+    <string name="day_from">Из:</string>
+    <string name="day_to">К:</string>
+    <string name="day_tasks_for">Задачи для:</string>
+
+    <string name="menu_settings">Настройки</string>
+
+    <!-- Preference Titles -->
+    <string name="overview_header">обзор</string>
+    <string name="sounds_header">Звуки</string>
+    <string name="visuals_header">Визуальные эффекты</string>
+    <string name="language_header">Язык</string>
+
+    <!-- Language -->
+    <string name="language_title">Язык приложения</string>
+
+    <!-- Overview Preferences -->
+    <string name="overviewTimeFrame_title">обзор временное ограничение</string>
+
+    <!-- Sounds Preferences -->
+    <string name="notificationSound_title">Звук уведомления</string>
+
+    <!-- Visual Preferences -->
+    <string name="colorBackground_title">Фоновый цвет</string>
+    <string name="colorAccent_title">Акцентный цвет</string>
+
+    <!-- Login/Registration -->
+    <string name="title_activity_login">Вход в систему</string>
+    <string name="prompt_email">Электронное письмо</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_register">регистр</string>
+    <string name="invalid_username">Неверное имя пользователя</string>
+    <string name="invalid_password">Пароль должен содержать более 5 символов.</string>
+    <string name="login_failed">"Ошибка входа"</string>
+
+    <string name="notification_title">Ваша задача выполнена!</string>
+    <string name="notification_message">Этот текст намного длиннее исходного сообщения.</string>
+
+    <string name="hello_blank_fragment">Привет пустой фрагмент</string>
+
+</resources>

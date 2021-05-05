@@ -6,6 +6,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -56,7 +57,10 @@ class NewTaskInstrumentedTest {
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)))
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 
     private fun setStartTimeValues(cal: Calendar) {
@@ -64,7 +68,10 @@ class NewTaskInstrumentedTest {
                 .perform(click())
         onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
                 .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 
     private fun setEndDateValues(cal: Calendar) {
@@ -75,16 +82,21 @@ class NewTaskInstrumentedTest {
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)))
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 
     private fun setEndTimeValues(cal: Calendar) {
-
         onView(withId(R.id.taskEndTime))
                 .perform(click())
         onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
                 .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 
     //endregion
