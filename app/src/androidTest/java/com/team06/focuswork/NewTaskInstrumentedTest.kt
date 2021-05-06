@@ -5,88 +5,149 @@ import android.widget.TimePicker
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.DrawerActions
-import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
 class NewTaskInstrumentedTest {
 
     @get:Rule
-    var activityRule: ActivityScenarioRule<MainActivity>
-            = ActivityScenarioRule(MainActivity::class.java)
+    var activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun init() {
-        /*onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open())
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_new_task))
-*/
         onView(withId(R.id.fab))
                 .perform(click())
         // Wait short amount of time to ensure everything has loaded
         Thread.sleep(400)
-        onView(withId(R.id.containerCreateTask))
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_container_new_task))
+                .check(matches(isDisplayed()))
     }
+
+    //region UI Utility functions
     private fun setupTaskStrings(taskName: String, taskDescription: String) {
         onView(withId(R.id.taskName))
-            .perform(typeText(taskName))
+                .perform(clearText(), typeText(taskName))
         onView(withId(R.id.taskDescription))
-            .perform(typeText(taskDescription))
+                .perform(clearText(), typeText(taskDescription))
         onView(isRoot())
-            .perform(closeSoftKeyboard())
+                .perform(closeSoftKeyboard())
     }
-    private fun setStartDateValues(year: Int, month: Int, day: Int) {
+
+    private fun setStartDateValues(cal: Calendar) {
         onView(withId(R.id.taskStartDate))
-            .perform(click())
+                .perform(click())
         onView(withClassName(Matchers.equalTo(DatePicker::class.java.name)))
-            .perform(PickerActions.setDate(year, month, day))
-        onView(withId(android.R.id.button1)).perform(click())
+                .perform(PickerActions.setDate(
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)))
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
-    private fun setStartTimeValues(hour: Int, minute: Int) {
+
+    private fun setStartTimeValues(cal: Calendar) {
         onView(withId(R.id.taskStartTime))
-            .perform(click())
+                .perform(click())
         onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
-            .perform(PickerActions.setTime(hour, minute))
-        onView(withId(android.R.id.button1)).perform(click())
+                .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
-    private fun setEndDateValues(year: Int, month: Int, day: Int) {
+
+    private fun setEndDateValues(cal: Calendar) {
         onView(withId(R.id.taskEndDate))
-            .perform(click())
+                .perform(click())
         onView(withClassName(Matchers.equalTo(DatePicker::class.java.name)))
-            .perform(PickerActions.setDate(year, month, day))
-        onView(withId(android.R.id.button1)).perform(click())
-    }
-    private fun setEndTimeValues(hour: Int, minute: Int) {
-        onView(withId(R.id.taskEndTime))
+                .perform(PickerActions.setDate(
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)))
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
             .perform(click())
-        onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
-            .perform(PickerActions.setTime(hour, minute))
-        onView(withId(android.R.id.button1)).perform(click())
     }
+
+    private fun setEndTimeValues(cal: Calendar) {
+        onView(withId(R.id.taskEndTime))
+                .perform(click())
+        onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
+                .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
+        onView(withId(android.R.id.button1))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+    }
+
+    //endregion
+    //region FirebaseFireStore Utility functions
+    private fun getFirestoreDocRef(): CollectionReference {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection("User")
+                .document("dggkbNlMM7QqSWjj8Nii")
+                .collection("Task")
+    }
+
+    private fun assertFirestoreContainsTask(taskName: String, taskDescription: String,
+                                            startTime: Calendar, endTime: Calendar) {
+        val docRef = getFirestoreDocRef()
+        docRef.whereEqualTo("name", taskName)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        // Firebase get successful
+                        Assert.assertEquals(taskName, document.documents[0]["name"])
+                        Assert.assertEquals(taskDescription, document.documents[0]["description"])
+                        val startTimestamp = document.documents[0]["startTime"] as Timestamp
+                        val endTimestamp = document.documents[0]["endTime"] as Timestamp
+                        //for the time asserts to work, cleaning up the Database beforehand would be necessary
+                        //Assert.assertEquals(startTime.time, startTimestamp.toDate())
+                        //Assert.assertEquals(endTime.time, endTimestamp.toDate())
+                    } else {
+                        // Could not find document
+                        Assert.assertTrue("Firestore could not find document Firestore", false)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Firebase get failed
+                    Assert.assertTrue("Firebase get failed", false)
+                }
+    }
+
+    //endregion
     @Test
-    fun createSimpleTask() {
+    fun createSimpleTaskTest() {
         // At first, Task Create Button should not be enabled
         onView(withId(R.id.taskCreate))
                 .check(matches(not(isEnabled())))
 
-        setupTaskStrings("Task Name", "Task Description");
-        setStartDateValues(2022, 10, 22)
-        setStartTimeValues(10, 0)
-        setEndDateValues(2022, 10, 22)
-        setEndTimeValues(11, 0)
+        setupTaskStrings("createSimpleTask", "SimpleTaskDescription");
+        val startDate = GregorianCalendar(2022, 10, 22, 10, 0)
+        val endDate = GregorianCalendar(2022, 10, 22, 11, 0)
+        setStartDateValues(startDate)
+        setStartTimeValues(startDate)
+        setEndDateValues(endDate)
+        setEndTimeValues(endDate)
 
         // Task Create Button should now be enabled
         onView(withId(R.id.taskCreate))
@@ -94,23 +155,103 @@ class NewTaskInstrumentedTest {
                 .perform(click())
 
         // After click, overview should be shown again
-        onView(withId(R.id.frame_layout_overview))
+        onView(withId(R.id.fragment_container_overview))
                 .check(matches(isDisplayed()))
+
+        assertFirestoreContainsTask(
+                "createSimpleTask",
+                "SimpleTaskDescription",
+                startDate,
+                endDate)
     }
+
     @Test
-    fun namelessTask() {
+    fun createTaskWithoutNameTest() {
         // At first, Task Create Button should not be enabled
         onView(withId(R.id.taskCreate))
-            .check(matches(not(isEnabled())))
+                .check(matches(not(isEnabled())))
 
-        setupTaskStrings("", "Task Description");
-        setStartDateValues(2022, 10, 22)
-        setStartTimeValues(10, 0)
-        setEndDateValues(2022, 10, 22)
-        setEndTimeValues(9, 0)
+        setupTaskStrings("", "namelessTask description");
+        val startDate = GregorianCalendar(2022, 10, 22, 10, 0)
+        val endDate = GregorianCalendar(2022, 10, 22, 11, 0)
+        setStartDateValues(startDate)
+        setStartTimeValues(startDate)
+        setEndDateValues(endDate)
+        setEndTimeValues(endDate)
 
         // Task Create Button should still be disabled
         onView(withId(R.id.taskCreate))
-            .check(matches(not(isEnabled())))
+                .check(matches(not(isEnabled())))
+    }
+
+    @Test
+    fun createTaskWithoutDescriptionTest() {
+        // At first, Task Create Button should not be enabled
+        onView(withId(R.id.taskCreate))
+                .check(matches(not(isEnabled())))
+
+        setupTaskStrings("TaskName no Desc", "");
+        val startDate = GregorianCalendar(2022, 10, 22, 10, 0)
+        val endDate = GregorianCalendar(2022, 10, 22, 11, 0)
+        setStartDateValues(startDate)
+        setStartTimeValues(startDate)
+        setEndDateValues(endDate)
+        setEndTimeValues(endDate)
+
+        // Task Create Button should still be disabled
+        onView(withId(R.id.taskCreate))
+                .check(matches(not(isEnabled())))
+    }
+
+    @Test
+    fun createTwoTasksTest() {
+        val taskName = arrayOf("myFirstTask", "My Second Task")
+        val taskDescription = arrayOf("First Task Description", "Second task Desc.")
+        val startDate = arrayOf(
+                GregorianCalendar(2022, 10, 22, 10, 0),
+                GregorianCalendar(2022, 10, 23, 15, 15)
+        )
+        val endDate = arrayOf(
+                GregorianCalendar(2022, 10, 22, 11, 0),
+                GregorianCalendar(2022, 10, 23, 16, 30)
+        )
+
+        for (i in taskName.indices) {
+            // At first, Task Create Button should not be enabled
+            onView(withId(R.id.taskCreate))
+                    .check(matches(not(isEnabled())))
+
+            setupTaskStrings(taskName[i], taskDescription[i]);
+            setStartDateValues(startDate[i])
+            setStartTimeValues(startDate[i])
+            setEndDateValues(endDate[i])
+            setEndTimeValues(endDate[i])
+
+            // Task Create Button should now be enabled
+            onView(withId(R.id.taskCreate))
+                    .check(matches(isEnabled()))
+                    .perform(click())
+
+            // After click, overview should be shown again
+            onView(withId(R.id.fragment_container_overview))
+                    .check(matches(isDisplayed()))
+
+            // Navigate to create task again
+            onView(withId(R.id.fab))
+                    .perform(click())
+            // Wait short amount of time to ensure everything has loaded
+            Thread.sleep(400)
+            onView(withId(R.id.fragment_container_new_task))
+                    .check(matches(isDisplayed()))
+        }
+
+        // Assert that all tasks are stored in firebase
+        for (i in taskName.indices) {
+            assertFirestoreContainsTask(
+                    taskName[i],
+                    taskDescription[i],
+                    startDate[i],
+                    endDate[i])
+        }
     }
 }

@@ -61,7 +61,7 @@ class TimerFragment : Fragment() {
                 showToast(getString(R.string.no_task_selected))
                 return@setOnClickListener
             }
-            val duration = selectedTask!!.duration.timeInMillis -
+            val duration = selectedTask!!.endTime.timeInMillis -
                     selectedTask!!.startTime.timeInMillis
 
 

@@ -34,7 +34,14 @@ While this application is planned to be a local app, in a later stage it will al
 ## Features
 | Title | Short Description |
 | ---- | ---- |
-| FW-001 Start application #1 | User can start the app and sees the Home View. |
+| FW-001 Start application | User can start the app and sees the Home View. |
+| FW-003 Notifications | User gets push-notifications (currently on demand). |
+| FW-005 Settings fragment | User can access a fragment view, where he/she can set multiple options. |
+| FW-012 Task overview fragment | User sees an overview view which contains his/her tasks. |
+| FW-013 New task fragment | User can create new tasks in a single view. |
+| FW-014 Task detail fragment | User sees details of tasks when opening it. |
+| FW-015 Store tasks in firebase firestore | Tasks will be stored in firebase after saving it. |
+| FW-026 Load tasks from overview into detail fragment | Tasks will be loaded from overview view to detail view. |
 
 
 
