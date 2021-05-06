@@ -65,11 +65,19 @@
 
     <!-- Login/Registration -->
     <string name="title_activity_login">LoginActivity</string>
+
+    <!-- Login and Registration -->
+    <string name="prompt_first_name">First name</string>
+    <string name="prompt_last_name">Last name</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_register">Register</string>
-    <string name="invalid_username">Not a valid username</string>
+    <string name="sign_in_text_view">Already have an account?</string>
+    <string name="sign_up_text_view">Don\'t have an account yet?</string>
+    <string name="invalid_firstname">First name cannot be empty</string>
+    <string name="invalid_lastname">Last name cannot be empty</string>
+    <string name="invalid_username">Not a valid email address</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 

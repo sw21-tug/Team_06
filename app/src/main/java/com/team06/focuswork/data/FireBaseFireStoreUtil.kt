@@ -11,6 +11,9 @@ class FireBaseFireStoreUtil {
     private val taskCollection = "Task"
     private val emailField = "email"
     private val passwordField = "password"
+    private val nameField = "firstname"
+    private val surNameField = "lastname"
+
 
     fun retrieveUser(username: String, password: String): LoggedInUser {
         val fetchUserAsync = fireBaseStore
@@ -60,8 +63,11 @@ class FireBaseFireStoreUtil {
         }
     }
 
-    fun addUser(username: String, password: String): LoggedInUser {
+    fun addUser(firstname:String, lastname:String, username: String, password: String): LoggedInUser {
         val user: MutableMap<String, Any> = HashMap()
+
+        user[nameField] = firstname
+        user[surNameField] = lastname
         user[emailField] = username
         user[passwordField] = password
         val documents = fireBaseStore.collection(userCollection).add(user)
