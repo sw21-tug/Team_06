@@ -1,11 +1,13 @@
 <resources>
     <!-- Notifation Sound Preference -->
     <string-array name="notification_sound_entries">
+        <item>System Default</item>
         <item>Classic</item>
         <item>Funky</item>
     </string-array>
 
     <string-array name="notification_sound_values">
+        <item>default</item>
         <item>classic</item>
         <item>funky</item>
     </string-array>
