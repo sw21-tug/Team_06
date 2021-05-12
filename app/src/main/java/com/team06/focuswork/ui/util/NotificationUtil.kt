@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings.Global.getString
 import android.view.View
@@ -46,12 +47,21 @@ object NotificationUtil {
                     NotificationChannel(NOTIFICATION_CHANNEL_IDS[i], name, important).apply {
                         description = descriptionText
                         setSound(
-                            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
+                            getNotificationSound(context, i),
                             audioAttributes
                         )
                     }
                 notificationManager.createNotificationChannel(channel)
             }
+        }
+    }
+
+    fun getNotificationSound(context: Context, notificationSoundIndex: Int): Uri {
+        return when (notificationSoundIndex) {
+            0 -> RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            1 -> Uri.parse("android.resource://" + context.packageName + "/" + R.raw.notifclassic)
+            2 -> Uri.parse("android.resource://" + context.packageName + "/" + R.raw.notiffunky)
+            else -> RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         }
     }
 
