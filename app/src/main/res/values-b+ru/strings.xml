@@ -50,7 +50,7 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
-    <string name="erroneous_config">Предупреждение! Ошибочная конфигурация, по умолчанию неделя!</string>
+    <string name="erroneous_config">    Предупреждение! Ошибочная конфигурация, по умолчанию неделя!</string>
 
     <string name="menu_settings">Настройки</string>
 

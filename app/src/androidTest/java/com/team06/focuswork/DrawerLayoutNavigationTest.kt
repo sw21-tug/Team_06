@@ -44,14 +44,6 @@ class DrawerLayoutNavigationTest {
         openLayoutDrawer()
 
         onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_day_overview))
-        onView(withId(R.id.fragment_container_day))
-            .check(matches(isDisplayed()))
-        Thread.sleep(200)
-
-        openLayoutDrawer()
-
-        onView(withId(R.id.nav_view))
             .perform(NavigationViewActions.navigateTo(R.id.nav_timer))
         onView(withId(R.id.fragment_container_timer))
             .check(matches(isDisplayed()))
