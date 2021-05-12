@@ -1,14 +1,18 @@
 package com.team06.focuswork.ui.taskdetails
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
+
 
 class TaskdetailsFragment : Fragment() {
 
@@ -18,6 +22,47 @@ class TaskdetailsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_details, menu)
         return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.menu_detail_edit -> {
+
+
+            true
+        }
+
+        R.id.menu_detail_delete -> {
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton(R.string.delete_dialog_confirm_delete,
+                            DialogInterface.OnClickListener { dialog, id ->
+                                // User clicked OK button
+                            })
+
+                    setNegativeButton(R.string.delete_dialog_cancel,
+                            DialogInterface.OnClickListener { dialog, id ->
+                                // User cancelled the dialog
+                            })
+                }
+
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder?.setMessage(R.string.delete_dialog_description)
+                        .setTitle(R.string.delete_dialog_title)
+
+                // Create the AlertDialog
+                builder.create()
+            }
+
+            alertDialog?.show()
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(

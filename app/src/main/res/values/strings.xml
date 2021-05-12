@@ -87,5 +87,10 @@
     <string name="notification" tools:ignore="MissingTranslation">Notification</string>
     <string name="textview_range" tools:ignore="MissingTranslation">TextView</string>
 
+    <string name="delete_dialog_title">Delete task</string>
+    <string name="delete_dialog_description">Do you really want to delete the task?</string>
+    <string name="delete_dialog_cancel">Cancel</string>
+    <string name="delete_dialog_confirm_delete">Delete</string>
+
 
 </resources>
