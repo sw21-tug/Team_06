@@ -33,6 +33,7 @@ class FireBaseFireStoreUtil {
             .collection(userCollection)
             .document((LoginRepository.getUser() ?: return).userId)
             .collection(taskCollection)
+            .orderBy("startTime")
 
         taskCollection.get().addOnSuccessListener { tasks ->
             val taskList: MutableList<Task> = mutableListOf()

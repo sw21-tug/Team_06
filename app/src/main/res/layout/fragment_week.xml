@@ -5,9 +5,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingLeft="0dp"
     android:paddingTop="@dimen/fragment_vertical_margin"
-    android:paddingRight="@dimen/fragment_horizontal_margin"
+    android:paddingRight="0dp"
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".MainActivity">
 
@@ -16,8 +16,8 @@
         android:id="@+id/textview_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/week_title"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -30,8 +30,8 @@
         android:id="@+id/textview_range"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -55,26 +55,33 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_range">
 
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            style="?android:attr/buttonBarStyle">
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button_monday"
+                android:id="@+id/button_display_all"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/monday"
-                style="?android:attr/buttonBarButtonStyle"/>
+                android:text="@string/all_days" />
+
+            <Button
+                android:id="@+id/button_monday"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:text="@string/monday" />
 
             <Button
                 android:id="@+id/button_tuesday"
@@ -87,48 +94,48 @@
 
             <Button
                 android:id="@+id/button_wednesday"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="@string/wednesday"
-                style="?android:attr/buttonBarButtonStyle"/>
+                android:text="@string/wednesday" />
 
             <Button
                 android:id="@+id/button_thursday"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="@string/thursday"
-                style="?android:attr/buttonBarButtonStyle"/>
+                android:text="@string/thursday" />
 
             <Button
                 android:id="@+id/button_friday"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="@string/friday"
-                style="?android:attr/buttonBarButtonStyle"/>
+                android:text="@string/friday" />
 
             <Button
                 android:id="@+id/button_saturday"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="@string/saturday"
-                style="?android:attr/buttonBarButtonStyle"/>
+                android:text="@string/saturday" />
 
             <Button
                 android:id="@+id/button_sunday"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="@string/sunday"
-                style="?android:attr/buttonBarButtonStyle"/>
+                android:text="@string/sunday" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -136,9 +143,9 @@
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

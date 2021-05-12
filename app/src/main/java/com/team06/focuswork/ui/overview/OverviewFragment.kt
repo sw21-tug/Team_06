@@ -17,6 +17,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -51,6 +53,7 @@ class OverviewFragment : Fragment() {
     private val allTasks = mutableListOf<Task>()
     private var filter: Filter = Filter.NONE
     private var selectedDay = Calendar.getInstance()
+    private var showEntireWeek = true
 
 
     override fun onCreateView(
@@ -73,7 +76,9 @@ class OverviewFragment : Fragment() {
                 layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
             else -> {
-                //TODO: Error handling
+                showToast(R.string.erroneous_config)
+                dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
+                layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
         }
 
@@ -96,6 +101,7 @@ class OverviewFragment : Fragment() {
             Filter.WEEK -> initializeWeekView()
             else -> {
                 //TODO: Error handling
+
             }
         }
     }
@@ -154,7 +160,6 @@ class OverviewFragment : Fragment() {
 
         tasksViewModel.allTasks.observe(requireActivity(), Observer {
             tasks -> currentTasks.removeAll(currentTasks)
-            Log.d("Overview", "Entered Observer Function")
             tasks.iterator().forEach {
                 if(filterForDay(selectedDay, it.startTime, it.endTime))
                     currentTasks.add(it)
@@ -191,38 +196,49 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initWeekButtons(binding: FragmentWeekBinding){
+        binding.buttonDisplayAll.setOnClickListener {
+            showEntireWeek = true
+            tasksViewModel.setTasks(allTasks)
+        }
         binding.buttonMonday.setOnClickListener {
             setMonday(selectedDay)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonTuesday.setOnClickListener {
             setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 1)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonWednesday.setOnClickListener {
             setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 2)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonThursday.setOnClickListener {
             setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 3)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonFriday.setOnClickListener {
             setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 4)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSaturday.setOnClickListener {
             setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 5)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSunday.setOnClickListener {
             setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 6)
+            showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
     }
@@ -245,6 +261,8 @@ class OverviewFragment : Fragment() {
     }
 
     private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
+        if(showEntireWeek) return filterForWeek(day, start, end)
+
         //We don't care about the year-to-day conversion being accurate
         //since we only care about what day comes first, meaning leaving 1 day unsused
         //for most years is of no consequence
@@ -256,6 +274,23 @@ class OverviewFragment : Fragment() {
                 day.get(Calendar.YEAR) * 366
 
         return currentDay in startDay..endDay
+    }
+
+    //week can just be any day within the week
+    private fun filterForWeek(week: Calendar, start: Calendar, end: Calendar): Boolean {
+        setMonday(week)
+
+        val startDay = start.get(Calendar.DAY_OF_YEAR) +
+                start.get(Calendar.YEAR) * 366
+        val endDay = end.get(Calendar.DAY_OF_YEAR) +
+                end.get(Calendar.YEAR) * 366
+        val currentDay = week.get(Calendar.DAY_OF_YEAR) +
+                week.get(Calendar.YEAR) * 366
+
+        return (currentDay   in startDay..endDay) || (currentDay+1 in startDay..endDay) ||
+               (currentDay+2 in startDay..endDay) || (currentDay+3 in startDay..endDay) ||
+               (currentDay+4 in startDay..endDay) || (currentDay+5 in startDay..endDay) ||
+               (currentDay+6 in startDay..endDay)
     }
 
     private fun createNotifChannel() {
@@ -324,5 +359,9 @@ class OverviewFragment : Fragment() {
                 this.filter = Filter.WEEK
             }
         }
+    }
+
+    private fun showToast(@StringRes string: Int) {
+        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
     }
 }
