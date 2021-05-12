@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Сосредоточенная работа</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Сосредоточенная работа</string>
+    <string name="nav_header_subtitle">Команда 06 - ТУ Грац</string>
     <string name="nav_header_desc">Заголовок навигации</string>
 
     <string name="menu_overview">обзор</string>

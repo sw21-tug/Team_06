@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">专注工作</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+    <string name="nav_header_title">重点工作</string>
+    <string name="nav_header_subtitle">战队06-格拉茨大学</string>
     <string name="nav_header_desc">导航标题</string>
 
     <string name="menu_overview">概述</string>

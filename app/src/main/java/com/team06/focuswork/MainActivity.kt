@@ -51,50 +51,6 @@ class MainActivity : ThemedAppCompatActivity(), SharedPreferences.OnSharedPrefer
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        //Load default values for settings in case user hasn't selected values yet
-        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
-
-        checkLocale()
-
-        // set listener for settings
-        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        preferences.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onDestroy() {
-        //Unregister settings listener
-        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        preferences.unregisterOnSharedPreferenceChangeListener(this)
-
-        super.onDestroy()
-    }
-
-    /**
-     * If the preferred language is not the current language,
-     * restarts the activity with the preferred language
-     */
-    @Suppress("DEPRECATION")
-    private fun checkLocale() {
-        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val languageKey = (preferences.getString("language", "en")).toString()
-        if (languageKey.toLowerCase(Locale.getDefault()) != resources.configuration.locale.language.toLowerCase(
-                Locale.getDefault()
-            )
-        )
-            onChangedLanguage(languageKey)
-    }
-
-    @Suppress("DEPRECATION")
-    private fun onChangedLanguage(languageKey: String) {
-        val myLocale = Locale(languageKey)
-        val dm: DisplayMetrics = resources.displayMetrics
-        val conf: Configuration = resources.configuration
-        conf.locale = myLocale
-        resources.updateConfiguration(conf, dm)
-
-        finish()
-        startActivity(this.intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -107,12 +63,4 @@ class MainActivity : ThemedAppCompatActivity(), SharedPreferences.OnSharedPrefer
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == "language") {
-            val languageValue: String = (sharedPreferences?.getString(key, "en")).toString()
-            onChangedLanguage(languageValue);
-        }
-    }
-
 }
