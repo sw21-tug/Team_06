@@ -74,6 +74,6 @@
     <string name="login_failed">"Ошибка входа"</string>
 
     <string name="notification_title">Ваша задача выполнена!</string>
-    <string name="notification_message">Этот текст намного длиннее исходного сообщения.</string>
+    <string name="notification_message">Задание, для которого вы установили таймер, выполнено.</string>
 
 </resources>

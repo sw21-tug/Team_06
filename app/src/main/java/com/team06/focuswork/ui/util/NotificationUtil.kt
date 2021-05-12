@@ -2,12 +2,19 @@ package com.team06.focuswork.ui.util
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.media.RingtoneManager
 import android.os.Build
+import android.provider.Settings.Global.getString
+import android.view.View
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 
 object NotificationUtil {
@@ -62,5 +69,35 @@ object NotificationUtil {
 
         // If nothing found, return default channel
         return NOTIFICATION_CHANNEL_IDS[0]
+    }
+
+    fun sendTimerFinishedNotif(context: Context) {
+        // based off this tutorial
+        // navigates back to app by clicking on it
+        // https://www.youtube.com/watch?v=B5dgmvbrHgs
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(context, 0, intent, 0)
+
+        val builder = NotificationCompat.Builder(
+            context,
+            getNotificationChannelId(context)
+        )
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(context.getString(R.string.notification_title))
+            .setContentText(context.getString(R.string.notification_message))
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    context.getString(R.string.notification_message)
+                )
+            )
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(context)) {
+            notify(101, builder.build())
+        }
     }
 }

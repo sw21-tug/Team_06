@@ -39,7 +39,7 @@ import com.team06.focuswork.model.TasksViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
-import com.team06.focuswork.ui.util.NotificationUtil.getNotificationChannelId
+import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
 
 class OverviewFragment : Fragment() {
 
@@ -279,30 +279,8 @@ class OverviewFragment : Fragment() {
     }
 
 
-    private fun sendNotif(view: View) {
-        // based on this tutorial
-        // our first notification, navigates back to app by clicking on it
-        // https://www.youtube.com/watch?v=B5dgmvbrHgs
-        val intent = Intent(requireContext(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(requireContext(), 0, intent, 0)
-
-
-        val builder = NotificationCompat.Builder(requireContext(),
-            getNotificationChannelId(requireContext()))
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText(getString(R.string.notification_message))
-                .setStyle(NotificationCompat.BigTextStyle().bigText(
-                    getString(R.string.notification_message)))
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(requireContext())) {
-            notify(101, builder.build())
-        }
+    private fun sendNotif(@Suppress("UNUSED_PARAMETER") view :View) {
+        sendTimerFinishedNotif(requireContext())
     }
 
     fun onClickTaskItem(task: Task) {

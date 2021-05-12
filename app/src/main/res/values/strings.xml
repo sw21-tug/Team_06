@@ -74,7 +74,7 @@
     <string name="login_failed">"Login failed"</string>
 
     <string name="notification_title">Your task has finished!</string>
-    <string name="notification_message">This text is so much longer than the original message.</string>
+    <string name="notification_message">The task you set a timer for has finished.</string>
 
     <string name="login_email_hint" tools:ignore="MissingTranslation">max.mustermann@gmail.at</string>
     <string name="logo_image_description" tools:ignore="MissingTranslation">Logo image</string>

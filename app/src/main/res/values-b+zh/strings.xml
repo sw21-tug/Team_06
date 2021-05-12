@@ -75,6 +75,6 @@
     <string name="login_failed">"登录失败"</string>
 
     <string name="notification_title">您的任务已经完成！</string>
-    <string name="notification_message">该文本比原始消息长得多。</string>
+    <string name="notification_message">您为其设置计时器的任务已完成。</string>
 
 </resources>
