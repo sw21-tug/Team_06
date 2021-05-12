@@ -14,6 +14,9 @@
         <!-- Customize your theme here. -->
         <item name="divider">@color/divider</item>
         <item name="icon">@color/divider</item>
+
+        <item name="android:actionButtonStyle">@style/customActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/customActionButtonStyle</item>
     </style>
 
     <style name="Theme.FocusWork.NoActionBar">
@@ -24,4 +27,10 @@
     <style name="Theme.FocusWork.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.FocusWork.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="customActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:scaleX">0.75</item>
+        <item name="android:scaleY">0.75</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
 </resources>
