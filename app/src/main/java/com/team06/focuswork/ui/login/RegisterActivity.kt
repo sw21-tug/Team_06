@@ -15,46 +15,77 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.databinding.ActivityLoginBinding
+import com.team06.focuswork.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var firstname: EditText
+    private lateinit var lastname: EditText
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+    private lateinit var login: Button
+    private lateinit var register: Button
+    private lateinit var loading: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_register)
+        bindComponents()
+        setUpRegisterFormState()
+        setUpRegisterResult()
+        setUpTextListeners()
+        setUpSubmitButtons()
+    }
 
-        val firstname = findViewById<EditText>(R.id.firstname)
-        val lastname = findViewById<EditText>(R.id.lastname)
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val register = findViewById<Button>(R.id.register)
-        val loading = findViewById<ProgressBar>(R.id.loading)
+    private fun setUpSubmitButtons() {
+        register.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            loginViewModel.register(
+                firstname.text.toString(), lastname.text.toString(),
+                username.text.toString(), password.text.toString()
+            )
+        }
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        login.setOnClickListener {
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
-        loginViewModel.registerFormState.observe(this@RegisterActivity, Observer {
-            val registerState = it ?: return@Observer
-
-            // disable login button unless both username / password is valid
-            register.isEnabled = registerState.isDataValid
-
-            if (registerState.usernameError != null) {
-                username.error = getString(registerState.usernameError)
+    private fun setUpTextListeners() {
+        username.afterTextChanged {
+            loginViewModel.registerDataChanged(
+                firstname.text.toString(),
+                lastname.text.toString(),
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
+        password.afterTextChanged {
+            loginViewModel.registerDataChanged(
+                firstname.text.toString(),
+                lastname.text.toString(),
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
+        password.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE ->
+                    loginViewModel.register(
+                        firstname.text.toString(),
+                        lastname.text.toString(),
+                        username.text.toString(),
+                        password.text.toString()
+                    )
             }
-            if (registerState.passwordError != null) {
-                password.error = getString(registerState.passwordError)
-            }
-            if (registerState.firstnameError != null) {
-                password.error = getString(registerState.firstnameError)
-            }
-            if (registerState.lastnameError != null) {
-                password.error = getString(registerState.lastnameError)
-            }
-        })
+            false
+        }
+    }
 
+    private fun setUpRegisterResult() {
         loginViewModel.loginResult.observe(this@RegisterActivity, Observer {
             val loginResult = it ?: return@Observer
 
@@ -71,52 +102,42 @@ class RegisterActivity : AppCompatActivity() {
             //Complete and destroy login activity once successful
             finish()
         })
+    }
 
-        username.afterTextChanged {
-            loginViewModel.registerDataChanged(
-                firstname.text.toString(),
-                lastname.text.toString(),
-                username.text.toString(),
-                password.text.toString()
-            )
-        }
+    private fun setUpRegisterFormState() {
+        loginViewModel.registerFormState.observe(this@RegisterActivity, Observer {
+            val registerState = it ?: return@Observer
 
-        password.apply {
-            afterTextChanged {
-                loginViewModel.registerDataChanged(
-                    firstname.text.toString(),
-                    lastname.text.toString(),
-                    username.text.toString(),
-                    password.text.toString()
-                )
+            // disable login button unless both username / password is valid
+            register.isEnabled = registerState.isDataValid
+            if (registerState.usernameError != null) {
+                username.error = getString(registerState.usernameError)
             }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.register(
-                            firstname.text.toString(),
-                            lastname.text.toString(),
-                            username.text.toString(),
-                            password.text.toString()
-                        )
-                }
-                false
+            if (registerState.passwordError != null) {
+                password.error = getString(registerState.passwordError)
             }
-
-            register.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.register(firstname.text.toString(), lastname.text.toString(),
-                                        username.text.toString(), password.text.toString())
+            if (registerState.firstnameError != null) {
+                password.error = getString(registerState.firstnameError)
             }
-
-            login.setOnClickListener {
-                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                startActivity(intent)
-                //loading.visibility = View.VISIBLE
-                //loginViewModel.register(username.text.toString(), password.text.toString())
+            if (registerState.lastnameError != null) {
+                password.error = getString(registerState.lastnameError)
             }
-        }
+        })
+    }
+
+    private fun bindComponents() {
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        firstname = binding.firstname
+        lastname = binding.lastname
+        username = binding.username
+        password = binding.password
+        login = binding.login
+        register = binding.register
+        loading = binding.loading
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+            .get(LoginViewModel::class.java)
     }
 
     private fun updateUiWithUser() {
