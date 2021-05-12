@@ -36,6 +36,9 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
     <string name="erroneous_config">Warning! Erroneous config, defaulting to Week!</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">Edit</string>
+    <string name="menu_item_delete">Delete</string>
 
     <string name="menu_settings">Settings</string>
 

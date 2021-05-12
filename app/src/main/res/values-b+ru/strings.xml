@@ -36,6 +36,9 @@
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
     <string name="erroneous_config">    Предупреждение! Ошибочная конфигурация, по умолчанию неделя!</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">Редактировать</string>
+    <string name="menu_item_delete">Удалить</string>
 
     <string name="menu_settings">Настройки</string>
 

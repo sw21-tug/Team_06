@@ -2,9 +2,7 @@ package com.team06.focuswork.ui.taskdetails
 
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,6 +14,11 @@ class TaskdetailsFragment : Fragment() {
 
     private val tasksViewModel: TasksViewModel by activityViewModels()
     private lateinit var binding: FragmentTaskdetailsBinding
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_details, menu)
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
