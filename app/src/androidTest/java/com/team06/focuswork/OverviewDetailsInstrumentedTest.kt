@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions
@@ -14,10 +15,13 @@ import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers.isClosed
 import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.overview.OverviewFragment
@@ -87,16 +91,6 @@ class OverviewDetailsInstrumentedTest {
         onView(withId(R.id.fragment_container_overview))
                 .check(matches(isDisplayed()))
 
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
-                .perform(DrawerActions.open()); // Open Drawer
-
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_overview))
-
-        onView(withId(R.id.fragment_container_overview))
-                .check(matches(isDisplayed()))
-
         val startDate = Calendar.getInstance()
         OverviewFragment.setMonday(startDate)
         startDate.add(Calendar.DATE, 6)
@@ -159,7 +153,6 @@ class OverviewDetailsInstrumentedTest {
     }
 
     private fun setEndTimeValues(cal: Calendar) {
-
         onView(withId(R.id.taskEndTime))
                 .perform(click())
         onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker::class.java.name)))
@@ -194,6 +187,22 @@ class OverviewDetailsInstrumentedTest {
                 .check(matches(isDisplayed()))
     }
 
+    private fun navigateToSettings() {
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open())
+
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_settings));
+    }
+
+    private fun navigateToOverview() {
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open())
+
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_overview));
+    }
+
     @Test
     fun testBackPressed() {
         navigateToTaskDetail()
@@ -205,6 +214,22 @@ class OverviewDetailsInstrumentedTest {
 
     @Test
     fun testSundayView() {
+        navigateToSettings()
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                        hasDescendant(withText(R.string.overviewTimeFrame_title)), click()))
+
+        val array = InstrumentationRegistry.getInstrumentation()
+                .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
+
+        onView(withText(array[1]))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click());
+
+        navigateToOverview()
+        Thread.sleep(400)
         navigateToSunday()
         pressBack()
 
