@@ -61,7 +61,7 @@ class LoginInstrumentedTest {
     fun basicLoginTest() {
         setLoginData("test@gmail.com", "password")
         clickLogin()
-        Espresso.onView(ViewMatchers.withId(R.id.recycler_view))
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_view_week))
                 .check(matches(ViewMatchers.isDisplayed()))
     }
 
@@ -70,7 +70,7 @@ class LoginInstrumentedTest {
         deleteUser("newTest@gmail.com")
         setLoginData("newTest@gmail.com", "aosjkgaod")
         clickRegister()
-        Espresso.onView(ViewMatchers.withId(R.id.recycler_view))
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_view_week))
                 .check(matches(ViewMatchers.isDisplayed()))
     }
 

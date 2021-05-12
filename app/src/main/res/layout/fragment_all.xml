@@ -10,7 +10,7 @@
     android:id="@+id/fragment_container_all">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/recycler_view_week"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"

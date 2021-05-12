@@ -117,7 +117,7 @@ class OverviewFragment : Fragment() {
 
         initDayUI(localBinding)
 
-        recyclerView = localBinding.recyclerView
+        recyclerView = localBinding.recyclerViewWeek
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         localBinding.progressbar.visibility = View.GONE
@@ -153,7 +153,7 @@ class OverviewFragment : Fragment() {
         initWeekUI(localBinding)
         initWeekButtons(localBinding)
 
-        recyclerView = localBinding.recyclerView
+        recyclerView = localBinding.recyclerViewWeek
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
@@ -241,23 +241,6 @@ class OverviewFragment : Fragment() {
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
-    }
-
-    //This is needed because setting the field Calendar.DAY_OF_WEEK has flimsy behaviour
-    private fun setMonday(cal: Calendar): Calendar {
-        var delta = 0
-        when(cal.get(Calendar.DAY_OF_WEEK)){
-            Calendar.MONDAY -> delta = 0
-            Calendar.TUESDAY -> delta = -1
-            Calendar.WEDNESDAY -> delta = -2
-            Calendar.THURSDAY -> delta = -3
-            Calendar.FRIDAY -> delta = -4
-            Calendar.SATURDAY -> delta = -5
-            Calendar.SUNDAY -> delta = -6
-        }
-
-        cal.add(Calendar.DAY_OF_MONTH, delta)
-        return cal
     }
 
     private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
@@ -363,5 +346,24 @@ class OverviewFragment : Fragment() {
 
     private fun showToast(@StringRes string: Int) {
         Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+    }
+
+    companion object Overview {
+        //This is needed because setting the field Calendar.DAY_OF_WEEK has flimsy behaviour
+        fun setMonday(cal: Calendar): Calendar {
+            var delta = 0
+            when(cal.get(Calendar.DAY_OF_WEEK)){
+                Calendar.MONDAY -> delta = 0
+                Calendar.TUESDAY -> delta = -1
+                Calendar.WEDNESDAY -> delta = -2
+                Calendar.THURSDAY -> delta = -3
+                Calendar.FRIDAY -> delta = -4
+                Calendar.SATURDAY -> delta = -5
+                Calendar.SUNDAY -> delta = -6
+            }
+
+            cal.add(Calendar.DAY_OF_MONTH, delta)
+            return cal
+        }
     }
 }
