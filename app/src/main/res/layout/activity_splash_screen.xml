@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    android:background="#ed413e"
+    android:background="?attr/colorPrimary"
 
 
     tools:context=".ui.splashscreen.SplashScreen">
