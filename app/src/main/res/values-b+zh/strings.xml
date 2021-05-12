@@ -42,6 +42,16 @@
     <string name="day_from">从：</string>
     <string name="day_to">至：</string>
     <string name="day_tasks_for">任务：</string>
+    <string name="week_title">本周任务</string>
+    <string name="all_days">整个星期</string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">星期五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">星期日</string>
+    <string name="erroneous_config">警告！错误的配置，默认为周！</string>
 
     <string name="menu_settings">设定值</string>
 
