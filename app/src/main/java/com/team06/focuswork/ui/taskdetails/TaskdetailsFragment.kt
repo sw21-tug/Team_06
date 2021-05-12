@@ -29,7 +29,7 @@ class TaskdetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_detail_edit -> {
-            findNavController().navigate(R.id.nav_new_task)
+            findNavController().navigate(R.id.action_nav_taskdetails_to_nav_new_task)
             true
         }
 
@@ -78,9 +78,7 @@ class TaskdetailsFragment : Fragment() {
         })
 
     }
-
-    private fun onDeleteItem()
-    {
+    private fun onDeleteItem() {
         val deleteDialog: AlertDialog? = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
@@ -107,11 +105,8 @@ class TaskdetailsFragment : Fragment() {
         deleteDialog?.show()
     }
 
-    private fun onConfirmDelete()
-    {
-        //ToDo: deleteTask
-
-
-        findNavController().navigate(R.id.nav_overview)
+    private fun onConfirmDelete() {
+        fireBaseStore.deleteTask(tasksViewModel.currentTask.value!!)
+        findNavController().navigate(R.id.action_nav_taskdetails_to_nav_overview)
     }
 }

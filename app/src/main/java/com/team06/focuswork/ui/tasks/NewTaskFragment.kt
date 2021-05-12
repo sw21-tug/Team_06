@@ -8,11 +8,15 @@ import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
+import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import com.team06.focuswork.ui.util.DatePickerFragment
 import com.team06.focuswork.ui.util.TimePickerFragment
@@ -22,13 +26,12 @@ import java.util.*
 
 class NewTaskFragment : Fragment() {
 
-    var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
-    var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
-
-    private val startDatePicker = DatePickerFragment(startCalendar)
-    private val startTimePicker = TimePickerFragment(startCalendar)
-    private val endDatePicker = DatePickerFragment(endCalendar)
-    private val endTimePicker = TimePickerFragment(endCalendar)
+    private lateinit var workingTask: Task
+    private val tasksViewModel: TasksViewModel by activityViewModels()
+    private val startDatePicker = DatePickerFragment(this, true)
+    private val startTimePicker = TimePickerFragment(this, true)
+    private val endDatePicker = DatePickerFragment(this, false)
+    private val endTimePicker = TimePickerFragment(this, false)
     private lateinit var binding: FragmentNewTaskBinding
     private val fireBaseStore = FireBaseFireStoreUtil()
 
@@ -50,32 +53,36 @@ class NewTaskFragment : Fragment() {
         taskNameView.doAfterTextChanged { checkTextFilled(view) }
         taskDescriptionView.doAfterTextChanged { checkTextFilled(view) }
 
+        tasksViewModel.currentTask.value.let { task ->
+            if(task != null) {
+                taskNameView.setText(task.taskName)
+                taskDescriptionView.setText(task.taskDescription)
+                startCalendar.value = task.startTime
+                endCalendar.value = task.endTime
+            } else {
+                endCalendar.value?.add(Calendar.HOUR, 1);
+            }
+        }
+
         prepareStartDateTextView(binding.taskStartDate)
         prepareStartTimeTextView(binding.taskStartTime)
-        endCalendar.value?.add(Calendar.HOUR, 1);
         prepareEndDateTextView(binding.taskEndDate)
         prepareEndTimeTextView(binding.taskEndTime)
         setupObserverCallbacks()
 
         binding.taskCreate.setOnClickListener {
             saveTask()
-            findNavController().navigate(R.id.nav_overview)
+            findNavController().navigateUp()
         }
     }
 
     private fun saveTask() {
-        val task: MutableMap<String, Any> = HashMap()
-        val startTime = startCalendar.value
-        val endTime = endCalendar.value
-        task["name"] = binding.taskName.text.toString()
-        task["description"] = binding.taskDescription.text.toString()
-        if (startTime == null || endTime == null) {
-            showToast("Unfortunately the task could not be saved!")
-            return
-        }
-        task["startTime"] = CalendarTimestampUtil.toTimeStamp(startTime)
-        task["endTime"] = CalendarTimestampUtil.toTimeStamp(endTime)
-        fireBaseStore.saveTask(task)
+        workingTask = Task(
+            binding.taskName.text.toString(),
+            binding.taskDescription.text.toString(),
+            startCalendar.value!!,
+            endCalendar.value!!)
+        fireBaseStore.saveTask(workingTask, tasksViewModel::setSelectedTask)
     }
 
     private fun prepareStartTimeTextView(startTimeTextView: TextView) {
@@ -128,21 +135,26 @@ class NewTaskFragment : Fragment() {
                     endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
                 )
                 endCalendar.value = newEndCal
+                binding.taskEndDate.text = formatDate(newEndCal)
+                binding.taskEndTime.text = formatTime(newEndCal)
             }
             binding.taskStartDate.text = formatDate(cal)
             binding.taskStartTime.text = formatTime(cal)
         })
         endCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            val cal = it ?: return@Observer
+            var cal = it ?: return@Observer
             if (cal.before(startCalendar.value)) {
                 val newEndCal = GregorianCalendar(
-                    startCalendar.value?.get(Calendar.YEAR) ?: return@Observer,
-                    startCalendar.value?.get(Calendar.MONTH) ?: return@Observer,
-                    startCalendar.value?.get(Calendar.DAY_OF_MONTH) ?: return@Observer,
-                    endCalendar.value?.get(Calendar.HOUR_OF_DAY) ?: return@Observer,
-                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
-                )
+                        startCalendar.value?.get(Calendar.YEAR)!!,
+                        startCalendar.value?.get(Calendar.MONTH)!!,
+                        startCalendar.value?.get(Calendar.DAY_OF_MONTH)!!,
+                        endCalendar.value?.get(Calendar.HOUR_OF_DAY)!!,
+                        endCalendar.value?.get(Calendar.MINUTE)!!)
+                if(newEndCal.before(startCalendar.value)) {
+                    newEndCal.add(Calendar.DAY_OF_YEAR, 1)
+                }
                 endCalendar.value = newEndCal
+                cal = newEndCal
             }
             binding.taskEndDate.text = formatDate(cal)
             binding.taskEndTime.text = formatTime(cal)

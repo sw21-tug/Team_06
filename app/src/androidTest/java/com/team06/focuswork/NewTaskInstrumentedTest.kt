@@ -32,6 +32,10 @@ class NewTaskInstrumentedTest {
 
     @Before
     fun init() {
+        onView(withId(R.id.fragment_container_overview))
+            .check(matches(isDisplayed()))
+        // Wait short amount of time to ensure everything has loaded
+        Thread.sleep(400)
         onView(withId(R.id.fab))
             .perform(click())
         // Wait short amount of time to ensure everything has loaded
