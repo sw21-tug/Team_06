@@ -1,30 +1,27 @@
 package com.team06.focuswork
 
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Menu
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.firestore.FirebaseFirestore
-import com.team06.focuswork.data.FireBaseFireStoreUtil
-import com.team06.focuswork.data.LoginRepository
-import com.team06.focuswork.data.Task
+import androidx.preference.PreferenceManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.team06.focuswork.model.TasksViewModel
-import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var tasksViewModel: TasksViewModel
@@ -51,6 +48,47 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_overview, R.id.nav_new_task, R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //Load default values for settings in case user hasn't selected values yet
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
+
+        checkLocale()
+
+        // set listener for settings
+        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        preferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onDestroy() {
+        //Unregister settings listener
+        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        preferences.unregisterOnSharedPreferenceChangeListener(this)
+
+        super.onDestroy()
+    }
+
+    /**
+     * If the preferred language is not the current language,
+     * restarts the activity with the preferred language
+     */
+    @Suppress("DEPRECATION")
+    private fun checkLocale() {
+        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val languageKey = (preferences.getString("language", "en")).toString()
+        if(languageKey.toLowerCase() != resources.configuration.locale.language.toLowerCase())
+            onChangedLanguage(languageKey)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun onChangedLanguage(languageKey: String){
+        val myLocale = Locale(languageKey)
+        val dm: DisplayMetrics = resources.displayMetrics
+        val conf: Configuration = resources.configuration
+        conf.locale = myLocale
+        resources.updateConfiguration(conf, dm)
+
+        finish()
+        startActivity(this.intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -62,6 +100,13 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key == "language") {
+            val languageValue: String = (sharedPreferences?.getString(key, "en")).toString()
+            onChangedLanguage(languageValue);
+        }
     }
 
 }

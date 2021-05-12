@@ -69,7 +69,7 @@ class OverviewFragment : Fragment() {
         when(filter){
             Filter.DAY -> {
                 dynamicBinding = FragmentDayBinding.inflate(layoutInflater, layout, false)
-                layout.addView((dynamicBinding as FragmentDayBinding).container)
+                layout.addView((dynamicBinding as FragmentDayBinding).fragmentContainerDay)
             }
             Filter.WEEK -> {
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
@@ -321,7 +321,7 @@ class OverviewFragment : Fragment() {
     }
 
     fun onClickTaskItem(task: Task) {
-        tasksViewModel.setSelectedTask(task, requireContext())
+        tasksViewModel.setSelectedTask(task)
         findNavController().navigate(R.id.action_nav_overview_to_nav_taskdetails)
     }
 
