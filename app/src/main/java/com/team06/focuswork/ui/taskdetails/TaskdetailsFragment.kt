@@ -12,12 +12,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
+import com.team06.focuswork.ui.util.CalendarTimestampUtil
+import java.util.HashMap
 
 
 class TaskdetailsFragment : Fragment() {
 
     private val tasksViewModel: TasksViewModel by activityViewModels()
     private lateinit var binding: FragmentTaskdetailsBinding
+    private val fireBaseStore = FireBaseFireStoreUtil()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_details, menu)
@@ -26,35 +29,12 @@ class TaskdetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_detail_edit -> {
-
-
+            findNavController().navigate(R.id.nav_new_task)
             true
         }
 
         R.id.menu_detail_delete -> {
-            val alertDialog: AlertDialog? = activity?.let {
-                val builder = AlertDialog.Builder(it)
-                builder.apply {
-                    setPositiveButton(R.string.delete_dialog_confirm_delete,
-                            DialogInterface.OnClickListener { dialog, id ->
-                                // User clicked OK button
-                            })
-
-                    setNegativeButton(R.string.delete_dialog_cancel,
-                            DialogInterface.OnClickListener { dialog, id ->
-                                // User cancelled the dialog
-                            })
-                }
-
-                // 2. Chain together various setter methods to set the dialog characteristics
-                builder?.setMessage(R.string.delete_dialog_description)
-                        .setTitle(R.string.delete_dialog_title)
-
-                // Create the AlertDialog
-                builder.create()
-            }
-
-            alertDialog?.show()
+            onDeleteItem()
             true
         }
 
@@ -97,5 +77,41 @@ class TaskdetailsFragment : Fragment() {
 
         })
 
+    }
+
+    private fun onDeleteItem()
+    {
+        val deleteDialog: AlertDialog? = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setPositiveButton(R.string.delete_dialog_confirm_delete,
+                        DialogInterface.OnClickListener { dialog, _ ->
+                            onConfirmDelete()
+                            dialog.dismiss()
+                        })
+
+                setNegativeButton(R.string.delete_dialog_cancel,
+                        DialogInterface.OnClickListener { dialog, _ ->
+                            dialog.cancel()
+                        })
+            }
+
+            // 2. Chain together various setter methods to set the dialog characteristics
+            builder.setMessage(R.string.delete_dialog_description)
+                    .setTitle(R.string.delete_dialog_title)
+
+            // Create the AlertDialog
+            builder.create()
+        }
+
+        deleteDialog?.show()
+    }
+
+    private fun onConfirmDelete()
+    {
+        //ToDo: deleteTask
+
+
+        findNavController().navigate(R.id.nav_overview)
     }
 }
