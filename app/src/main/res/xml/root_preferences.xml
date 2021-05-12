@@ -47,7 +47,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="blue"
+            app:defaultValue="red"
             app:entries="@array/color_accent_entries"
             app:entryValues="@array/color_accent_values"
             app:key="colorAccent"
