@@ -13,11 +13,10 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setTheme()
-
         //Load default values for settings in case user hasn't selected values yet
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
+        applyTheme()
         checkLocale()
 
         // set listener for settings
@@ -33,7 +32,7 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
         super.onDestroy()
     }
 
-    private fun setTheme() {
+    private fun applyTheme() {
         val preferences: SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val backgroundValue =
@@ -41,23 +40,25 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
         val accentValue =
             (preferences.getString("colorAccent", "red")).toString()
 
-        setTheme(getBackgroundTheme(backgroundValue))
-        setTheme(getAccentTheme(accentValue))
+        super.setTheme(getTheme(backgroundValue, accentValue))
     }
 
-    private fun getBackgroundTheme(preferenceBackgroundThemeValue: String): Int {
-        return when (preferenceBackgroundThemeValue) {
-            "light" -> R.style.Theme_FocusWork
-            "dark" -> R.style.Theme_FocusWork_Dark
-            else -> R.style.Theme_FocusWork
-        }
-    }
-
-    private fun getAccentTheme(preferenceAccentThemeValue: String): Int {
-        return when (preferenceAccentThemeValue) {
-            "red" -> R.style.Theme_FocusWork_Accent_Red
-            "blue" -> R.style.Theme_FocusWork_Accent_Blue
-            else -> R.style.Theme_FocusWork_Accent_Red
+    private fun getTheme(
+        preferenceBackgroundThemeValue: String,
+        preferenceAccentThemeValue: String
+    ): Int {
+        return if (preferenceAccentThemeValue == "blue") {
+            when (preferenceBackgroundThemeValue) {
+                "light" -> R.style.Theme_FocusWork_Blue
+                "dark" -> R.style.Theme_FocusWork_DarkBlue
+                else -> R.style.Theme_FocusWork_Blue
+            }
+        } else {
+            when (preferenceBackgroundThemeValue) {
+                "light" -> R.style.Theme_FocusWork
+                "dark" -> R.style.Theme_FocusWork_Dark
+                else -> R.style.Theme_FocusWork
+            }
         }
     }
 
@@ -90,7 +91,7 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
             val languageValue: String = (sharedPreferences?.getString(key, "en")).toString()
             onChangedLanguage(languageValue);
         } else if (key == "colorBackground" || key == "colorAccent") {
-            setTheme()
+            applyTheme()
         }
     }
 }

@@ -1,43 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.FocusWork" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#ED413E</item>
-        <item name="colorPrimaryVariant">#A11C1A</item>
-        <item name="colorOnPrimary">@color/primary_text</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/divider</item>
-        <item name="colorSecondaryVariant">#269AED</item>
-        <item name="colorOnSecondary">#226CA1</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="divider">@color/divider</item>
         <item name="icon">@color/divider</item>
 
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.FocusWork.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#ED413E</item>
-        <item name="colorPrimaryVariant">#A11C1A</item>
-        <item name="colorOnPrimary">@color/primary_text</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/divider</item>
-        <item name="colorSecondaryVariant">#269AED</item>
-        <item name="colorOnSecondary">#226CA1</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-        <item name="divider">@color/divider</item>
-        <item name="icon">@color/divider</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    <style name="Theme.FocusWork.Accent.Red" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ED413E</item>
         <item name="colorPrimaryVariant">#A11C1A</item>
@@ -50,11 +19,56 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.FocusWork.Accent.Blue" parent="Theme.MaterialComponents.DayNight">
+
+    <style name="Theme.FocusWork.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="divider">@color/divider</item>
+        <item name="icon">@color/divider</item>
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#ED413E</item>
+        <item name="colorPrimaryVariant">#A11C1A</item>
+        <item name="colorOnPrimary">@color/primary_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/divider</item>
+        <item name="colorSecondaryVariant">#F734EC</item>
+        <item name="colorOnSecondary">#D62D78</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.FocusWork.Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="divider">@color/divider</item>
+        <item name="icon">@color/divider</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">#4E84F5</item>
         <item name="colorPrimaryVariant">#4B54EB</item>
         <item name="colorOnPrimary">@color/primary_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/divider</item>
+        <item name="colorSecondaryVariant">#4EDBF5</item>
+        <item name="colorOnSecondary">#4BEBD8</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.FocusWork.DarkBlue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="divider">@color/divider</item>
+        <item name="icon">@color/divider</item>
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#4E84F5</item>
+        <item name="colorPrimaryVariant">#4B54EB</item>
+        <item name="colorOnPrimary">#EEEEEE</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/divider</item>
         <item name="colorSecondaryVariant">#4EDBF5</item>
