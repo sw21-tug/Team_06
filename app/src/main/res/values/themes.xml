@@ -7,6 +7,12 @@
         <item name="divider">@color/divider</item>
         <item name="icon">@color/divider</item>
 
+        <!-- Backgrounds -->
+        <item name="android:colorBackground">#E9E9E9</item>
+        <item name="android:colorForeground">#121212</item>
+        <item name="android:textColor">#121212</item>
+        <item name="android:textColorHint">#333333</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ED413E</item>
         <item name="colorPrimaryVariant">#A11C1A</item>
@@ -27,10 +33,16 @@
         <item name="divider">@color/divider</item>
         <item name="icon">@color/divider</item>
 
+        <!-- Backgrounds -->
+        <item name="android:colorBackground">#232323</item>
+        <item name="android:colorForeground">#EFEFEF</item>
+        <item name="android:textColor">#EFEFEF</item>
+        <item name="android:textColorHint">#DDDDDD</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ED413E</item>
         <item name="colorPrimaryVariant">#A11C1A</item>
-        <item name="colorOnPrimary">@color/primary_text</item>
+        <item name="colorOnPrimary">#EEEEEE</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/divider</item>
         <item name="colorSecondaryVariant">#F734EC</item>
@@ -45,6 +57,12 @@
         <!-- Customize your theme here. -->
         <item name="divider">@color/divider</item>
         <item name="icon">@color/divider</item>
+
+        <!-- Backgrounds -->
+        <item name="android:colorBackground">#E9E9E9</item>
+        <item name="android:colorForeground">#121212</item>
+        <item name="android:textColor">#121212</item>
+        <item name="android:textColorHint">#333333</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">#4E84F5</item>
@@ -64,6 +82,12 @@
         <!-- Customize your theme here. -->
         <item name="divider">@color/divider</item>
         <item name="icon">@color/divider</item>
+
+        <!-- Backgrounds -->
+        <item name="android:colorBackground">#232323</item>
+        <item name="android:colorForeground">#EFEFEF</item>
+        <item name="android:textColor">#EFEFEF</item>
+        <item name="android:textColorHint">#DDDDDD</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">#4E84F5</item>
