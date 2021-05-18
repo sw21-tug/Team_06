@@ -22,15 +22,15 @@ import java.util.*
 
 class NewTaskFragment : Fragment() {
 
-    private val startDatePicker = DatePickerFragment(this, true)
-    private val startTimePicker = TimePickerFragment(this, true)
-    private val endDatePicker = DatePickerFragment(this, false)
-    private val endTimePicker = TimePickerFragment(this, false)
-    private lateinit var binding: FragmentNewTaskBinding
-    private val fireBaseStore = FireBaseFireStoreUtil()
-
     var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
     var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+
+    private val startDatePicker = DatePickerFragment(this, true)
+    private val startTimePicker = TimePickerFragment(startCalendar)
+    private val endDatePicker = DatePickerFragment(this, false)
+    private val endTimePicker = TimePickerFragment(endCalendar)
+    private lateinit var binding: FragmentNewTaskBinding
+    private val fireBaseStore = FireBaseFireStoreUtil()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -164,7 +164,7 @@ class NewTaskFragment : Fragment() {
     private fun checkTextFilled(view: View) {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
             !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
-                    view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+                view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {

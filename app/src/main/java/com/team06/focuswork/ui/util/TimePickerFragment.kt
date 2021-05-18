@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import com.team06.focuswork.ui.tasks.NewTaskFragment
+import androidx.lifecycle.MutableLiveData
 import java.util.*
 
 /**
@@ -15,33 +15,22 @@ import java.util.*
  * Use the [DatePicker.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TimePickerFragment(private var newTaskFragment: NewTaskFragment, private val startPicker: Boolean) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerFragment(
+    private val calendar: MutableLiveData<Calendar>
+) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val arg = arguments
-
-        val cal = Calendar.getInstance()
-        val hour = arg?.getInt("HOUR") ?: cal.get(Calendar.HOUR_OF_DAY)
-        val minute = arg?.getInt("MINUTE") ?: cal.get(Calendar.MINUTE)
-
+        val hour = arguments?.getInt("HOUR") ?: Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val minute = arguments?.getInt("MINUTE") ?: Calendar.getInstance().get(Calendar.MINUTE)
         return TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        calendar.value?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar.value?.set(Calendar.MINUTE, minute)
     }
 
     companion object {
         const val TAG = "TimePickerDialog"
-    }
-
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        if (startPicker) {
-            val cal = newTaskFragment.startCalendar.value
-            cal?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-            cal?.set(Calendar.MINUTE, minute)
-            newTaskFragment.startCalendar.value = cal
-        } else {
-            val cal = newTaskFragment.startCalendar.value
-            cal?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-            cal?.set(Calendar.MINUTE, minute)
-            newTaskFragment.endCalendar.value = cal
-        }
     }
 }
