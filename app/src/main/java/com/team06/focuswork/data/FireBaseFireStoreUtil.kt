@@ -6,6 +6,10 @@ import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import java.util.HashMap
 
 class FireBaseFireStoreUtil {
+    enum class Filter {
+        NONE, DAY, WEEK, MONTH
+    }
+
     private val fireBaseStore = FirebaseFirestore.getInstance()
     private val userCollection = "User"
     private val taskCollection = "Task"
@@ -27,11 +31,12 @@ class FireBaseFireStoreUtil {
         return LoggedInUser(documents)
     }
 
-    fun retrieveTasks(callback: (tasks: List<Task>) -> Unit) {
+    fun retrieveTasks(callback: (tasks: List<Task>) -> Unit, filter: Filter = Filter.NONE) {
         val taskCollection = FirebaseFirestore.getInstance()
             .collection(userCollection)
             .document((LoginRepository.getUser() ?: return).userId)
             .collection(taskCollection)
+            .orderBy("startTime")
 
         taskCollection.get().addOnSuccessListener { tasks ->
             val taskList: MutableList<Task> = mutableListOf()

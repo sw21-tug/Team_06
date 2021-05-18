@@ -58,6 +58,8 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
             showToast(item.taskName + ": " + item.taskDescription)
             overviewFragment.onClickTaskItem(item)
         }
+
+        holder.taskItem.tag = "Task:$position"
     }
 
     private fun chooseBackGround(drawableId: Int): Drawable? = ResourcesCompat.getDrawable(

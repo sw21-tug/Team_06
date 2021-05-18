@@ -64,7 +64,7 @@ class RegisterInstrumentedTest {
         clickRegister()
         setRegisterData("Test", "Test2","newTest@gmail.com", "aosjkgaod")
         clickRegister()
-        Espresso.onView(ViewMatchers.withId(R.id.recycler_view))
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_view_week))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
