@@ -1,15 +1,13 @@
 package com.team06.focuswork.ui.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import androidx.lifecycle.viewModelScope
+import com.team06.focuswork.R
 import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.data.Result
-
-import com.team06.focuswork.R
-import com.team06.focuswork.model.TasksViewModel
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {

@@ -10,11 +10,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
-import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import com.team06.focuswork.ui.util.DatePickerFragment

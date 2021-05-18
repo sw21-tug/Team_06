@@ -9,7 +9,6 @@ import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ui.login.LoginActivity
 

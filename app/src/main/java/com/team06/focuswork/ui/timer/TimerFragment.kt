@@ -1,6 +1,5 @@
 package com.team06.focuswork.ui.timer
 
-import com.team06.focuswork.R
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -15,11 +14,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTimerBinding
-import java.text.DateFormat
 import java.util.*
-import kotlin.math.truncate
 
 
 /**

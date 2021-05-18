@@ -1,11 +1,8 @@
 package com.team06.focuswork.data
 
 import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.model.LoggedInUser
 import java.io.IOException
-import java.lang.Exception
-import java.util.*
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -26,7 +23,9 @@ class LoginDataSource {
         // TODO: revoke authentication
     }
 
-    fun register(firstname: String, lastname: String, username: String, password: String): Result<LoggedInUser> = try {
+    fun register(
+        firstname: String, lastname: String, username: String, password: String
+    ): Result<LoggedInUser> = try {
         fireStoreUtil.checkForExistingUser(username)
         val loggedInUser = fireStoreUtil.addUser(firstname, lastname, username, password)
         Result.Success(loggedInUser)

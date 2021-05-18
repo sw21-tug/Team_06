@@ -1,14 +1,12 @@
 package com.team06.focuswork
 
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.EspressoException
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.firestore.FirebaseFirestore
-import com.team06.focuswork.ui.login.LoginActivity
 import com.team06.focuswork.ui.login.RegisterActivity
 import org.hamcrest.Matchers
 import org.junit.Rule
@@ -22,7 +20,12 @@ class RegisterInstrumentedTest {
     var activityRule: ActivityScenarioRule<RegisterActivity> =
         ActivityScenarioRule(RegisterActivity::class.java)
 
-    private fun setRegisterData(firstname: String, lastname: String, username: String, password: String) {
+    private fun setRegisterData(
+        firstname: String,
+        lastname: String,
+        username: String,
+        password: String
+    ) {
         Espresso.onView(ViewMatchers.withId(R.id.firstname))
             .perform(ViewActions.clearText(), ViewActions.typeText(firstname))
         Espresso.onView(ViewMatchers.withId(R.id.lastname))
@@ -62,7 +65,7 @@ class RegisterInstrumentedTest {
     fun basicRegistrationTest() {
         deleteUser("newTest@gmail.com")
         clickRegister()
-        setRegisterData("Test", "Test2","newTest@gmail.com", "aosjkgaod")
+        setRegisterData("Test", "Test2", "newTest@gmail.com", "aosjkgaod")
         clickRegister()
         Espresso.onView(ViewMatchers.withId(R.id.recycler_view_week))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -70,7 +73,7 @@ class RegisterInstrumentedTest {
 
     @Test
     fun disabledButtonsTest() {
-        setRegisterData("asdfa", "asdfafasd","akjfamfgaksja@casf", "lajksfaj")
+        setRegisterData("asdfa", "asdfafasd", "akjfamfgaksja@casf", "lajksfaj")
         Espresso.onView(ViewMatchers.withId(R.id.register))
             .check(ViewAssertions.matches(Matchers.not(ViewMatchers.isEnabled())))
     }
@@ -78,7 +81,7 @@ class RegisterInstrumentedTest {
     @Test
     fun failingRegistrationTest() {
         clickRegister()
-        setRegisterData("Max", "Mustermann","newTest@gmail.com", "aosjkgaod")
+        setRegisterData("Max", "Mustermann", "newTest@gmail.com", "aosjkgaod")
         clickRegister()
         Espresso.onView(ViewMatchers.withId(R.id.register))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

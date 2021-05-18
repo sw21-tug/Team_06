@@ -1,6 +1,5 @@
 package com.team06.focuswork.data
 
-import java.io.Serializable
 import java.util.*
 
 data class Task(

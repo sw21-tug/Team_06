@@ -13,9 +13,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team06.focuswork.R
-import com.team06.focuswork.data.Task
-import com.team06.focuswork.model.TasksViewModel
-import java.util.*
 
 
 class TaskAdapter(private val context: Context, private val overviewFragment: OverviewFragment)
