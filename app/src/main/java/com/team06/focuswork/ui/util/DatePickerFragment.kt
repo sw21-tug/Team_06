@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.team06.focuswork.ui.tasks.NewTaskFragment
 import java.util.*
 
@@ -14,15 +15,15 @@ import java.util.*
  * Use the [DatePicker.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DatePickerFragment(private var newTaskFragment: NewTaskFragment, private val startPicker: Boolean) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerFragment(
+    private val calendar: MutableLiveData<Calendar>
+) : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val arg = arguments
-        val cal = Calendar.getInstance()
-        val year = arg?.getInt("YEAR") ?: cal.get(Calendar.YEAR)
-        val month = arg?.getInt("MONTH") ?: cal.get(Calendar.MONTH)
-        val day = arg?.getInt("DAY") ?: cal.get(Calendar.DAY_OF_MONTH)
-        val minDate = arg?.getLong("MIN_DATE") ?: System.currentTimeMillis() - 1000
+        val year = arguments?.getInt("YEAR") ?: Calendar.getInstance().get(Calendar.YEAR)
+        val month = arguments?.getInt("MONTH") ?: Calendar.getInstance().get(Calendar.MONTH)
+        val day = arguments?.getInt("DAY") ?: Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        val minDate = arguments?.getLong("MIN_DATE") ?: System.currentTimeMillis() - 1000
 
         val dialog = DatePickerDialog(requireContext(), this, year, month, day)
         dialog.datePicker.minDate = minDate
@@ -30,15 +31,7 @@ class DatePickerFragment(private var newTaskFragment: NewTaskFragment, private v
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        if (startPicker) {
-            val cal = newTaskFragment.startCalendar.value
-            cal?.set(year, month, dayOfMonth)
-            newTaskFragment.startCalendar.value = cal
-        } else {
-            val cal = newTaskFragment.startCalendar.value
-            cal?.set(year, month, dayOfMonth)
-            newTaskFragment.endCalendar.value = cal
-        }
+        calendar.value?.set(year, month, dayOfMonth)
     }
 
     companion object {

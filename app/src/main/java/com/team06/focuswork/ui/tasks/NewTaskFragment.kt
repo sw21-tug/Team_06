@@ -25,9 +25,9 @@ class NewTaskFragment : Fragment() {
     var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
     var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
-    private val startDatePicker = DatePickerFragment(this, true)
+    private val startDatePicker = DatePickerFragment(startCalendar)
     private val startTimePicker = TimePickerFragment(startCalendar)
-    private val endDatePicker = DatePickerFragment(this, false)
+    private val endDatePicker = DatePickerFragment(endCalendar)
     private val endTimePicker = TimePickerFragment(endCalendar)
     private lateinit var binding: FragmentNewTaskBinding
     private val fireBaseStore = FireBaseFireStoreUtil()
