@@ -1,6 +1,5 @@
 package com.team06.focuswork
 
-import android.util.Log
 import android.view.Gravity
 import android.widget.DatePicker
 import android.widget.TimePicker
@@ -31,7 +30,6 @@ import io.mockk.mockkObject
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -70,7 +68,9 @@ class OverviewDetailsInstrumentedTest {
         Thread.sleep(1000)
 
         try {
-            onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
+            onView(withId(R.id.recycler_view)).perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
+            )
 
         } catch (e: NoMatchingViewException) {
             val startDate = Calendar.getInstance()
@@ -80,8 +80,8 @@ class OverviewDetailsInstrumentedTest {
             addTask(startDate, endDate)
             Thread.sleep(1000)
             onView(withId(R.id.task_item))
-                    .check(matches(isDisplayed()))
-                    .perform(click())
+                .check(matches(isDisplayed()))
+                .perform(click())
         }
 
         onView(withId(R.id.fragment_container_taskdetails))
@@ -90,7 +90,7 @@ class OverviewDetailsInstrumentedTest {
 
     private fun navigateToSunday() {
         onView(withId(R.id.fragment_container_overview))
-                .check(matches(isDisplayed()))
+            .check(matches(isDisplayed()))
 
         val startDate = Calendar.getInstance()
         OverviewFragment.setMonday(startDate)
@@ -105,72 +105,78 @@ class OverviewDetailsInstrumentedTest {
         addTask(startDate, endDate)
 
         onView(withId(R.id.button_sunday))
-                .perform(scrollTo(), click())
+            .perform(scrollTo(), click())
         Thread.sleep(1000)
 
         onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
 
         onView(withId(R.id.fragment_container_taskdetails))
-                .check(matches(isDisplayed()))
+            .check(matches(isDisplayed()))
     }
 
     private fun setupTaskStrings(taskName: String, taskDescription: String) {
         onView(withId(R.id.taskName))
-                .perform(ViewActions.clearText(), ViewActions.typeText(taskName))
+            .perform(ViewActions.clearText(), ViewActions.typeText(taskName))
         onView(withId(R.id.taskDescription))
-                .perform(ViewActions.clearText(), ViewActions.typeText(taskDescription))
+            .perform(ViewActions.clearText(), ViewActions.typeText(taskDescription))
         onView(ViewMatchers.isRoot())
-                .perform(ViewActions.closeSoftKeyboard())
+            .perform(ViewActions.closeSoftKeyboard())
     }
 
     private fun setStartDateValues(cal: Calendar) {
         onView(withId(R.id.taskStartDate))
-                .perform(click())
+            .perform(click())
         onView(ViewMatchers.withClassName(Matchers.equalTo(DatePicker::class.java.name)))
-                .perform(PickerActions.setDate(
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH)+1,
-                        cal.get(Calendar.DAY_OF_MONTH)))
+            .perform(
+                PickerActions.setDate(
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH) + 1,
+                    cal.get(Calendar.DAY_OF_MONTH)
+                )
+            )
         onView(withId(android.R.id.button1)).perform(click())
     }
 
     private fun setStartTimeValues(cal: Calendar) {
         onView(withId(R.id.taskStartTime))
-                .perform(click())
+            .perform(click())
         onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker::class.java.name)))
-                .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
+            .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
         onView(withId(android.R.id.button1)).perform(click())
     }
 
     private fun setEndDateValues(cal: Calendar) {
         onView(withId(R.id.taskEndDate))
-                .perform(click())
+            .perform(click())
         onView(ViewMatchers.withClassName(Matchers.equalTo(DatePicker::class.java.name)))
-                .perform(PickerActions.setDate(
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH)+1,
-                        cal.get(Calendar.DAY_OF_MONTH)))
+            .perform(
+                PickerActions.setDate(
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH) + 1,
+                    cal.get(Calendar.DAY_OF_MONTH)
+                )
+            )
         onView(withId(android.R.id.button1)).perform(click())
     }
 
     private fun setEndTimeValues(cal: Calendar) {
         onView(withId(R.id.taskEndTime))
-                .perform(click())
+            .perform(click())
         onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker::class.java.name)))
-                .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
+            .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
         onView(withId(android.R.id.button1)).perform(click())
     }
 
-    private fun addTask(startDate: Calendar, endDate: Calendar){
+    private fun addTask(startDate: Calendar, endDate: Calendar) {
         onView(withId(R.id.fab))
-                .perform(click())
+            .perform(click())
         // Wait short amount of time to ensure everything has loaded
         Thread.sleep(400)
         onView(withId(R.id.fragment_container_new_task))
-                .check(matches(isDisplayed()))
+            .check(matches(isDisplayed()))
 
         onView(withId(R.id.taskCreate))
-                .check(matches(CoreMatchers.not(ViewMatchers.isEnabled())))
+            .check(matches(CoreMatchers.not(ViewMatchers.isEnabled())))
 
         setupTaskStrings("createSimpleTask", "SimpleTaskDescription");
         setStartDateValues(startDate)
@@ -180,28 +186,28 @@ class OverviewDetailsInstrumentedTest {
 
         // Task Create Button should now be enabled
         onView(withId(R.id.taskCreate))
-                .check(matches(ViewMatchers.isEnabled()))
-                .perform(click())
+            .check(matches(ViewMatchers.isEnabled()))
+            .perform(click())
 
         // After click, overview should be shown again
         onView(withId(R.id.fragment_container_overview))
-                .check(matches(isDisplayed()))
+            .check(matches(isDisplayed()))
     }
 
     private fun navigateToSettings() {
         onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open())
+            .perform(DrawerActions.open())
 
         onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_settings));
+            .perform(NavigationViewActions.navigateTo(R.id.nav_settings));
     }
 
     private fun navigateToOverview() {
         onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open())
+            .perform(DrawerActions.open())
 
         onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_overview));
+            .perform(NavigationViewActions.navigateTo(R.id.nav_overview));
     }
 
     @Test
@@ -218,16 +224,19 @@ class OverviewDetailsInstrumentedTest {
         navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                        hasDescendant(withText(R.string.overviewTimeFrame_title)), click()))
+            .perform(
+                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.overviewTimeFrame_title)), click()
+                )
+            )
 
         val array = InstrumentationRegistry.getInstrumentation()
-                .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
+            .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
 
         onView(withText(array[1]))
-                .inRoot(RootMatchers.isDialog())
-                .check(matches(isDisplayed()))
-                .perform(click());
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click());
 
         navigateToOverview()
         Thread.sleep(400)
@@ -235,6 +244,6 @@ class OverviewDetailsInstrumentedTest {
         pressBack()
 
         onView(withId(R.id.fragment_container_overview))
-                .check(matches(isDisplayed()))
+            .check(matches(isDisplayed()))
     }
 }

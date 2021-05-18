@@ -1,6 +1,7 @@
 package com.team06.focuswork
 
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -64,7 +65,6 @@ class RegisterInstrumentedTest {
     @Test
     fun basicRegistrationTest() {
         deleteUser("newTest@gmail.com")
-        clickRegister()
         setRegisterData("Test", "Test2", "newTest@gmail.com", "aosjkgaod")
         clickRegister()
         Espresso.onView(ViewMatchers.withId(R.id.recycler_view_week))
@@ -80,10 +80,9 @@ class RegisterInstrumentedTest {
 
     @Test
     fun failingRegistrationTest() {
-        clickRegister()
         setRegisterData("Max", "Mustermann", "newTest@gmail.com", "aosjkgaod")
         clickRegister()
-        Espresso.onView(ViewMatchers.withId(R.id.register))
+        Espresso.onView(ViewMatchers.withId(R.id.container_register_activity))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
