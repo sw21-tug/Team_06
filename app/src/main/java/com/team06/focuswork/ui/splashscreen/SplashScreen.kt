@@ -30,12 +30,10 @@ class SplashScreen : AppCompatActivity() {
             PropertyValuesHolder.ofFloat("scaleY", 1.2f)
         )
         scaleDown.duration = 310
-
         scaleDown.repeatCount = ObjectAnimator.INFINITE
         scaleDown.repeatMode = ObjectAnimator.REVERSE
 
         scaleDown.start()
-
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/

@@ -125,7 +125,8 @@ class NewTaskFragment : Fragment() {
                     startCalendar.value?.get(Calendar.MONTH) ?: return@Observer,
                     startCalendar.value?.get(Calendar.DAY_OF_MONTH) ?: return@Observer,
                     endCalendar.value?.get(Calendar.HOUR_OF_DAY) ?: return@Observer,
-                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer)
+                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
+                )
                 endCalendar.value = newEndCal
             }
             binding.taskStartDate.text = formatDate(cal)
@@ -139,7 +140,8 @@ class NewTaskFragment : Fragment() {
                     startCalendar.value?.get(Calendar.MONTH) ?: return@Observer,
                     startCalendar.value?.get(Calendar.DAY_OF_MONTH) ?: return@Observer,
                     endCalendar.value?.get(Calendar.HOUR_OF_DAY) ?: return@Observer,
-                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer)
+                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
+                )
                 endCalendar.value = newEndCal
             }
             binding.taskEndDate.text = formatDate(cal)
@@ -162,7 +164,7 @@ class NewTaskFragment : Fragment() {
     private fun checkTextFilled(view: View) {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
             !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
-                view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+                    view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {
@@ -171,7 +173,8 @@ class NewTaskFragment : Fragment() {
             Pair("YEAR", cal?.get(Calendar.YEAR)),
             Pair("MONTH", cal?.get(Calendar.MONTH)),
             Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
-            Pair("MIN_DATE",
+            Pair(
+                "MIN_DATE",
                 if (startBundle) System.currentTimeMillis() - 1000
                 else startCalendar.value?.timeInMillis
             )

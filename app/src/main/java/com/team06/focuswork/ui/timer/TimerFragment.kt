@@ -29,27 +29,27 @@ class TimerFragment : Fragment() {
 
     private lateinit var binding: FragmentTimerBinding
     private val list = mutableListOf<Task>()
+
     init {
         populateList()
     }
 
-    private var selectedTask : Task? = null
-    private var selectedTaskTimer : CountDownTimer? = null
+    private var selectedTask: Task? = null
+    private var selectedTaskTimer: CountDownTimer? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         populateSpinner()
 
-        binding.buttonStartTimer.setOnClickListener{
-            if(selectedTask == null)
-            {
+        binding.buttonStartTimer.setOnClickListener {
+            if (selectedTask == null) {
                 showToast(getString(R.string.no_task_selected))
                 return@setOnClickListener
             }
             val duration = selectedTask!!.endTime.timeInMillis -
                     selectedTask!!.startTime.timeInMillis
 
-            selectedTaskTimer = object: CountDownTimer(duration, 10 * 1000) {
+            selectedTaskTimer = object : CountDownTimer(duration, 10 * 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val hours = millisUntilFinished / (60 * 60 * 1000)
                     val minutes = millisUntilFinished / (60 * 1000) % (60)
@@ -72,7 +72,7 @@ class TimerFragment : Fragment() {
         return binding.root
     }
 
-    fun populateList(){
+    private fun populateList() {
         //Intended: call data holder class to fetch Tasks
         val calLater = Calendar.getInstance()
         calLater.add(Calendar.HOUR, 1)
@@ -126,7 +126,7 @@ class TimerFragment : Fragment() {
         )
     }
 
-    fun populateSpinner(){
+    fun populateSpinner() {
         val spinner = binding.taskSelector
         val adapter = TaskArrayAdapter(
             requireContext(),
@@ -158,14 +158,14 @@ class TimerFragment : Fragment() {
     }
 }
 
-class TaskArrayAdapter(context: Context, textViewResourceId: Int, val tasks: MutableList<Task>)
-    : ArrayAdapter<Task>(context, textViewResourceId) {
+class TaskArrayAdapter(context: Context, textViewResourceId: Int, val tasks: MutableList<Task>) :
+    ArrayAdapter<Task>(context, textViewResourceId) {
 
-    override fun getCount() : Int {
+    override fun getCount(): Int {
         return tasks.size
     }
 
-    override fun getItem(position: Int) : Task {
+    override fun getItem(position: Int): Task {
         return tasks[position]
     }
 
