@@ -31,7 +31,7 @@ class FireBaseFireStoreUtil {
         return LoggedInUser(documents)
     }
 
-    fun retrieveTasks(callback: (tasks: List<Task>) -> Unit, filter: Filter = Filter.NONE) {
+    fun retrieveTasks(callback: (tasks: List<Task>) -> Unit) {
         val taskCollection = FirebaseFirestore.getInstance()
             .collection(userCollection)
             .document((LoginRepository.getUser() ?: return).userId)

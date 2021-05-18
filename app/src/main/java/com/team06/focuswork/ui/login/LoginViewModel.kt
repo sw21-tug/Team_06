@@ -64,10 +64,12 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun registerDataChanged(firstname: String, lastname: String, username: String, password: String) {
-        if(firstname.isBlank()) {
+    fun registerDataChanged(
+        firstname: String, lastname: String, username: String, password: String
+    ) {
+        if (firstname.isBlank()) {
             _registerForm.value = RegisterFormState(firstnameError = R.string.invalid_firstname)
-        } else if(lastname.isBlank()) {
+        } else if (lastname.isBlank()) {
             _registerForm.value = RegisterFormState(lastnameError = R.string.invalid_lastname)
         } else if (!isUserNameValid(username)) {
             _registerForm.value = RegisterFormState(usernameError = R.string.invalid_username)

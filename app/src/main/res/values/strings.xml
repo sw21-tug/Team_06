@@ -7,7 +7,6 @@
     <string name="menu_overview">Overview</string>
     <string name="menu_new_task">New Task</string>
     <string name="menu_timer">Start Task Timer</string>
-    <string name="menu_day_overview">Day Overview</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_task_name">Task Name</string>
     <string name="prompt_task_description">Task Description</string>
@@ -26,8 +25,6 @@
     <string name="no_task_selected">Please select a Task!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Tasks for Today</string>
-    <string name="day_from">From:</string>
-    <string name="day_to">To:</string>
     <string name="day_tasks_for">Tasks for:</string>
     <string name="week_title">Tasks for the Week</string>
     <string name="all_days">Entire Week</string>
@@ -85,6 +82,7 @@
     <string name="add_new_task" tools:ignore="MissingTranslation">Add new task</string>
     <string name="startTime" tools:ignore="MissingTranslation">0:00</string>
     <string name="notification" tools:ignore="MissingTranslation">Notification</string>
+    <string name="textview_range" tools:ignore="MissingTranslation">TextView</string>
 
 
 </resources>

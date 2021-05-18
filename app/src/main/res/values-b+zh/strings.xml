@@ -7,7 +7,6 @@
     <string name="menu_overview">概述</string>
     <string name="menu_new_task">新任务</string>
     <string name="menu_timer">启动任务计时器</string>
-    <string name="menu_day_overview">日概述</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_task_name">任务名称</string>
     <string name="prompt_task_description">任务描述</string>
@@ -27,8 +26,6 @@
 
     <!-- Strings related to Day Overview -->
     <string name="day_title">今天的任务</string>
-    <string name="day_from">从：</string>
-    <string name="day_to">至：</string>
     <string name="day_tasks_for">任务：</string>
     <string name="week_title">本周任务</string>
     <string name="all_days">整个星期</string>

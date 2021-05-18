@@ -7,7 +7,6 @@
     <string name="menu_overview">обзор</string>
     <string name="menu_new_task">Новое задание</string>
     <string name="menu_timer">Таймер запуска задачи</string>
-    <string name="menu_day_overview">обзор дня</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_task_name">Название задачи</string>
     <string name="prompt_task_description">Описание задания</string>
@@ -26,8 +25,6 @@
     <string name="no_task_selected">Выберите задачу!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Задачи на сегодня</string>
-    <string name="day_from">Из:</string>
-    <string name="day_to">К:</string>
     <string name="day_tasks_for">Задачи для:</string>
     <string name="week_title">Задачи на неделю</string>
     <string name="all_days">Всю неделю</string>

@@ -119,14 +119,14 @@ class OverviewDetailsInstrumentedTest {
             .perform(ViewActions.clearText(), ViewActions.typeText(taskName))
         onView(withId(R.id.taskDescription))
             .perform(ViewActions.clearText(), ViewActions.typeText(taskDescription))
-        onView(ViewMatchers.isRoot())
+        onView(isRoot())
             .perform(ViewActions.closeSoftKeyboard())
     }
 
     private fun setStartDateValues(cal: Calendar) {
         onView(withId(R.id.taskStartDate))
             .perform(click())
-        onView(ViewMatchers.withClassName(Matchers.equalTo(DatePicker::class.java.name)))
+        onView(withClassName(Matchers.equalTo(DatePicker::class.java.name)))
             .perform(
                 PickerActions.setDate(
                     cal.get(Calendar.YEAR),
@@ -140,7 +140,7 @@ class OverviewDetailsInstrumentedTest {
     private fun setStartTimeValues(cal: Calendar) {
         onView(withId(R.id.taskStartTime))
             .perform(click())
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker::class.java.name)))
+        onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
             .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
         onView(withId(android.R.id.button1)).perform(click())
     }
@@ -148,7 +148,7 @@ class OverviewDetailsInstrumentedTest {
     private fun setEndDateValues(cal: Calendar) {
         onView(withId(R.id.taskEndDate))
             .perform(click())
-        onView(ViewMatchers.withClassName(Matchers.equalTo(DatePicker::class.java.name)))
+        onView(withClassName(Matchers.equalTo(DatePicker::class.java.name)))
             .perform(
                 PickerActions.setDate(
                     cal.get(Calendar.YEAR),
@@ -162,7 +162,7 @@ class OverviewDetailsInstrumentedTest {
     private fun setEndTimeValues(cal: Calendar) {
         onView(withId(R.id.taskEndTime))
             .perform(click())
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker::class.java.name)))
+        onView(withClassName(Matchers.equalTo(TimePicker::class.java.name)))
             .perform(PickerActions.setTime(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE)))
         onView(withId(android.R.id.button1)).perform(click())
     }

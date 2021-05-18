@@ -25,7 +25,7 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     }
 
     class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val taskItem = view.findViewById<MaterialCardView>(R.id.task_item)
+        val taskItem: MaterialCardView = view.findViewById(R.id.task_item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

@@ -21,7 +21,7 @@ class TaskdetailsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTaskdetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,7 +38,6 @@ class TaskdetailsFragment : Fragment() {
 
         val timeFormat: java.text.DateFormat = DateFormat.getTimeFormat(context)
         val dateFormat: java.text.DateFormat = DateFormat.getDateFormat(context)
-
 
         tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
             titleView.text = it.taskName
