@@ -57,9 +57,9 @@ class OverviewFragment : Fragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
         var layout = binding.fragmentContainerOverview
@@ -287,8 +287,10 @@ class OverviewFragment : Fragment() {
             val channel = NotificationChannel("TIMER_NOTIF_ID", name, important).apply {
                 description = descriptionText;
             }
-            val notificationManager = getSystemService(requireContext(),
-                    NotificationManager::class.java) as NotificationManager
+            val notificationManager = getSystemService(
+                requireContext(),
+                NotificationManager::class.java
+            ) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -301,19 +303,23 @@ class OverviewFragment : Fragment() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent =
-                PendingIntent.getActivity(requireContext(), 0, intent, 0)
+            PendingIntent.getActivity(requireContext(), 0, intent, 0)
 
-        val notificationSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager
-                .TYPE_NOTIFICATION)
+        val notificationSound: Uri = RingtoneManager.getDefaultUri(
+            RingtoneManager
+                .TYPE_NOTIFICATION
+        )
 
         val builder = NotificationCompat.Builder(requireContext(), "TIMER_NOTIF_ID")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText("The task {...} you have set has finished.")
-                .setStyle(NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_message)))
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSound(notificationSound)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText("The task {...} you have set has finished.")
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_message))
+            )
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setSound(notificationSound)
 
         with(NotificationManagerCompat.from(requireContext())) {
             notify(101, builder.build())

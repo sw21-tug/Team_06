@@ -18,26 +18,79 @@ import android.widget.Toast
 import com.team06.focuswork.MainActivity
 
 import com.team06.focuswork.R
+import com.team06.focuswork.databinding.ActivityLoginBinding
+import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.model.TasksViewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+    private lateinit var login: Button
+    private lateinit var register: Button
+    private lateinit var loading: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        bindComponents()
+        setUpLoginFormState()
+        setUpLoginResult()
+        setUpTextListeners()
+        setUpSubmitButtons()
+    }
 
-        setContentView(R.layout.activity_login)
-
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val register = findViewById<Button>(R.id.register)
-        val loading = findViewById<ProgressBar>(R.id.loading)
-
+    private fun bindComponents() {
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        username = binding.username
+        password = binding.password
+        login = binding.login
+        register = binding.register
+        loading = binding.loading
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-                .get(LoginViewModel::class.java)
+            .get(LoginViewModel::class.java)
+    }
 
+    private fun setUpSubmitButtons() {
+        login.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            loginViewModel.login(username.text.toString(), password.text.toString())
+        }
+
+        register.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            loginViewModel.register(username.text.toString(), password.text.toString())
+        }
+    }
+
+    private fun setUpTextListeners() {
+        username.afterTextChanged {
+            loginViewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
+
+        password.afterTextChanged {
+            loginViewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
+
+        password.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE ->
+                    loginViewModel.login(username.text.toString(), password.text.toString())
+            }
+            false
+        }
+    }
+
+    private fun setUpLoginFormState() {
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -51,7 +104,9 @@ class LoginActivity : AppCompatActivity() {
                 password.error = getString(loginState.passwordError)
             }
         })
+    }
 
+    private fun setUpLoginResult() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
