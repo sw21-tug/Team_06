@@ -34,6 +34,20 @@ class LanguageInstrumentedTest {
     fun cleanUp() {
         // reset the locale to English
         setLocale("en", "US")
+
+        // set app language to Engish as well
+        Thread.sleep(200)
+        navigateToSettings()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(actionOnItem<RecyclerView.ViewHolder>(
+                hasDescendant(withText(R.string.language_title)), click()))
+
+        val array = InstrumentationRegistry.getInstrumentation()
+            .targetContext.resources.getStringArray(R.array.language_entries)
+        onView(withText(array[0]))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click());
     }
 
     @Suppress("DEPRECATION")
