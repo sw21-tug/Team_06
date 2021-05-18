@@ -1,36 +1,24 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FocusWork</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Focus Work</string>
     <string name="nav_header_subtitle">Team 06 - TU Graz</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_overview">Overview</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="menu_new_task">New Task</string>
     <string name="menu_timer">Start Task Timer</string>
     <string name="menu_day_overview">Day Overview</string>
     <!-- Strings related to new task fragment -->
-    <string name="prompt_title">Create New Task</string>
     <string name="prompt_task_name">Task Name</string>
     <string name="prompt_task_description">Task Description</string>
-    <string name="prompt_task_start">Task Start</string>
     <string name="prompt_task_start_date">01.01.1970</string>
     <string name="prompt_task_start_time">00:00</string>
     <string name="task_start_date_and_time">Task Start</string>
-    <string name="prompt_task_end">Task End</string>
     <string name="prompt_task_end_date">01.01.1970</string>
     <string name="prompt_task_end_time">00:00</string>
     <string name="task_end_date_and_time">Task End</string>
-    <string name="task_illegal_start_date_toast">The task start date must not be in the past!</string>
-    <string name="task_illegal_start_time_toast">The task start time must not be in the past!</string>
-    <string name="task_illegal_end_date_toast">The task end date must be after the task start date!</string>
-    <string name="task_illegal_end_time_toast">The task end time must be after the task start date!</string>
     <string name="action_create_task">Create Task</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
     <!-- Strings related to Timer Fragment -->
     <string name="timer_countdown">00:00</string>
     <string name="timer_start_button">Start Timer</string>
@@ -73,9 +61,6 @@
     <string name="colorBackground_title">Background color</string>
     <string name="colorAccent_title">Accent color</string>
 
-    <!-- Login/Registration -->
-    <string name="title_activity_login">LoginActivity</string>
-
     <!-- Login and Registration -->
     <string name="prompt_first_name">First name</string>
     <string name="prompt_last_name">Last name</string>
@@ -94,7 +79,12 @@
     <string name="notification_title">Your task has finished!</string>
     <string name="notification_message">This text is so much longer than the original message.</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_email_hint" tools:ignore="MissingTranslation">max.mustermann@gmail.at</string>
+    <string name="logo_image_description" tools:ignore="MissingTranslation">Logo image</string>
+    <string name="focus_work_title" tools:ignore="MissingTranslation">Focus Work</string>
+    <string name="add_new_task" tools:ignore="MissingTranslation">Add new task</string>
+    <string name="startTime" tools:ignore="MissingTranslation">0:00</string>
+    <string name="notification" tools:ignore="MissingTranslation">Notification</string>
 
 
 </resources>

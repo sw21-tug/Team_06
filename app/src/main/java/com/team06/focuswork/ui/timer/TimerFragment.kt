@@ -142,13 +142,13 @@ class TimerFragment : Fragment() {
             ) {
                 selectedTask = adapter.getItem(position)
                 selectedTaskTimer?.cancel()
-                binding.taskTimer.text = "0:00"
+                binding.taskTimer.text = getString(R.string.startTime)
             }
 
             override fun onNothingSelected(adapter: AdapterView<*>?) {
                 selectedTask = null
                 selectedTaskTimer?.cancel()
-                binding.taskTimer.text = "0:00"
+                binding.taskTimer.text = getString(R.string.startTime)
             }
         })
     }
