@@ -92,5 +92,7 @@
     <string name="delete_dialog_cancel">Cancel</string>
     <string name="delete_dialog_confirm_delete">Delete</string>
 
+    <string name="title_edit_task">Edit Task</string>
+    <string name="action_save_task">Save Task</string>
 
 </resources>

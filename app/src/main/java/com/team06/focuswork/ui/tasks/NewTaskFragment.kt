@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -59,8 +60,14 @@ class NewTaskFragment : Fragment() {
                 taskDescriptionView.setText(task.taskDescription)
                 startCalendar.value = task.startTime
                 endCalendar.value = task.endTime
+
+                (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_edit_task)
+                binding.taskCreate.text = getString(R.string.action_save_task)
             } else {
                 endCalendar.value?.add(Calendar.HOUR, 1);
+
+                (activity as AppCompatActivity).supportActionBar?.title =  getString(R.string.menu_new_task)
+                binding.taskCreate.text = getString(R.string.action_create_task)
             }
         }
 

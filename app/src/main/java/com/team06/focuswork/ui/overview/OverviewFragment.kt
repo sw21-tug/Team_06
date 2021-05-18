@@ -119,9 +119,14 @@ class OverviewFragment : Fragment() {
 
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
-
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
-            currentTasks.removeAll(currentTasks)
+        tasksViewModel.setSelectedTask(null)
+        val fab: FloatingActionButton = binding.fab
+        fab.setOnClickListener { _ ->
+            tasksViewModel.setSelectedTask(null)
+            findNavController().navigate(R.id.nav_new_task)
+        }
+        tasksViewModel.allTasks.observe(requireActivity(), Observer {
+                tasks -> currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
