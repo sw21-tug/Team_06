@@ -68,7 +68,7 @@ class OverviewDetailsInstrumentedTest {
         Thread.sleep(1000)
 
         try {
-            onView(withId(R.id.recycler_view)).perform(
+            onView(withId(R.id.recycler_view_week)).perform(
                 RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
             )
 
