@@ -10,11 +10,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
-import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
 import com.team06.focuswork.ui.util.DatePickerFragment
@@ -25,21 +22,20 @@ import java.util.*
 
 class NewTaskFragment : Fragment() {
 
-    private lateinit var workingTask: Task
-    private val startDatePicker = DatePickerFragment(this, true)
-    private val startTimePicker = TimePickerFragment(this, true)
-    private val endDatePicker = DatePickerFragment(this, false)
-    private val endTimePicker = TimePickerFragment(this, false)
-    private lateinit var binding: FragmentNewTaskBinding
-    private val fireBaseStore = FireBaseFireStoreUtil()
-
     var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
     var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
+    private val startDatePicker = DatePickerFragment(startCalendar)
+    private val startTimePicker = TimePickerFragment(startCalendar)
+    private val endDatePicker = DatePickerFragment(endCalendar)
+    private val endTimePicker = TimePickerFragment(endCalendar)
+    private lateinit var binding: FragmentNewTaskBinding
+    private val fireBaseStore = FireBaseFireStoreUtil()
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentNewTaskBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -69,10 +65,16 @@ class NewTaskFragment : Fragment() {
 
     private fun saveTask() {
         val task: MutableMap<String, Any> = HashMap()
+        val startTime = startCalendar.value
+        val endTime = endCalendar.value
         task["name"] = binding.taskName.text.toString()
         task["description"] = binding.taskDescription.text.toString()
-        task["startTime"] = CalendarTimestampUtil.toTimeStamp(startCalendar.value!!)
-        task["endTime"] = CalendarTimestampUtil.toTimeStamp(endCalendar.value!!)
+        if (startTime == null || endTime == null) {
+            showToast("Unfortunately the task could not be saved!")
+            return
+        }
+        task["startTime"] = CalendarTimestampUtil.toTimeStamp(startTime)
+        task["endTime"] = CalendarTimestampUtil.toTimeStamp(endTime)
         fireBaseStore.saveTask(task)
     }
 
@@ -105,7 +107,6 @@ class NewTaskFragment : Fragment() {
         endDateTextView.setOnClickListener {
             endDatePicker.arguments = createDateOrTimeBundle(isDate = true, startBundle = false)
             endDatePicker.show(childFragmentManager, DatePickerFragment.TAG)
-
         }
     }
 
@@ -118,13 +119,14 @@ class NewTaskFragment : Fragment() {
                 cal.add(Calendar.DAY_OF_YEAR, 1)
                 startCalendar.value = cal
             }
-            if (endCalendar.value?.before(cal)!!) {
+            if (endCalendar.value?.before(cal) ?: return@Observer) {
                 val newEndCal = GregorianCalendar(
-                        startCalendar.value?.get(Calendar.YEAR)!!,
-                        startCalendar.value?.get(Calendar.MONTH)!!,
-                        startCalendar.value?.get(Calendar.DAY_OF_MONTH)!!,
-                        endCalendar.value?.get(Calendar.HOUR_OF_DAY)!!,
-                        endCalendar.value?.get(Calendar.MINUTE)!!)
+                    startCalendar.value?.get(Calendar.YEAR) ?: return@Observer,
+                    startCalendar.value?.get(Calendar.MONTH) ?: return@Observer,
+                    startCalendar.value?.get(Calendar.DAY_OF_MONTH) ?: return@Observer,
+                    endCalendar.value?.get(Calendar.HOUR_OF_DAY) ?: return@Observer,
+                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
+                )
                 endCalendar.value = newEndCal
             }
             binding.taskStartDate.text = formatDate(cal)
@@ -134,11 +136,12 @@ class NewTaskFragment : Fragment() {
             val cal = it ?: return@Observer
             if (cal.before(startCalendar.value)) {
                 val newEndCal = GregorianCalendar(
-                        startCalendar.value?.get(Calendar.YEAR)!!,
-                        startCalendar.value?.get(Calendar.MONTH)!!,
-                        startCalendar.value?.get(Calendar.DAY_OF_MONTH)!!,
-                        endCalendar.value?.get(Calendar.HOUR_OF_DAY)!!,
-                        endCalendar.value?.get(Calendar.MINUTE)!!)
+                    startCalendar.value?.get(Calendar.YEAR) ?: return@Observer,
+                    startCalendar.value?.get(Calendar.MONTH) ?: return@Observer,
+                    startCalendar.value?.get(Calendar.DAY_OF_MONTH) ?: return@Observer,
+                    endCalendar.value?.get(Calendar.HOUR_OF_DAY) ?: return@Observer,
+                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
+                )
                 endCalendar.value = newEndCal
             }
             binding.taskEndDate.text = formatDate(cal)
@@ -160,23 +163,24 @@ class NewTaskFragment : Fragment() {
 
     private fun checkTextFilled(view: View) {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
-                !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
-                        view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+            !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
+                view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {
         val cal = if (startBundle) startCalendar.value else endCalendar.value
         return if (isDate) bundleOf(
-                Pair("YEAR", cal?.get(Calendar.YEAR)),
-                Pair("MONTH", cal?.get(Calendar.MONTH)),
-                Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
-                Pair("MIN_DATE",
-                        if (startBundle) System.currentTimeMillis() - 1000
-                        else startCalendar.value?.timeInMillis
-                )
+            Pair("YEAR", cal?.get(Calendar.YEAR)),
+            Pair("MONTH", cal?.get(Calendar.MONTH)),
+            Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
+            Pair(
+                "MIN_DATE",
+                if (startBundle) System.currentTimeMillis() - 1000
+                else startCalendar.value?.timeInMillis
+            )
         ) else bundleOf(
-                Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
-                Pair("MINUTE", cal?.get(Calendar.MINUTE))
+            Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
+            Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
     }
 }

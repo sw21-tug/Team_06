@@ -13,13 +13,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team06.focuswork.R
-import com.team06.focuswork.data.Task
-import com.team06.focuswork.model.TasksViewModel
-import java.util.*
 
 
-class TaskAdapter(private val context: Context, private val overviewFragment: OverviewFragment)
-    : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val context: Context, private val overviewFragment: OverviewFragment) :
+    RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val list = overviewFragment.getAllTasks()
 
@@ -28,13 +25,13 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     }
 
     class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val taskItem = view.findViewById<MaterialCardView>(R.id.task_item)
+        val taskItem: MaterialCardView = view.findViewById(R.id.task_item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val layout = LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.task_item_view, parent, false)
+            .from(parent.context)
+            .inflate(R.layout.task_item_view, parent, false)
         return TaskViewHolder(layout)
     }
 
@@ -63,9 +60,9 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     }
 
     private fun chooseBackGround(drawableId: Int): Drawable? = ResourcesCompat.getDrawable(
-            context.resources,
-            drawableId,
-            null
+        context.resources,
+        drawableId,
+        null
     )
 
     private fun showToast(message: String) {

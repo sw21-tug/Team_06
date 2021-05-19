@@ -19,21 +19,44 @@ class LoginInstrumentedTest {
 
     @get:Rule
     var activityRule: ActivityScenarioRule<LoginActivity> =
-            ActivityScenarioRule(LoginActivity::class.java)
+        ActivityScenarioRule(LoginActivity::class.java)
 
     private fun setLoginData(username: String, password: String) {
         Espresso.onView(ViewMatchers.withId(R.id.username))
-                .perform(ViewActions.clearText(), ViewActions.typeText(username))
+            .perform(ViewActions.clearText(), ViewActions.typeText(username))
         Espresso.onView(ViewMatchers.withId(R.id.password))
-                .perform(ViewActions.clearText(), ViewActions.typeText(password))
+            .perform(ViewActions.clearText(), ViewActions.typeText(password))
         Espresso.onView(ViewMatchers.isRoot())
-                .perform(ViewActions.closeSoftKeyboard())
+            .perform(ViewActions.closeSoftKeyboard())
     }
 
     private fun clickLogin() {
         Espresso.onView(ViewMatchers.withId(R.id.login))
-                .perform(ViewActions.click())
+            .perform(ViewActions.click())
     }
+
+    private fun clickRegister() {
+        Espresso.onView(ViewMatchers.withId(R.id.register))
+            .perform(ViewActions.click())
+    }
+
+    private fun deleteUser(username: String) {
+        FirebaseFirestore.getInstance()
+            .collection("User")
+            .whereEqualTo("email", username)
+            .get().addOnSuccessListener { document ->
+                assert(document.documents.size < 2)
+                if (document.documents.isEmpty()) {
+                    return@addOnSuccessListener
+                }
+                FirebaseFirestore
+                    .getInstance()
+                    .collection("User")
+                    .document(document.documents[0].id)
+                    .delete()
+            }
+    }
+
     @Test
     fun basicLoginTest() {
         setLoginData("test@gmail.com", "password")
@@ -45,8 +68,10 @@ class LoginInstrumentedTest {
     @Test
     fun disabledButtonsTest() {
         setLoginData("akjfamfgaksja@casf", "lajksfaj")
+        Espresso.onView(ViewMatchers.withId(R.id.register))
+            .check(matches(ViewMatchers.isEnabled()))
         Espresso.onView(ViewMatchers.withId(R.id.login))
-                .check(matches(not(ViewMatchers.isEnabled())))
+            .check(matches(not(ViewMatchers.isEnabled())))
     }
 
     @Test
@@ -54,7 +79,14 @@ class LoginInstrumentedTest {
         setLoginData("akjfamf@gaksja.casf", "lajksfaj")
         clickLogin()
         Espresso.onView(ViewMatchers.withId(R.id.login))
-                .check(matches(ViewMatchers.isDisplayed()))
+            .check(matches(ViewMatchers.isDisplayed()))
     }
 
+    @Test
+    fun failingRegistrationTest() {
+        setLoginData("newTest@gmail.com", "aosjkgaod")
+        clickRegister()
+        Espresso.onView(ViewMatchers.withId(R.id.login))
+            .check(matches(ViewMatchers.isDisplayed()))
+    }
 }

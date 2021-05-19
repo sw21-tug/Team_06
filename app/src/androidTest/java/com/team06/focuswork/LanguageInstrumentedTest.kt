@@ -15,7 +15,10 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.*
+import org.junit.After
+import org.junit.Assert
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
 
@@ -24,8 +27,8 @@ import java.util.*
 class LanguageInstrumentedTest {
 
     @get:Rule
-    var activityRule: ActivityScenarioRule<MainActivity>
-            = ActivityScenarioRule(MainActivity::class.java)
+    var activityRule: ActivityScenarioRule<MainActivity> =
+        ActivityScenarioRule(MainActivity::class.java)
 
     @After
     fun cleanUp() {
@@ -54,8 +57,7 @@ class LanguageInstrumentedTest {
 
     }
 
-    private fun assertLanguageIsEnglish()
-    {
+    private fun assertLanguageIsEnglish() {
         //This is needed since accessing R.strings.menu_overview will always get the displayed text
         //However, we want to know whether English is currently being displayed.
         var text = "Overview"
@@ -64,8 +66,8 @@ class LanguageInstrumentedTest {
 
         Assert.assertEquals(text, context.getString(R.string.menu_overview))
     }
-    private fun assertLanguageIsChinese()
-    {
+
+    private fun assertLanguageIsChinese() {
         //This is needed since accessing R.strings.menu_overview will always get the displayed text
         //However, we want to know whether Chinese is currently being displayed.
         var text = "概述"
@@ -74,8 +76,8 @@ class LanguageInstrumentedTest {
 
         Assert.assertEquals(text, context.getString(R.string.menu_overview))
     }
-    private fun assertLanguageIsRussian()
-    {
+
+    private fun assertLanguageIsRussian() {
         //This is needed since accessing R.strings.menu_overview will always get the displayed text
         //However, we want to know whether Russian is currently being displayed.
         var text = "обзор"
@@ -110,6 +112,7 @@ class LanguageInstrumentedTest {
         onView(withId(R.id.nav_view))
             .perform(NavigationViewActions.navigateTo(R.id.nav_overview));
     }
+
     private fun navigateToSettings() {
         onView(withId(R.id.drawer_layout))
             .perform(DrawerActions.open())
@@ -123,8 +126,11 @@ class LanguageInstrumentedTest {
         navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(actionOnItem<RecyclerView.ViewHolder>(
-                hasDescendant(withText(R.string.language_title)), click()))
+            .perform(
+                actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.language_title)), click()
+                )
+            )
 
         val array = InstrumentationRegistry.getInstrumentation()
             .targetContext.resources.getStringArray(R.array.language_entries)
@@ -145,8 +151,11 @@ class LanguageInstrumentedTest {
         navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(actionOnItem<RecyclerView.ViewHolder>(
-                hasDescendant(withText(R.string.language_title)), click()))
+            .perform(
+                actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.language_title)), click()
+                )
+            )
 
         val array = InstrumentationRegistry.getInstrumentation()
             .targetContext.resources.getStringArray(R.array.language_entries)
@@ -167,8 +176,11 @@ class LanguageInstrumentedTest {
         navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(actionOnItem<RecyclerView.ViewHolder>(
-                hasDescendant(withText(R.string.language_title)), click()))
+            .perform(
+                actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.language_title)), click()
+                )
+            )
 
         val array = InstrumentationRegistry.getInstrumentation()
             .targetContext.resources.getStringArray(R.array.language_entries)

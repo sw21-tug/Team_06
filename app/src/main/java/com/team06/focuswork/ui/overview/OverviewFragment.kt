@@ -57,16 +57,16 @@ class OverviewFragment : Fragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
-        var layout = binding.fragmentContainerOverview
+        val layout = binding.fragmentContainerOverview
 
         readFilterFromConfig()
 
-        when(filter){
+        when (filter) {
             Filter.DAY -> {
                 dynamicBinding = FragmentDayBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentDayBinding).fragmentContainerDay)
@@ -82,9 +82,6 @@ class OverviewFragment : Fragment() {
             }
         }
 
-
-
-
         return binding.root
     }
 
@@ -92,16 +89,15 @@ class OverviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         createNotifChannel()
-        binding.notifButton.setOnClickListener(this::sendNotif)
+        binding.notifButton.setOnClickListener { sendNotif() }
 
-        fireStoreUtil.retrieveTasks(this::setTasks, filter)
+        fireStoreUtil.retrieveTasks(this::setTasks)
 
-        when(filter){
+        when (filter) {
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
             else -> {
                 //TODO: Error handling
-
             }
         }
     }
@@ -112,8 +108,8 @@ class OverviewFragment : Fragment() {
         tasksViewModel.setTasks(tasks)
     }
 
-    private fun initializeDayView(){
-        var localBinding = dynamicBinding as FragmentDayBinding
+    private fun initializeDayView() {
+        val localBinding = dynamicBinding as FragmentDayBinding
 
         initDayUI(localBinding)
 
@@ -123,32 +119,36 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer {
-                tasks -> currentTasks.removeAll(currentTasks)
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+            currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if(filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
+                if (filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
 
-    private fun initDayUI(binding: FragmentDayBinding){
+    private fun initDayUI(binding: FragmentDayBinding) {
         val cal = Calendar.getInstance()
 
         val dayName = SimpleDateFormat("EEEE").format(cal.time)
-        val text = SpannableString(String.format("%s %s, %d.%d.", getString(R.string.day_tasks_for),
-                dayName, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1))
+        val text = SpannableString(
+            String.format(
+                "%s %s, %d.%d.", getString(R.string.day_tasks_for),
+                dayName, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1
+            )
+        )
         text.setSpan(
-                StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length+1,
-                dayName.length + getString(R.string.day_tasks_for).length + 2,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length + 1,
+            dayName.length + getString(R.string.day_tasks_for).length + 2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         binding.textviewTitle.text = text
     }
 
-    private fun initializeWeekView(){
-        var localBinding = dynamicBinding as FragmentWeekBinding
+    private fun initializeWeekView() {
+        val localBinding = dynamicBinding as FragmentWeekBinding
 
         initWeekUI(localBinding)
         initWeekButtons(localBinding)
@@ -158,10 +158,10 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer {
-            tasks -> currentTasks.removeAll(currentTasks)
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+            currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if(filterForDay(selectedDay, it.startTime, it.endTime))
+                if (filterForDay(selectedDay, it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -179,23 +179,26 @@ class OverviewFragment : Fragment() {
         val sunday = SimpleDateFormat("EEEE").format(calSun.time)
 
 
-        val text = SpannableString(String.format("%s, %2d.%2d.  -  %s, %2d.%2d.",
+        val text = SpannableString(
+            String.format(
+                "%s, %2d.%2d.  -  %s, %2d.%2d.",
                 monday, calMon.get(Calendar.DAY_OF_MONTH), calMon.get(Calendar.MONTH) + 1,
-                sunday, calSun.get(Calendar.DAY_OF_MONTH), calSun.get(Calendar.MONTH) + 1)
+                sunday, calSun.get(Calendar.DAY_OF_MONTH), calSun.get(Calendar.MONTH) + 1
+            )
         )
 
         text.setSpan(
-                StyleSpan(Typeface.BOLD), 0,
-                monday.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            StyleSpan(Typeface.BOLD), 0,
+            monday.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         text.setSpan(
-                StyleSpan(Typeface.BOLD), monday.length + 13,
-                monday.length + sunday.length + 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            StyleSpan(Typeface.BOLD), monday.length + 13,
+            monday.length + sunday.length + 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         binding.textviewRange.text = text
     }
 
-    private fun initWeekButtons(binding: FragmentWeekBinding){
+    private fun initWeekButtons(binding: FragmentWeekBinding) {
         binding.buttonDisplayAll.setOnClickListener {
             showEntireWeek = true
             tasksViewModel.setTasks(allTasks)
@@ -244,17 +247,17 @@ class OverviewFragment : Fragment() {
     }
 
     private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
-        if(showEntireWeek) return filterForWeek(day, start, end)
+        if (showEntireWeek) return filterForWeek(day, start, end)
 
         //We don't care about the year-to-day conversion being accurate
         //since we only care about what day comes first, meaning leaving 1 day unsused
         //for most years is of no consequence
         val startDay = start.get(Calendar.DAY_OF_YEAR) +
-                start.get(Calendar.YEAR) * 366
+            start.get(Calendar.YEAR) * 366
         val endDay = end.get(Calendar.DAY_OF_YEAR) +
-                end.get(Calendar.YEAR) * 366
+            end.get(Calendar.YEAR) * 366
         val currentDay = day.get(Calendar.DAY_OF_YEAR) +
-                day.get(Calendar.YEAR) * 366
+            day.get(Calendar.YEAR) * 366
 
         return currentDay in startDay..endDay
     }
@@ -264,22 +267,21 @@ class OverviewFragment : Fragment() {
         setMonday(week)
 
         val startDay = start.get(Calendar.DAY_OF_YEAR) +
-                start.get(Calendar.YEAR) * 366
+            start.get(Calendar.YEAR) * 366
         val endDay = end.get(Calendar.DAY_OF_YEAR) +
-                end.get(Calendar.YEAR) * 366
+            end.get(Calendar.YEAR) * 366
         val currentDay = week.get(Calendar.DAY_OF_YEAR) +
-                week.get(Calendar.YEAR) * 366
+            week.get(Calendar.YEAR) * 366
 
-        return (currentDay   in startDay..endDay) || (currentDay+1 in startDay..endDay) ||
-               (currentDay+2 in startDay..endDay) || (currentDay+3 in startDay..endDay) ||
-               (currentDay+4 in startDay..endDay) || (currentDay+5 in startDay..endDay) ||
-               (currentDay+6 in startDay..endDay)
+        return (currentDay in startDay..endDay) || (currentDay + 1 in startDay..endDay) ||
+            (currentDay + 2 in startDay..endDay) || (currentDay + 3 in startDay..endDay) ||
+            (currentDay + 4 in startDay..endDay) || (currentDay + 5 in startDay..endDay) ||
+            (currentDay + 6 in startDay..endDay)
     }
 
     private fun createNotifChannel() {
-        // based off this tutorial
+        // based on this tutorial
         // https://www.youtube.com/watch?v=B5dgmvbrHgs
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Timer finished"
             val descriptionText = "The timer for your task has finished."
@@ -287,33 +289,39 @@ class OverviewFragment : Fragment() {
             val channel = NotificationChannel("TIMER_NOTIF_ID", name, important).apply {
                 description = descriptionText;
             }
-            val notificationManager = getSystemService(requireContext(),
-                    NotificationManager::class.java) as NotificationManager
+            val notificationManager = getSystemService(
+                requireContext(),
+                NotificationManager::class.java
+            ) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
 
-    private fun sendNotif(view: View) {
-        // based off this tutorial
+    private fun sendNotif() {
+        // based on this tutorial
         // out first notification, navigates back to app by clicking on it
         // https://www.youtube.com/watch?v=B5dgmvbrHgs
         val intent = Intent(requireContext(), MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent =
-                PendingIntent.getActivity(requireContext(), 0, intent, 0)
+            PendingIntent.getActivity(requireContext(), 0, intent, 0)
 
-        val notificationSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager
-                .TYPE_NOTIFICATION)
+        val notificationSound: Uri = RingtoneManager.getDefaultUri(
+            RingtoneManager
+                .TYPE_NOTIFICATION
+        )
 
         val builder = NotificationCompat.Builder(requireContext(), "TIMER_NOTIF_ID")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText("The task {...} you have set has finished.")
-                .setStyle(NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_message)))
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSound(notificationSound)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText("The task {...} you have set has finished.")
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_message))
+            )
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setSound(notificationSound)
 
         with(NotificationManagerCompat.from(requireContext())) {
             notify(101, builder.build())
@@ -325,16 +333,15 @@ class OverviewFragment : Fragment() {
         findNavController().navigate(R.id.action_nav_overview_to_nav_taskdetails)
     }
 
-    fun getAllTasks() : MutableList<Task> = currentTasks
+    fun getAllTasks(): MutableList<Task> = currentTasks
 
-    private fun readFilterFromConfig(){
-        val preferences : SharedPreferences =
+    private fun readFilterFromConfig() {
+        val preferences: SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        var filter = (preferences.getString("overviewTimeFrame", "none")).toString()
+        val filter = (preferences.getString("overviewTimeFrame", "none")).toString()
         Log.d("overview", filter)
-        when(filter)
-        {
+        when (filter) {
             "day" -> this.filter = Filter.DAY
             "week" -> this.filter = Filter.WEEK
             "month" -> this.filter = Filter.MONTH
@@ -352,7 +359,7 @@ class OverviewFragment : Fragment() {
         //This is needed because setting the field Calendar.DAY_OF_WEEK has flimsy behaviour
         fun setMonday(cal: Calendar): Calendar {
             var delta = 0
-            when(cal.get(Calendar.DAY_OF_WEEK)){
+            when (cal.get(Calendar.DAY_OF_WEEK)) {
                 Calendar.MONDAY -> delta = 0
                 Calendar.TUESDAY -> delta = -1
                 Calendar.WEDNESDAY -> delta = -2

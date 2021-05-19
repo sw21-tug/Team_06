@@ -9,7 +9,6 @@ import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ui.login.LoginActivity
 
@@ -31,12 +30,10 @@ class SplashScreen : AppCompatActivity() {
             PropertyValuesHolder.ofFloat("scaleY", 1.2f)
         )
         scaleDown.duration = 310
-
         scaleDown.repeatCount = ObjectAnimator.INFINITE
         scaleDown.repeatMode = ObjectAnimator.REVERSE
 
         scaleDown.start()
-
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/

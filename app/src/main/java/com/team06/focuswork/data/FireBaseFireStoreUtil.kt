@@ -3,7 +3,7 @@ package com.team06.focuswork.data
 import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
-import java.util.HashMap
+import java.util.*
 
 class FireBaseFireStoreUtil {
     enum class Filter {
@@ -31,7 +31,7 @@ class FireBaseFireStoreUtil {
         return LoggedInUser(documents)
     }
 
-    fun retrieveTasks(callback: (tasks: List<Task>) -> Unit, filter: Filter = Filter.NONE) {
+    fun retrieveTasks(callback: (tasks: List<Task>) -> Unit) {
         val taskCollection = FirebaseFirestore.getInstance()
             .collection(userCollection)
             .document((LoginRepository.getUser() ?: return).userId)
@@ -68,9 +68,10 @@ class FireBaseFireStoreUtil {
         }
     }
 
-    fun addUser(firstname:String, lastname:String, username: String, password: String): LoggedInUser {
+    fun addUser(
+        firstname: String, lastname: String, username: String, password: String
+    ): LoggedInUser {
         val user: MutableMap<String, Any> = HashMap()
-
         user[nameField] = firstname
         user[surNameField] = lastname
         user[emailField] = username

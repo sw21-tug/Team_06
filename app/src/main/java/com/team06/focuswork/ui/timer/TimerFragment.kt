@@ -1,6 +1,5 @@
 package com.team06.focuswork.ui.timer
 
-import com.team06.focuswork.R
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -15,11 +14,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTimerBinding
-import java.text.DateFormat
 import java.util.*
-import kotlin.math.truncate
 
 
 /**
@@ -31,27 +29,27 @@ class TimerFragment : Fragment() {
 
     private lateinit var binding: FragmentTimerBinding
     private val list = mutableListOf<Task>()
+
     init {
         populateList()
     }
 
-    private var selectedTask : Task? = null
-    private var selectedTaskTimer : CountDownTimer? = null
+    private var selectedTask: Task? = null
+    private var selectedTaskTimer: CountDownTimer? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         populateSpinner()
 
-        binding.buttonStartTimer.setOnClickListener{
-            if(selectedTask == null)
-            {
+        binding.buttonStartTimer.setOnClickListener {
+            if (selectedTask == null) {
                 showToast(getString(R.string.no_task_selected))
                 return@setOnClickListener
             }
             val duration = selectedTask!!.endTime.timeInMillis -
                     selectedTask!!.startTime.timeInMillis
 
-            selectedTaskTimer = object: CountDownTimer(duration, 10 * 1000) {
+            selectedTaskTimer = object : CountDownTimer(duration, 10 * 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val hours = millisUntilFinished / (60 * 60 * 1000)
                     val minutes = millisUntilFinished / (60 * 1000) % (60)
@@ -74,7 +72,7 @@ class TimerFragment : Fragment() {
         return binding.root
     }
 
-    fun populateList(){
+    private fun populateList() {
         //Intended: call data holder class to fetch Tasks
         val calLater = Calendar.getInstance()
         calLater.add(Calendar.HOUR, 1)
@@ -128,7 +126,7 @@ class TimerFragment : Fragment() {
         )
     }
 
-    fun populateSpinner(){
+    fun populateSpinner() {
         val spinner = binding.taskSelector
         val adapter = TaskArrayAdapter(
             requireContext(),
@@ -144,13 +142,13 @@ class TimerFragment : Fragment() {
             ) {
                 selectedTask = adapter.getItem(position)
                 selectedTaskTimer?.cancel()
-                binding.taskTimer.text = "0:00"
+                binding.taskTimer.text = getString(R.string.startTime)
             }
 
             override fun onNothingSelected(adapter: AdapterView<*>?) {
                 selectedTask = null
                 selectedTaskTimer?.cancel()
-                binding.taskTimer.text = "0:00"
+                binding.taskTimer.text = getString(R.string.startTime)
             }
         })
     }
@@ -160,14 +158,14 @@ class TimerFragment : Fragment() {
     }
 }
 
-class TaskArrayAdapter(context: Context, textViewResourceId: Int, val tasks: MutableList<Task>)
-    : ArrayAdapter<Task>(context, textViewResourceId) {
+class TaskArrayAdapter(context: Context, textViewResourceId: Int, val tasks: MutableList<Task>) :
+    ArrayAdapter<Task>(context, textViewResourceId) {
 
-    override fun getCount() : Int {
+    override fun getCount(): Int {
         return tasks.size
     }
 
-    override fun getItem(position: Int) : Task {
+    override fun getItem(position: Int): Task {
         return tasks[position]
     }
 

@@ -1,15 +1,13 @@
 package com.team06.focuswork.ui.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import androidx.lifecycle.viewModelScope
+import com.team06.focuswork.R
 import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.data.Result
-
-import com.team06.focuswork.R
-import com.team06.focuswork.model.TasksViewModel
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
@@ -66,10 +64,12 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun registerDataChanged(firstname: String, lastname: String, username: String, password: String) {
-        if(firstname.isBlank()) {
+    fun registerDataChanged(
+        firstname: String, lastname: String, username: String, password: String
+    ) {
+        if (firstname.isBlank()) {
             _registerForm.value = RegisterFormState(firstnameError = R.string.invalid_firstname)
-        } else if(lastname.isBlank()) {
+        } else if (lastname.isBlank()) {
             _registerForm.value = RegisterFormState(lastnameError = R.string.invalid_lastname)
         } else if (!isUserNameValid(username)) {
             _registerForm.value = RegisterFormState(usernameError = R.string.invalid_username)

@@ -1,7 +1,6 @@
 package com.team06.focuswork.ui.taskdetails
 
 import android.os.Bundle
-import android.text.Layout
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.team06.focuswork.R
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
 
@@ -20,10 +18,10 @@ class TaskdetailsFragment : Fragment() {
     private lateinit var binding: FragmentTaskdetailsBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentTaskdetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,7 +38,6 @@ class TaskdetailsFragment : Fragment() {
 
         val timeFormat: java.text.DateFormat = DateFormat.getTimeFormat(context)
         val dateFormat: java.text.DateFormat = DateFormat.getDateFormat(context)
-
 
         tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
             titleView.text = it.taskName
