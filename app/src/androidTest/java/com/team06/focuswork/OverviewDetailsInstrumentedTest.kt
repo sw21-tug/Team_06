@@ -68,7 +68,7 @@ class OverviewDetailsInstrumentedTest {
         Thread.sleep(1000)
 
         try {
-            onView(withId(R.id.`@+id/recycler_view`)).perform(
+            onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
             )
 
@@ -83,32 +83,6 @@ class OverviewDetailsInstrumentedTest {
                 .check(matches(isDisplayed()))
                 .perform(click())
         }
-
-        onView(withId(R.id.fragment_container_taskdetails))
-            .check(matches(isDisplayed()))
-    }
-
-    private fun navigateToSunday() {
-        onView(withId(R.id.fragment_container_overview))
-            .check(matches(isDisplayed()))
-
-        val startDate = Calendar.getInstance()
-        OverviewFragment.setMonday(startDate)
-        startDate.add(Calendar.DATE, 6)
-
-        val endDate = Calendar.getInstance()
-        OverviewFragment.setMonday(endDate)
-        endDate.add(Calendar.DATE, 6)
-        endDate.add(Calendar.HOUR, 1)
-
-        //We must ensure that there is a task on this monday to begin with
-        addTask(startDate, endDate)
-
-        onView(withId(R.id.button_sunday))
-            .perform(scrollTo(), click())
-        Thread.sleep(1000)
-
-        onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
 
         onView(withId(R.id.fragment_container_taskdetails))
             .check(matches(isDisplayed()))
@@ -220,7 +194,7 @@ class OverviewDetailsInstrumentedTest {
     }
 
     @Test
-    fun testSundayView() {
+    fun testWeekView() {
         navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
@@ -236,14 +210,63 @@ class OverviewDetailsInstrumentedTest {
         onView(withText(array[1]))
             .inRoot(RootMatchers.isDialog())
             .check(matches(isDisplayed()))
-            .perform(click());
+            .perform(click())
 
         navigateToOverview()
         Thread.sleep(400)
-        navigateToSunday()
-        pressBack()
+        onView(withId(R.id.text_view_week))
+            .check(matches(isDisplayed()))
+    }
 
-        onView(withId(R.id.fragment_container_overview))
+    @Test
+    fun testMonthView() {
+        navigateToSettings()
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.overviewTimeFrame_title)), click()
+                )
+            )
+
+        val array = InstrumentationRegistry.getInstrumentation()
+            .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
+
+        onView(withText(array[2]))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        navigateToOverview()
+        Thread.sleep(400)
+
+        onView(withId(R.id.textview_month))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun testDayView() {
+        navigateToSettings()
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.overviewTimeFrame_title)), click()
+                )
+            )
+
+        val array = InstrumentationRegistry.getInstrumentation()
+            .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
+
+        onView(withText(array[0]))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        navigateToOverview()
+        Thread.sleep(400)
+
+        onView(withId(R.id.text_view_day))
             .check(matches(isDisplayed()))
     }
 }

@@ -61,8 +61,8 @@ class LoginInstrumentedTest {
     fun basicLoginTest() {
         setLoginData("test@gmail.com", "password")
         clickLogin()
-        Espresso.onView(ViewMatchers.withId(R.id.`@+id/recycler_view`))
-                .check(matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_view))
+            .check(matches(ViewMatchers.isDisplayed()))
     }
 
     @Test

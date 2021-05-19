@@ -151,7 +151,7 @@ class OverviewFragment : Fragment() {
             dayName.length + getString(R.string.day_tasks_for).length + 2,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        binding.textviewTitle.text = text
+        binding.textViewDay.text = text
     }
 
     private fun initializeWeekView() {
@@ -253,7 +253,7 @@ class OverviewFragment : Fragment() {
         }
     }
 
-    private fun initializeMonthView(){
+    private fun initializeMonthView() {
         val localBinding = dynamicBinding as FragmentMonthBinding
 
         initMonthUI(localBinding)
@@ -274,8 +274,22 @@ class OverviewFragment : Fragment() {
         })
     }
 
-    private fun initMonthUI(binding: FragmentMonthBinding){
+    private fun initMonthUI(binding: FragmentMonthBinding) {
+        val cal = Calendar.getInstance()
 
+        val monthName = SimpleDateFormat("MMMM").format(cal.time)
+        val text = SpannableString(
+            String.format(
+                "%s %s, %d", getString(R.string.day_tasks_for),
+                monthName, cal.get(Calendar.YEAR)
+            )
+        )
+        text.setSpan(
+            StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length + 1,
+            monthName.length + getString(R.string.day_tasks_for).length + 2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        binding.textviewMonth.text = text
     }
 
     private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
@@ -311,7 +325,7 @@ class OverviewFragment : Fragment() {
             (currentDay + 6 in startDay..endDay)
     }
 
-    private fun filterForMonth(month: Calendar, start: Calendar, end:Calendar): Boolean{
+    private fun filterForMonth(month: Calendar, start: Calendar, end: Calendar): Boolean {
         //This is highly awkward, yet the best way to efficiently ensure that changing
         //DAY_OF_MONTH doesn't change MONTH itself (which it sometimes did in my tests)
         var m = month.get(Calendar.MONTH)
@@ -319,20 +333,20 @@ class OverviewFragment : Fragment() {
         month.set(Calendar.MONTH, m)
 
         val startDay = start.get(Calendar.DAY_OF_YEAR) +
-                start.get(Calendar.YEAR) * 366
+            start.get(Calendar.YEAR) * 366
         val endDay = end.get(Calendar.DAY_OF_YEAR) +
-                end.get(Calendar.YEAR) * 366
+            end.get(Calendar.YEAR) * 366
         val firstOfMonth = month.get(Calendar.DAY_OF_YEAR) +
-                month.get(Calendar.YEAR) * 366
+            month.get(Calendar.YEAR) * 366
 
-        month.set(Calendar.DAY_OF_MONTH,month.getActualMaximum(Calendar.DAY_OF_MONTH))
+        month.set(Calendar.DAY_OF_MONTH, month.getActualMaximum(Calendar.DAY_OF_MONTH))
         month.set(Calendar.MONTH, m)
 
         val lastOfMonth = month.get(Calendar.DAY_OF_YEAR) +
-                month.get(Calendar.YEAR) * 366
+            month.get(Calendar.YEAR) * 366
 
-        return(startDay in firstOfMonth..lastOfMonth || endDay in firstOfMonth..lastOfMonth||
-                firstOfMonth in (startDay + 1)..endDay || lastOfMonth in startDay until endDay)
+        return (startDay in firstOfMonth..lastOfMonth || endDay in firstOfMonth..lastOfMonth ||
+            firstOfMonth in (startDay + 1)..endDay || lastOfMonth in startDay until endDay)
     }
 
     private fun createNotifChannel() {

@@ -66,7 +66,7 @@ class RegisterInstrumentedTest {
         deleteUser("newTest@gmail.com")
         setRegisterData("Test", "Test2", "newTest@gmail.com", "aosjkgaod")
         clickRegister()
-        Espresso.onView(ViewMatchers.withId(R.id.`@+id/recycler_view`))
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_view))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
