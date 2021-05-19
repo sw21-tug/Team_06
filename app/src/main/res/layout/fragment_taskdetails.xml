@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.taskdetails.TaskdetailsFragment"
     android:background="@color/white"
     android:id="@+id/fragment_container_taskdetails">
+
 
     <TextView
         android:id="@+id/title_taskdetails"
@@ -18,22 +20,23 @@
         android:paddingTop="15dp"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"/>
 
-
-    <FrameLayout
+    <TextView
+        android:id="@+id/description_taskdetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_taskdetails">
+        android:textSize="22sp"/>
+
+    <FrameLayout
+        android:id="@+id/frameLayoutTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/starttime_taskdetails"
@@ -42,10 +45,7 @@
             android:layout_gravity="start"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toStartOf="@+id/title_taskdetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description_taskdetails" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/endtime_taskdetails"
@@ -54,23 +54,16 @@
             android:layout_gravity="end"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toStartOf="@+id/title_taskdetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/starttime_taskdetails" />
+            android:textSize="22sp" />
 
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frameLayoutDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_taskdetails">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/startdate_taskdetails"
@@ -80,10 +73,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/title_taskdetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description_taskdetails" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/enddate_taskdetails"
@@ -93,25 +83,57 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/title_taskdetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/starttime_taskdetails" />
+            android:textStyle="bold" />
 
     </FrameLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        />
 
-    <TextView
-        android:id="@+id/description_taskdetails"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_taskdetails" />
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="36dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                app:srcCompat="@drawable/ic_timer"
+                android:scaleType="fitXY"
+                android:layout_margin="2dp"/>
+            <TextView
+                android:id="@+id/taskTImerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:inputType="none"
+                android:text="Timer"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/taskTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/timer_countdown"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
