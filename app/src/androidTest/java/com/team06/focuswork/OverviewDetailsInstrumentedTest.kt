@@ -190,6 +190,8 @@ class OverviewDetailsInstrumentedTest {
             .check(matches(ViewMatchers.isEnabled()))
             .perform(click())
 
+        Thread.sleep(800)
+
         // After click, overview should be shown again
         onView(withId(R.id.fragment_container_overview))
             .check(matches(isDisplayed()))
@@ -234,7 +236,7 @@ class OverviewDetailsInstrumentedTest {
         val array = InstrumentationRegistry.getInstrumentation()
             .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
 
-        onView(withText(array[0]))
+        onView(withText(array[1]))
             .inRoot(RootMatchers.isDialog())
             .check(matches(isDisplayed()))
             .perform(click());
