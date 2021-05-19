@@ -16,9 +16,5 @@
             android:id="@+id/nav_new_task"
             android:icon="@drawable/ic_addtask"
             android:title="@string/menu_new_task" />
-        <item
-            android:id="@+id/nav_timer"
-            android:icon="@drawable/ic_timer"
-            android:title="@string/menu_timer" />
     </group>
 </menu>

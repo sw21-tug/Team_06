@@ -18,11 +18,9 @@
     <string name="task_end_date_and_time">Конец задачи</string>
     <string name="action_create_task">Создать задачу</string>
     <string name="action_sign_in_short">Войти</string>
-    <!-- Strings related to Timer Fragment -->
+    <!-- Strings related to Timer -->
     <string name="timer_format">(чч:мм)</string>
-    <string name="timer_start_button">Таймер запуска</string>
     <string name="timer_finished">Таймер закончился!</string>
-    <string name="no_task_selected">Выберите задачу!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Задачи на сегодня</string>
     <string name="day_tasks_for">Задачи для:</string>
