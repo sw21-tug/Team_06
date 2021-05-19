@@ -9,10 +9,10 @@ class TasksViewModel : ViewModel() {
     private var _allTasks = MutableLiveData<List<Task>>()
     val allTasks: LiveData<List<Task>> = _allTasks
 
-    private var _currentTask = MutableLiveData<Task>()
-    val currentTask: LiveData<Task> = _currentTask
+    private var _currentTask = MutableLiveData<Task?>()
+    val currentTask: LiveData<Task?> = _currentTask
 
-    fun setSelectedTask(task: Task) {
+    fun setSelectedTask(task: Task?) {
         _currentTask.postValue(task)
     }
 

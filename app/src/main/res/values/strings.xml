@@ -34,6 +34,9 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
     <string name="erroneous_config">Warning! Erroneous config, defaulting to Week!</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">Edit</string>
+    <string name="menu_item_delete">Delete</string>
 
     <string name="menu_settings">Settings</string>
 
@@ -82,5 +85,12 @@
     <string name="notification" tools:ignore="MissingTranslation">Notification</string>
     <string name="textview_range" tools:ignore="MissingTranslation">TextView</string>
 
+    <string name="delete_dialog_title">Delete task</string>
+    <string name="delete_dialog_description">Do you really want to delete the task?</string>
+    <string name="delete_dialog_cancel">Cancel</string>
+    <string name="delete_dialog_confirm_delete">Delete</string>
+
+    <string name="title_edit_task">Edit Task</string>
+    <string name="action_save_task">Save Task</string>
 
 </resources>

@@ -30,6 +30,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
@@ -92,8 +93,12 @@ class OverviewFragment : Fragment() {
         binding.notifButton.setOnClickListener { sendNotif() }
 
         fireStoreUtil.retrieveTasks(this::setTasks)
-
-        when (filter) {
+        val fab: FloatingActionButton = binding.fab
+        fab.setOnClickListener { _ ->
+            tasksViewModel.setSelectedTask(null)
+            findNavController().navigate(R.id.action_nav_overview_to_nav_new_task)
+        }
+        when(filter){
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
             else -> {
@@ -118,9 +123,10 @@ class OverviewFragment : Fragment() {
 
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
+        tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
-            currentTasks.removeAll(currentTasks)
+        tasksViewModel.allTasks.observe(requireActivity(), Observer {
+                tasks -> currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)

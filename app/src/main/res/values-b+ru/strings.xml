@@ -34,6 +34,9 @@
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
     <string name="erroneous_config">    Предупреждение! Ошибочная конфигурация, по умолчанию неделя!</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">Редактировать</string>
+    <string name="menu_item_delete">Удалить</string>
 
     <string name="menu_settings">Настройки</string>
 
@@ -73,5 +76,13 @@
 
     <string name="notification_title">Ваша задача выполнена!</string>
     <string name="notification_message">Этот текст намного длиннее исходного сообщения.</string>
+
+    <string name="delete_dialog_title">Удалить задачу</string>
+    <string name="delete_dialog_description">Вы действительно хотите удалить задание?</string>
+    <string name="delete_dialog_cancel">Отмена</string>
+    <string name="delete_dialog_confirm_delete">удалить</string>
+
+    <string name="action_save_task">Сохранить задание</string>
+    <string name="title_edit_task">Редактирование задачи</string>
 
 </resources>
