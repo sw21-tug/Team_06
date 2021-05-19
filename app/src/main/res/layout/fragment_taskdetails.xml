@@ -102,12 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="27dp"
-                android:layout_height="27dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 app:srcCompat="@drawable/ic_timer"
+                android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:layout_margin="2dp"/>
             <TextView
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="none"
-                android:text="Timer"
+                android:text="time remaining"
                 android:textSize="22sp" />
         </LinearLayout>
 
@@ -125,11 +126,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:text="@string/timer_countdown"
             android:textAlignment="center"
             android:textSize="30sp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/taskTimerFormat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/timer_format"
+            android:textAlignment="center"
+            android:textSize="16sp"
             android:layout_gravity="center"/>
     </LinearLayout>
 

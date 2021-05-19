@@ -19,7 +19,8 @@
     <string name="action_create_task">Создать задачу</string>
     <string name="action_sign_in_short">Войти</string>
     <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
+    <string name="timer_countdown">%02d:%02d</string>
+    <string name="timer_format">(чч:мм)</string>
     <string name="timer_start_button">Таймер запуска</string>
     <string name="timer_finished">Таймер закончился!</string>
     <string name="no_task_selected">Выберите задачу!</string>

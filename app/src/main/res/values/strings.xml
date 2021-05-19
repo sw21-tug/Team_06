@@ -19,7 +19,8 @@
     <string name="action_create_task">Create Task</string>
     <string name="action_sign_in_short">Sign in</string>
     <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
+    <string name="timer_countdown">%02d:%02d</string>
+    <string name="timer_format">(hh:mm)</string>
     <string name="timer_start_button">Start Timer</string>
     <string name="timer_finished">Timer has finished!</string>
     <string name="no_task_selected">Please select a Task!</string>
