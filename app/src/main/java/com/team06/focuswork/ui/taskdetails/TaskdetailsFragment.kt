@@ -53,6 +53,7 @@ class TaskdetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setHasOptionsMenu(true)
         binding = FragmentTaskdetailsBinding.inflate(inflater, container, false)
         return binding.root
     }

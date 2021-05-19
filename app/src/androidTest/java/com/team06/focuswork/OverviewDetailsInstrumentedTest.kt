@@ -101,7 +101,7 @@ class OverviewDetailsInstrumentedTest {
         OverviewFragment.setMonday(endDate)
         endDate.add(Calendar.DATE, 6)
         endDate.add(Calendar.HOUR, 1)
-
+        Thread.sleep(400)
         //We must ensure that there is a task on this monday to begin with
         addTask(startDate, endDate)
 
@@ -172,9 +172,7 @@ class OverviewDetailsInstrumentedTest {
         onView(withId(R.id.fab))
             .perform(click())
         // Wait short amount of time to ensure everything has loaded
-        Thread.sleep(800)
-        onView(withId(R.id.fragment_container_new_task))
-            .check(matches(isDisplayed()))
+        Thread.sleep(400)
 
         onView(withId(R.id.taskCreate))
             .check(matches(not(isEnabled())))
