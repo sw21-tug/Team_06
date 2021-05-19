@@ -40,6 +40,7 @@ import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.databinding.FragmentWeekBinding
 import com.team06.focuswork.databinding.FragmentMonthBinding
 import com.team06.focuswork.model.TasksViewModel
+import com.team06.focuswork.ui.util.FilterUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -129,7 +130,7 @@ class OverviewFragment : Fragment() {
         tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if (filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
+                if (FilterUtil.filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -168,7 +169,8 @@ class OverviewFragment : Fragment() {
         tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if (filterForDay(selectedDay, it.startTime, it.endTime))
+                if (showEntireWeek && FilterUtil.filterForWeek(selectedDay, it.startTime, it.endTime) ||
+                    !showEntireWeek && FilterUtil.filterForDay(selectedDay, it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -177,11 +179,11 @@ class OverviewFragment : Fragment() {
 
     private fun initWeekUI(binding: FragmentWeekBinding) {
         val calMon = Calendar.getInstance()
-        setMonday(calMon)
+        FilterUtil.setMonday(calMon)
         val monday = SimpleDateFormat("EEEE").format(calMon.time)
 
         val calSun = Calendar.getInstance()
-        setMonday(calSun)
+        FilterUtil.setMonday(calSun)
         calSun.add(Calendar.DATE, 6)
         val sunday = SimpleDateFormat("EEEE").format(calSun.time)
 
@@ -211,42 +213,42 @@ class OverviewFragment : Fragment() {
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonMonday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonTuesday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 1)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonWednesday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 2)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonThursday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 3)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonFriday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 4)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSaturday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 5)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSunday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 6)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
@@ -267,7 +269,7 @@ class OverviewFragment : Fragment() {
         tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if (filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
+                if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -290,63 +292,6 @@ class OverviewFragment : Fragment() {
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         binding.textviewMonth.text = text
-    }
-
-    private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
-        if (showEntireWeek) return filterForWeek(day, start, end)
-
-        //We don't care about the year-to-day conversion being accurate
-        //since we only care about what day comes first, meaning leaving 1 day unsused
-        //for most years is of no consequence
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val currentDay = day.get(Calendar.DAY_OF_YEAR) +
-            day.get(Calendar.YEAR) * 366
-
-        return currentDay in startDay..endDay
-    }
-
-    //week can just be any day within the week
-    private fun filterForWeek(week: Calendar, start: Calendar, end: Calendar): Boolean {
-        setMonday(week)
-
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val currentDay = week.get(Calendar.DAY_OF_YEAR) +
-            week.get(Calendar.YEAR) * 366
-
-        return (currentDay in startDay..endDay) || (currentDay + 1 in startDay..endDay) ||
-            (currentDay + 2 in startDay..endDay) || (currentDay + 3 in startDay..endDay) ||
-            (currentDay + 4 in startDay..endDay) || (currentDay + 5 in startDay..endDay) ||
-            (currentDay + 6 in startDay..endDay)
-    }
-
-    private fun filterForMonth(month: Calendar, start: Calendar, end: Calendar): Boolean {
-        //This is highly awkward, yet the best way to efficiently ensure that changing
-        //DAY_OF_MONTH doesn't change MONTH itself (which it sometimes did in my tests)
-        var m = month.get(Calendar.MONTH)
-        month.set(Calendar.DAY_OF_MONTH, 1)
-        month.set(Calendar.MONTH, m)
-
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val firstOfMonth = month.get(Calendar.DAY_OF_YEAR) +
-            month.get(Calendar.YEAR) * 366
-
-        month.set(Calendar.DAY_OF_MONTH, month.getActualMaximum(Calendar.DAY_OF_MONTH))
-        month.set(Calendar.MONTH, m)
-
-        val lastOfMonth = month.get(Calendar.DAY_OF_YEAR) +
-            month.get(Calendar.YEAR) * 366
-
-        return (startDay in firstOfMonth..lastOfMonth || endDay in firstOfMonth..lastOfMonth ||
-            firstOfMonth in (startDay + 1)..endDay || lastOfMonth in startDay until endDay)
     }
 
     private fun createNotifChannel() {
@@ -423,24 +368,5 @@ class OverviewFragment : Fragment() {
 
     private fun showToast(@StringRes string: Int) {
         Toast.makeText(context, string, Toast.LENGTH_LONG).show()
-    }
-
-    companion object Overview {
-        //This is needed because setting the field Calendar.DAY_OF_WEEK has flimsy behaviour
-        fun setMonday(cal: Calendar): Calendar {
-            var delta = 0
-            when (cal.get(Calendar.DAY_OF_WEEK)) {
-                Calendar.MONDAY -> delta = 0
-                Calendar.TUESDAY -> delta = -1
-                Calendar.WEDNESDAY -> delta = -2
-                Calendar.THURSDAY -> delta = -3
-                Calendar.FRIDAY -> delta = -4
-                Calendar.SATURDAY -> delta = -5
-                Calendar.SUNDAY -> delta = -6
-            }
-
-            cal.add(Calendar.DAY_OF_MONTH, delta)
-            return cal
-        }
     }
 }
