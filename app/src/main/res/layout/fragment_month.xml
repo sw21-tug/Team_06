@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container_day"
+    android:id="@+id/fragment_container_month"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
@@ -13,12 +13,12 @@
 
 
     <TextView
-        android:id="@+id/text_view_day"
+        android:id="@+id/textview_month"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:text="@string/day_title"
+        android:text="@string/month_title"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="30sp"
@@ -34,7 +34,7 @@
         android:indeterminate="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_day" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_month" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_day">
+        app:layout_constraintTop_toBottomOf="@+id/textview_month">
     </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

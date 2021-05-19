@@ -20,6 +20,10 @@
     <string name="action_sign_in_short">Sign in</string>
     <!-- Strings related to Timer -->
     <string name="timer_format">(hh:mm)</string>
+    <string name="task_not_saved_toast">Unfortunately the task could not be saved!</string>
+    <!-- Strings related to Timer Fragment -->
+    <string name="timer_countdown">00:00</string>
+    <string name="timer_start_button">Start Timer</string>
     <string name="timer_finished">Timer has finished!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Tasks for Today</string>
@@ -37,6 +41,7 @@
     <!-- String related to Details Fragment -->
     <string name="menu_item_edit">Edit</string>
     <string name="menu_item_delete">Delete</string>
+    <string name="month_title">Tasks for this Month</string>
 
     <string name="menu_settings">Settings</string>
 
@@ -77,13 +82,14 @@
     <string name="notification_title">Your task has finished!</string>
     <string name="notification_message">This text is so much longer than the original message.</string>
 
-    <string name="login_email_hint" tools:ignore="MissingTranslation">max.mustermann@gmail.at</string>
-    <string name="logo_image_description" tools:ignore="MissingTranslation">Logo image</string>
-    <string name="focus_work_title" tools:ignore="MissingTranslation">Focus Work</string>
-    <string name="add_new_task" tools:ignore="MissingTranslation">Add new task</string>
+    <string name="login_email_hint">max.mustermann@gmail.at</string>
+    <string name="logo_image_description">Logo image</string>
+    <string name="focus_work_title">Focus Work</string>
+    <string name="add_new_task">Add new task</string>
     <string name="startTime" tools:ignore="MissingTranslation">0:00</string>
-    <string name="notification" tools:ignore="MissingTranslation">Notification</string>
+    <string name="notification">Notification</string>
     <string name="textview_range" tools:ignore="MissingTranslation">TextView</string>
+    <string name="login_error_message">"Couldn't log in user "</string>
 
     <string name="delete_dialog_title">Delete task</string>
     <string name="delete_dialog_description">Do you really want to delete the task?</string>
