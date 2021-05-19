@@ -36,6 +36,7 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
     <string name="erroneous_config">Warning! Erroneous config, defaulting to Week!</string>
+    <string name="month_title">Tasks for this Month</string>
 
     <string name="menu_settings">Settings</string>
 

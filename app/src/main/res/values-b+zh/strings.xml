@@ -37,6 +37,7 @@
     <string name="saturday">周六</string>
     <string name="sunday">星期日</string>
     <string name="erroneous_config">警告！错误的配置，默认为周！</string>
+    <string name="month_title">这个月的任务</string>
 
     <string name="menu_settings">设定值</string>
 

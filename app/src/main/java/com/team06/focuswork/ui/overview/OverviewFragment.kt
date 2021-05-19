@@ -38,6 +38,7 @@ import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentDayBinding
 import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.databinding.FragmentWeekBinding
+import com.team06.focuswork.databinding.FragmentMonthBinding
 import com.team06.focuswork.model.TasksViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -75,6 +76,10 @@ class OverviewFragment : Fragment() {
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
+            Filter.MONTH -> {
+                dynamicBinding = FragmentMonthBinding.inflate(layoutInflater, layout, false)
+                layout.addView((dynamicBinding as FragmentMonthBinding).fragmentContainerMonth)
+            }
             else -> {
                 showToast(R.string.erroneous_config)
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
@@ -96,8 +101,10 @@ class OverviewFragment : Fragment() {
         when (filter) {
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
+            Filter.MONTH -> initializeMonthView()
             else -> {
                 //TODO: Error handling
+                initializeWeekView()
             }
         }
     }
@@ -113,7 +120,7 @@ class OverviewFragment : Fragment() {
 
         initDayUI(localBinding)
 
-        recyclerView = localBinding.recyclerViewWeek
+        recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         localBinding.progressbar.visibility = View.GONE
@@ -153,7 +160,7 @@ class OverviewFragment : Fragment() {
         initWeekUI(localBinding)
         initWeekButtons(localBinding)
 
-        recyclerView = localBinding.recyclerViewWeek
+        recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
@@ -246,6 +253,31 @@ class OverviewFragment : Fragment() {
         }
     }
 
+    private fun initializeMonthView(){
+        val localBinding = dynamicBinding as FragmentMonthBinding
+
+        initMonthUI(localBinding)
+
+        recyclerView = localBinding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        localBinding.progressbar.visibility = View.GONE
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
+
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+            currentTasks.removeAll(currentTasks)
+            tasks.iterator().forEach {
+                if (filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
+                    currentTasks.add(it)
+            }
+            (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
+        })
+    }
+
+    private fun initMonthUI(binding: FragmentMonthBinding){
+
+    }
+
     private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
         if (showEntireWeek) return filterForWeek(day, start, end)
 
@@ -277,6 +309,30 @@ class OverviewFragment : Fragment() {
             (currentDay + 2 in startDay..endDay) || (currentDay + 3 in startDay..endDay) ||
             (currentDay + 4 in startDay..endDay) || (currentDay + 5 in startDay..endDay) ||
             (currentDay + 6 in startDay..endDay)
+    }
+
+    private fun filterForMonth(month: Calendar, start: Calendar, end:Calendar): Boolean{
+        //This is highly awkward, yet the best way to efficiently ensure that changing
+        //DAY_OF_MONTH doesn't change MONTH itself (which it sometimes did in my tests)
+        var m = month.get(Calendar.MONTH)
+        month.set(Calendar.DAY_OF_MONTH, 1)
+        month.set(Calendar.MONTH, m)
+
+        val startDay = start.get(Calendar.DAY_OF_YEAR) +
+                start.get(Calendar.YEAR) * 366
+        val endDay = end.get(Calendar.DAY_OF_YEAR) +
+                end.get(Calendar.YEAR) * 366
+        val firstOfMonth = month.get(Calendar.DAY_OF_YEAR) +
+                month.get(Calendar.YEAR) * 366
+
+        month.set(Calendar.DAY_OF_MONTH,month.getActualMaximum(Calendar.DAY_OF_MONTH))
+        month.set(Calendar.MONTH, m)
+
+        val lastOfMonth = month.get(Calendar.DAY_OF_YEAR) +
+                month.get(Calendar.YEAR) * 366
+
+        return(startDay in firstOfMonth..lastOfMonth || endDay in firstOfMonth..lastOfMonth||
+                firstOfMonth in (startDay + 1)..endDay || lastOfMonth in startDay until endDay)
     }
 
     private fun createNotifChannel() {
