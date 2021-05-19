@@ -11,6 +11,29 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".ui.timer.TimerFragment">
 
+    <ProgressBar
+        android:id="@+id/timer_animation"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:indeterminateOnly="false"
+        android:progress="100"
+        android:progressDrawable="@drawable/timer_circle_progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/duration_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="@string/timer_countdown"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_animation"
+        app:layout_constraintEnd_toEndOf="@+id/timer_animation"
+        app:layout_constraintStart_toStartOf="@+id/timer_animation"
+        app:layout_constraintTop_toTopOf="@+id/timer_animation" />
+
     <TextView
         android:id="@+id/taskTimer"
         android:layout_width="0dp"
