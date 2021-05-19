@@ -18,6 +18,7 @@
     <string name="task_end_date_and_time">任务结束</string>
     <string name="action_create_task">创建任务</string>
     <string name="action_sign_in_short">登入</string>
+    <string name="task_not_saved_toast">不幸的是，該任務無法保存！</string>
     <!-- Strings related to Timer Fragment -->
     <string name="timer_countdown">00:00</string>
     <string name="timer_start_button">启动计时器</string>
@@ -82,5 +83,6 @@
 
     <string name="notification_title">您的任务已经完成！</string>
     <string name="notification_message">该文本比原始消息长得多。</string>
+    <string name="login_error_message">無法登錄用戶</string>
 
 </resources>

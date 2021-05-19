@@ -1,6 +1,8 @@
 package com.team06.focuswork.data
 
+import android.content.res.Resources
 import android.util.Log
+import com.team06.focuswork.R
 import com.team06.focuswork.model.LoggedInUser
 import java.io.IOException
 
@@ -14,7 +16,7 @@ class LoginDataSource {
         val loggedInUser = fireStoreUtil.retrieveUser(username, password)
         Result.Success(loggedInUser)
     } catch (e: Throwable) {
-        Log.e(TAG, "Couldn't log in user $username")
+        Log.e(TAG, "Unfortunately the task could not be saved!$username")
         e.printStackTrace()
         Result.Error(IOException("Error logging in", e))
     }
@@ -30,7 +32,7 @@ class LoginDataSource {
         val loggedInUser = fireStoreUtil.addUser(firstname, lastname, username, password)
         Result.Success(loggedInUser)
     } catch (e: Throwable) {
-        Log.e(TAG, "Couldn't log in user $username")
+        Log.e(TAG, "Unfortunately the task could not be saved!$username")
         e.printStackTrace()
         Result.Error(IOException("Error logging in", e))
     }

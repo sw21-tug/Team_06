@@ -1,6 +1,12 @@
 package com.team06.focuswork.ui.util
 
-import com.team06.focuswork.ui.overview.OverviewFragment
+import android.content.Context
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
+import com.team06.focuswork.R
+import java.text.SimpleDateFormat
 import java.util.*
 
 object FilterUtil {
@@ -75,5 +81,67 @@ object FilterUtil {
 
         return (startDay in firstOfMonth..lastOfMonth || endDay in firstOfMonth..lastOfMonth ||
             firstOfMonth in (startDay + 1)..endDay || lastOfMonth in startDay until endDay)
+    }
+
+    fun getMonthText(cal: Calendar, context: Context): SpannableString {
+
+        val monthName = SimpleDateFormat("MMMM").format(cal.time)
+        val text = SpannableString(
+            String.format(
+                "%s %s, %d", context.getString(R.string.day_tasks_for),
+                monthName, cal.get(Calendar.YEAR)
+            )
+        )
+        text.setSpan(
+            StyleSpan(Typeface.BOLD),
+            context.getString(R.string.day_tasks_for).length + 1,
+            monthName.length + context.getString(R.string.day_tasks_for).length + 2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return text
+    }
+
+    fun getWeekText(calMon: Calendar, calSun: Calendar): SpannableString {
+        setMonday(calMon)
+        val monday = SimpleDateFormat("EEEE").format(calMon.time)
+
+        setMonday(calSun)
+        calSun.add(Calendar.DATE, 6)
+        val sunday = SimpleDateFormat("EEEE").format(calSun.time)
+
+
+        val text = SpannableString(
+            String.format(
+                "%s, %2d.%2d.  -  %s, %2d.%2d.",
+                monday, calMon.get(Calendar.DAY_OF_MONTH), calMon.get(Calendar.MONTH) + 1,
+                sunday, calSun.get(Calendar.DAY_OF_MONTH), calSun.get(Calendar.MONTH) + 1
+            )
+        )
+
+        text.setSpan(
+            StyleSpan(Typeface.BOLD), 0,
+            monday.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        text.setSpan(
+            StyleSpan(Typeface.BOLD), monday.length + 13,
+            monday.length + sunday.length + 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return text
+    }
+
+    fun getDayText(cal: Calendar, context: Context): SpannableString {
+        val dayName = SimpleDateFormat("EEEE").format(cal.time)
+        val text = SpannableString(
+            String.format(
+                "%s %s, %d.%d.", context.getString(R.string.day_tasks_for),
+                dayName, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1
+            )
+        )
+        text.setSpan(
+            StyleSpan(Typeface.BOLD), context.getString(R.string.day_tasks_for).length + 1,
+            dayName.length + context.getString(R.string.day_tasks_for).length + 2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return text
     }
 }

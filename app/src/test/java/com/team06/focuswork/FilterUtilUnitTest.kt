@@ -1,19 +1,26 @@
 package com.team06.focuswork
 
+import android.content.Context
+import android.content.res.Resources
 import com.team06.focuswork.ui.util.FilterUtil
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.PowerMockRunner
 import java.util.*
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+
+@RunWith(PowerMockRunner::class)
+@PrepareForTest(Resources::class)
 class FilterUtilUnitTest {
+
+    var context: Context? = mock(Context::class.java)
+
     @Test
-    fun dayFilter_isCorrect() {
+    fun dayFilterTest() {
         val today = Calendar.getInstance()
 
         val beforeToday = Calendar.getInstance()
@@ -21,8 +28,8 @@ class FilterUtilUnitTest {
         val afterToday = Calendar.getInstance()
         afterToday.add(Calendar.DATE, 2)
 
-        assertFalse(FilterUtil.filterForDay(today,  beforeToday, beforeToday))
-        assertFalse(FilterUtil.filterForDay(today,  afterToday, afterToday))
+        assertFalse(FilterUtil.filterForDay(today, beforeToday, beforeToday))
+        assertFalse(FilterUtil.filterForDay(today, afterToday, afterToday))
         assertTrue(FilterUtil.filterForDay(today, today, today))
         assertTrue(FilterUtil.filterForDay(today, beforeToday, afterToday))
         assertTrue(FilterUtil.filterForDay(today, today, afterToday))
@@ -30,7 +37,7 @@ class FilterUtilUnitTest {
     }
 
     @Test
-    fun weekFilter_isCorrect() {
+    fun weekFilterTest() {
         val today = Calendar.getInstance()
 
         val lastWeek = Calendar.getInstance()
@@ -38,8 +45,8 @@ class FilterUtilUnitTest {
         val nextWeek = Calendar.getInstance()
         nextWeek.add(Calendar.DATE, 8)
 
-        assertFalse(FilterUtil.filterForWeek(today,  lastWeek, lastWeek))
-        assertFalse(FilterUtil.filterForWeek(today,  nextWeek, nextWeek))
+        assertFalse(FilterUtil.filterForWeek(today, lastWeek, lastWeek))
+        assertFalse(FilterUtil.filterForWeek(today, nextWeek, nextWeek))
         assertTrue(FilterUtil.filterForWeek(today, today, today))
         assertTrue(FilterUtil.filterForWeek(today, lastWeek, nextWeek))
         assertTrue(FilterUtil.filterForWeek(today, today, nextWeek))
@@ -47,7 +54,7 @@ class FilterUtilUnitTest {
     }
 
     @Test
-    fun monthFilter_isCorrect() {
+    fun monthFilterTest() {
         val today = Calendar.getInstance()
 
         val lastMonth = Calendar.getInstance()
@@ -55,8 +62,8 @@ class FilterUtilUnitTest {
         val nextMonth = Calendar.getInstance()
         nextMonth.add(Calendar.DATE, 32)
 
-        assertFalse(FilterUtil.filterForMonth(today,  lastMonth, lastMonth))
-        assertFalse(FilterUtil.filterForMonth(today,  nextMonth, nextMonth))
+        assertFalse(FilterUtil.filterForMonth(today, lastMonth, lastMonth))
+        assertFalse(FilterUtil.filterForMonth(today, nextMonth, nextMonth))
         assertTrue(FilterUtil.filterForMonth(today, today, today))
         assertTrue(FilterUtil.filterForMonth(today, lastMonth, nextMonth))
         assertTrue(FilterUtil.filterForMonth(today, today, nextMonth))
@@ -64,11 +71,13 @@ class FilterUtilUnitTest {
     }
 
     @Test
-    fun setMonday_isCorrect() {
+    fun setMondayTest() {
         val cal = Calendar.getInstance()
 
         FilterUtil.setMonday(cal)
-        assert(cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY &&
-            cal.timeInMillis <= Calendar.getInstance().timeInMillis)
+        assert(
+            cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY &&
+                cal.timeInMillis <= Calendar.getInstance().timeInMillis
+        )
     }
 }

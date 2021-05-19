@@ -70,7 +70,7 @@ class NewTaskFragment : Fragment() {
         task["name"] = binding.taskName.text.toString()
         task["description"] = binding.taskDescription.text.toString()
         if (startTime == null || endTime == null) {
-            showToast("Unfortunately the task could not be saved!")
+            showToast(getString(R.string.task_not_saved_toast))
             return
         }
         task["startTime"] = CalendarTimestampUtil.toTimeStamp(startTime)
