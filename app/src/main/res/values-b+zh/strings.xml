@@ -60,6 +60,11 @@
     <string name="colorAccent_title">口音颜色</string>
 
     <!-- Login/Registration -->
+    <string name="login_email_hint">陈小名</string>
+    <string name="logo_image_description">形象標識</string>
+    <string name="focus_work_title">重點工作</string>
+    <string name="add_new_task">添加新任務</string>
+    <string name="notification">通知</string>
     <string name="prompt_first_name">名</string>
     <string name="prompt_last_name">姓</string>
     <string name="prompt_email">电子邮件</string>

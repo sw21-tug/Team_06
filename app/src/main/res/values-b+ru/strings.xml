@@ -59,6 +59,11 @@
     <string name="colorAccent_title">Акцентный цвет</string>
 
     <!-- Login/Registration -->
+    <string name="login_email_hint">Иванов</string>
+    <string name="logo_image_description">Изображение логотипа</string>
+    <string name="focus_work_title">Сосредоточенная работа</string>
+    <string name="add_new_task">Добавить новую задачу</string>
+    <string name="notification">Уведомление</string>
     <string name="prompt_first_name">Фамилия</string>
     <string name="prompt_last_name">имя</string>
     <string name="prompt_email">Электронное письмо</string>
