@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import java.util.*
@@ -17,7 +16,7 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
         //Load default values for settings in case user hasn't selected values yet
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
-        checkTheme()
+        applyTheme()
         checkLocale()
 
         // set listener for settings
@@ -75,35 +74,6 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
             onChangedLanguage(languageKey)
     }
 
-    private fun checkTheme() {
-        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val backgroundValue =
-            (preferences.getString("colorBackground", "light")).toString()
-        val accentValue =
-            (preferences.getString("colorAccent", "red")).toString()
-
-        //val prefferedThemeName = backgroundValue + accentValue;
-
-        val preferredTheme = getPreferredTheme(backgroundValue, accentValue)
-        val currentTheme = packageManager.getActivityInfo(
-            componentName,
-            0
-        ).theme
-        val secondThemeTest = this.applicationContext.applicationInfo.theme
-
-        val curTheme = TypedValue()
-        theme.resolveAttribute(R.attr.theme, curTheme, true)
-        val themeString = curTheme.string
-        val themeRes = packageManager.getActivityInfo(componentName, 0).themeResource
-
-        if (preferredTheme != currentTheme ) {
-            applyTheme()
-
-            finish()
-            startActivity(this.intent)
-        }
-    }
-
     @Suppress("DEPRECATION")
     private fun onChangedLanguage(languageKey: String){
         val myLocale = Locale(languageKey)
@@ -121,7 +91,10 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
             val languageValue: String = (sharedPreferences?.getString(key, "en")).toString()
             onChangedLanguage(languageValue);
         } else if (key == "colorBackground" || key == "colorAccent") {
-            checkTheme()
+            applyTheme()
+
+            finish()
+            startActivity(this.intent)
         }
     }
 }
