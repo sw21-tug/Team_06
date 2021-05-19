@@ -4,12 +4,12 @@ import android.view.Gravity
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers.isClosed
@@ -29,6 +29,7 @@ import io.mockk.every
 import io.mockk.mockkObject
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
@@ -100,7 +101,7 @@ class OverviewDetailsInstrumentedTest {
         OverviewFragment.setMonday(endDate)
         endDate.add(Calendar.DATE, 6)
         endDate.add(Calendar.HOUR, 1)
-
+        Thread.sleep(400)
         //We must ensure that there is a task on this monday to begin with
         addTask(startDate, endDate)
 
@@ -172,11 +173,9 @@ class OverviewDetailsInstrumentedTest {
             .perform(click())
         // Wait short amount of time to ensure everything has loaded
         Thread.sleep(400)
-        onView(withId(R.id.fragment_container_new_task))
-            .check(matches(isDisplayed()))
 
         onView(withId(R.id.taskCreate))
-            .check(matches(CoreMatchers.not(ViewMatchers.isEnabled())))
+            .check(matches(not(isEnabled())))
 
         setupTaskStrings("createSimpleTask", "SimpleTaskDescription");
         setStartDateValues(startDate)
@@ -188,6 +187,8 @@ class OverviewDetailsInstrumentedTest {
         onView(withId(R.id.taskCreate))
             .check(matches(ViewMatchers.isEnabled()))
             .perform(click())
+
+        Thread.sleep(800)
 
         // After click, overview should be shown again
         onView(withId(R.id.fragment_container_overview))
@@ -243,6 +244,68 @@ class OverviewDetailsInstrumentedTest {
         navigateToSunday()
         pressBack()
 
+        onView(withId(R.id.fragment_container_overview))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deleteTest() {
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.HOUR, 1)
+        Thread.sleep(400)
+
+        addTask(startDate, endDate)
+
+        onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
+
+        onView(withId(R.id.fragment_container_taskdetails))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.menu_detail_delete))
+            .perform(click())
+
+        onView(withId(android.R.id.button1))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+    }
+
+    @Test
+    fun editTest() {
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.HOUR, 1)
+        Thread.sleep(400)
+
+        addTask(startDate, endDate)
+
+        onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
+
+        onView(withId(R.id.fragment_container_taskdetails))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.menu_detail_edit))
+            .perform(click())
+        Thread.sleep(400)
+        onView(withId(R.id.fragment_container_new_task))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.taskName))
+            .check(matches(withText("createSimpleTask")))
+            .perform(clearText(), typeText("editedSimpleTask"), closeSoftKeyboard())
+        onView(withId(R.id.taskDescription))
+            .check(matches(withText("SimpleTaskDescription")))
+
+        onView(withId(R.id.taskCreate))
+            .perform(click())
+        Thread.sleep(400)
+        onView(withId(R.id.fragment_container_taskdetails))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.title_taskdetails))
+            .check(matches(withText("editedSimpleTask")))
+        pressBack()
+        Thread.sleep(400)
         onView(withId(R.id.fragment_container_overview))
             .check(matches(isDisplayed()))
     }
