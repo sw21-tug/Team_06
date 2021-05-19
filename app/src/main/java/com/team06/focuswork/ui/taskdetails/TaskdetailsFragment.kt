@@ -72,15 +72,15 @@ class TaskdetailsFragment : Fragment() {
         val dateFormat: java.text.DateFormat = DateFormat.getDateFormat(context)
 
         tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
-            titleView.text = it.taskName
-            descriptionView.text = it.taskDescription
-            starttimeView.text = timeFormat.format(it.startTime.time)
-            endtimeView.text = timeFormat.format(it.endTime.time)
-            startdateView.text = dateFormat.format(it.startTime.time)
-            enddateView.text = dateFormat.format(it.endTime.time)
-
+            if(it != null) {
+                titleView.text = it.taskName
+                descriptionView.text = it.taskDescription
+                starttimeView.text = timeFormat.format(it.startTime.time)
+                endtimeView.text = timeFormat.format(it.endTime.time)
+                startdateView.text = dateFormat.format(it.startTime.time)
+                enddateView.text = dateFormat.format(it.endTime.time)
+            }
         })
-
     }
 
     private fun onDeleteItem() {
