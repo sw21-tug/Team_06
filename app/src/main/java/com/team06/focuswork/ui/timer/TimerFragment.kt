@@ -1,7 +1,9 @@
 package com.team06.focuswork.ui.timer
 
 import android.content.Context
+
 import android.graphics.Color
+
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.TypedValue
@@ -13,11 +15,13 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+
 import androidx.fragment.app.Fragment
 import com.team06.focuswork.R
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTimerBinding
 import java.util.*
+
 
 
 /**
@@ -54,13 +58,25 @@ class TimerFragment : Fragment() {
                     val hours = millisUntilFinished / (60 * 60 * 1000)
                     val minutes = millisUntilFinished / (60 * 1000) % (60)
                     binding.taskTimer.text = String.format("%d:%02d", hours, minutes)
+                    binding.durationLeft.text = String.format("%d:%02d", hours, minutes)
+                    updateTimerAnimation(duration, millisUntilFinished, hours, minutes)
                 }
 
                 override fun onFinish() {
                     showToast(getString(R.string.timer_finished))
+                    //sendNotif(view)
                 }
             }.start()
+
         }
+
+    }
+
+    private fun updateTimerAnimation(duration: Long, millisUntilFinished: Long,
+                             hours: Long, minutes: Long) {
+        binding.timerAnimation.progress = ((millisUntilFinished.toFloat() / duration.toFloat()) * 100)
+                .toInt()
+        binding.durationLeft.text = String.format("%d:%02d", hours, minutes)
     }
 
     override fun onCreateView(
@@ -187,3 +203,5 @@ class TaskArrayAdapter(context: Context, textViewResourceId: Int, val tasks: Mut
         return getView(position, convertView, parent)
     }
 }
+
+
