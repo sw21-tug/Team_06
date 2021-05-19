@@ -1,5 +1,6 @@
 package com.team06.focuswork.data
 
+import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
@@ -49,6 +50,7 @@ class FireBaseFireStoreUtil {
                     ),
                     CalendarTimestampUtil.toCalendar(it.getTimestamp("endTime") ?: return@forEach)
                 )
+                workingTask.id = it.id
                 taskList.add(workingTask)
             }
             callback(taskList)
@@ -82,13 +84,33 @@ class FireBaseFireStoreUtil {
         return LoggedInUser(result.id)
     }
 
-    fun saveTask(task: MutableMap<String, Any>) {
+    fun saveTask(task: Task, callback: (currentTask: Task) -> Unit) {
+        val map: MutableMap<String, Any> = HashMap()
+        map["name"] = task.taskName
+        map["description"] = task.taskDescription
+        map["startTime"] = CalendarTimestampUtil.toTimeStamp(task.startTime)
+        map["endTime"] = CalendarTimestampUtil.toTimeStamp(task.endTime)
         val db = FirebaseFirestore.getInstance()
         LoginRepository.getUser()?.userId?.let {
             db.collection("User")
                 .document(it)
                 .collection("Task")
-                .add(task)
+                .add(map)
+                .addOnSuccessListener { documentReference ->
+                    task.id = documentReference.id
+                    callback(task)
+                }
+        }
+    }
+
+    fun deleteTask(currentTask: Task) {
+        val db = FirebaseFirestore.getInstance()
+        LoginRepository.getUser()?.userId?.let {
+            db.collection("User")
+                .document(it)
+                .collection("Task")
+                .document(currentTask.id)
+                .delete()
         }
     }
 }

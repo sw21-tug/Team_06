@@ -27,7 +27,7 @@ class RegisterInstrumentedTest {
         password: String
     ) {
         Espresso.onView(ViewMatchers.withId(R.id.firstname))
-            .perform(ViewActions.clearText(), ViewActions.typeText(firstname))
+            .perform(ViewActions.typeText(firstname))
         Espresso.onView(ViewMatchers.withId(R.id.lastname))
             .perform(ViewActions.clearText(), ViewActions.typeText(lastname))
         Espresso.onView(ViewMatchers.withId(R.id.username))

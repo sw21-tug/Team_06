@@ -22,8 +22,9 @@
     <!-- Strings related to Timer Fragment -->
     <string name="timer_countdown">00:00</string>
     <string name="timer_start_button">Таймер запуска</string>
+    <!-- Strings related to Timer -->
+    <string name="timer_format">(чч:мм)</string>
     <string name="timer_finished">Таймер закончился!</string>
-    <string name="no_task_selected">Выберите задачу!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Задачи на сегодня</string>
     <string name="day_tasks_for">Задачи для:</string>
@@ -36,6 +37,9 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">Редактировать</string>
+    <string name="menu_item_delete">Удалить</string>
     <string name="erroneous_config">Предупреждение! Ошибочная конфигурация, по умолчанию неделя!</string>
     <string name="month_title">задачи на этот месяц</string>
 
@@ -83,5 +87,13 @@
     <string name="notification_title">Ваша задача выполнена!</string>
     <string name="notification_message">Этот текст намного длиннее исходного сообщения.</string>
     <string name="login_error_message">Не удалось войти пользователю</string>
+
+    <string name="delete_dialog_title">Удалить задачу</string>
+    <string name="delete_dialog_description">Вы действительно хотите удалить задание?</string>
+    <string name="delete_dialog_cancel">Отмена</string>
+    <string name="delete_dialog_confirm_delete">удалить</string>
+
+    <string name="action_save_task">Сохранить задание</string>
+    <string name="title_edit_task">Редактирование задачи</string>
 
 </resources>
