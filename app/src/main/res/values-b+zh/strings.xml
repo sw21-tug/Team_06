@@ -18,12 +18,9 @@
     <string name="task_end_date_and_time">任务结束</string>
     <string name="action_create_task">创建任务</string>
     <string name="action_sign_in_short">登入</string>
-    <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
-    <string name="timer_start_button">启动计时器</string>
+    <!-- Strings related to Timer -->
+    <string name="timer_format">(hh:mm)</string>
     <string name="timer_finished">计时器已结束！</string>
-    <string name="no_task_selected">请选择一个任务！</string>
-
     <!-- Strings related to Day Overview -->
     <string name="day_title">今天的任务</string>
     <string name="day_tasks_for">任务：</string>

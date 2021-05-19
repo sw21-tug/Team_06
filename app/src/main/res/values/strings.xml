@@ -18,11 +18,9 @@
     <string name="task_end_date_and_time">Task End</string>
     <string name="action_create_task">Create Task</string>
     <string name="action_sign_in_short">Sign in</string>
-    <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
-    <string name="timer_start_button">Start Timer</string>
+    <!-- Strings related to Timer -->
+    <string name="timer_format">(hh:mm)</string>
     <string name="timer_finished">Timer has finished!</string>
-    <string name="no_task_selected">Please select a Task!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Tasks for Today</string>
     <string name="day_tasks_for">Tasks for:</string>
