@@ -29,6 +29,7 @@ import io.mockk.every
 import io.mockk.mockkObject
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
@@ -171,12 +172,12 @@ class OverviewDetailsInstrumentedTest {
         onView(withId(R.id.fab))
             .perform(click())
         // Wait short amount of time to ensure everything has loaded
-        Thread.sleep(400)
+        Thread.sleep(800)
         onView(withId(R.id.fragment_container_new_task))
             .check(matches(isDisplayed()))
 
         onView(withId(R.id.taskCreate))
-            .check(matches(CoreMatchers.not(ViewMatchers.isEnabled())))
+            .check(matches(not(isEnabled())))
 
         setupTaskStrings("createSimpleTask", "SimpleTaskDescription");
         setStartDateValues(startDate)
@@ -233,7 +234,7 @@ class OverviewDetailsInstrumentedTest {
         val array = InstrumentationRegistry.getInstrumentation()
             .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
 
-        onView(withText(array[1]))
+        onView(withText(array[0]))
             .inRoot(RootMatchers.isDialog())
             .check(matches(isDisplayed()))
             .perform(click());

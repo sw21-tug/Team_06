@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
+import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
@@ -27,14 +28,17 @@ import java.util.*
 
 class NewTaskFragment : Fragment() {
 
-    private lateinit var workingTask: Task
-    private val tasksViewModel: TasksViewModel by activityViewModels()
-    private val startDatePicker = DatePickerFragment(this, true)
-    private val startTimePicker = TimePickerFragment(this, true)
-    private val endDatePicker = DatePickerFragment(this, false)
-    private val endTimePicker = TimePickerFragment(this, false)
+    private lateinit var workingTask: Task;
+    var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+    var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+
+    private val startDatePicker = DatePickerFragment(startCalendar)
+    private val startTimePicker = TimePickerFragment(startCalendar)
+    private val endDatePicker = DatePickerFragment(endCalendar)
+    private val endTimePicker = TimePickerFragment(endCalendar)
     private lateinit var binding: FragmentNewTaskBinding
     private val fireBaseStore = FireBaseFireStoreUtil()
+    private val tasksViewModel: TasksViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

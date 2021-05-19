@@ -92,11 +92,11 @@ class OverviewFragment : Fragment() {
         createNotifChannel()
         binding.notifButton.setOnClickListener { sendNotif() }
 
-        fireStoreUtil.retrieveTasks(this::setTasks, filter)
+        fireStoreUtil.retrieveTasks(this::setTasks)
         val fab: FloatingActionButton = binding.fab
         fab.setOnClickListener { _ ->
             tasksViewModel.setSelectedTask(null)
-            findNavController().navigate(R.id.nav_new_task)
+            findNavController().navigate(R.id.action_nav_overview_to_nav_new_task)
         }
         when(filter){
             Filter.DAY -> initializeDayView()
