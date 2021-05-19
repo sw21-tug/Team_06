@@ -112,7 +112,7 @@
                 android:scaleType="fitXY"
                 android:layout_margin="2dp"/>
             <TextView
-                android:id="@+id/taskTImerText"
+                android:id="@+id/taskTimerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -121,27 +121,55 @@
                 android:textSize="22sp" />
         </LinearLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_container_timer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.timer.TimerFragment">
+
+        <ProgressBar
+            android:id="@+id/timer_animation"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:indeterminateOnly="false"
+            android:progress="100"
+            android:progressDrawable="@drawable/timer_circle_progress_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/taskTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/timer_countdown"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:layout_gravity="center"/>
+            android:textSize="34sp"
+            android:text="00:00"
+            app:layout_constraintBottom_toBottomOf="@+id/timer_animation"
+            app:layout_constraintEnd_toEndOf="@+id/timer_animation"
+            app:layout_constraintStart_toStartOf="@+id/timer_animation"
+            app:layout_constraintTop_toTopOf="@+id/timer_animation" />
 
         <TextView
             android:id="@+id/taskTimerFormat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/timer_format"
             android:textAlignment="center"
             android:textSize="16sp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/timer_animation"
+            app:layout_constraintEnd_toEndOf="@+id/timer_animation"
+            app:layout_constraintStart_toStartOf="@+id/timer_animation"
+            app:layout_constraintTop_toTopOf="@+id/timer_animation"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
 
 

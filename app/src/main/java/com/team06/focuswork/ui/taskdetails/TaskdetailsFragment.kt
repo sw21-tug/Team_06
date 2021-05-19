@@ -45,7 +45,7 @@ class TaskdetailsFragment : Fragment() {
         val timeFormat: java.text.DateFormat = DateFormat.getTimeFormat(context)
         val dateFormat: java.text.DateFormat = DateFormat.getDateFormat(context)
 
-        binding.taskTimer.text = String.format(getString(R.string.timer_countdown), 0, 0)
+        binding.taskTimer.text = "00:00"
 
         tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
             titleView.text = it.taskName
@@ -60,19 +60,38 @@ class TaskdetailsFragment : Fragment() {
 
     }
 
-    fun onStartTimer(task: Task){
+    private fun onStartTimer(task: Task){
         val duration = task.endTime.timeInMillis - Calendar.getInstance().timeInMillis
 
         taskTimer = object : CountDownTimer(duration, 10 * 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val hours = millisUntilFinished / (60 * 60 * 1000)
                 val minutes = millisUntilFinished / (60 * 1000) % (60)
-                binding.taskTimer.text =String.format(getString(R.string.timer_countdown), hours, minutes)
+                binding.taskTimer.text = String.format("%02d:%02d", hours, minutes)
+                updateTimerAnimation(Calendar.getInstance().timeInMillis,
+                    task.startTime.timeInMillis, task.endTime.timeInMillis);
             }
 
             override fun onFinish() {
-                Toast.makeText(context?.applicationContext, "Task finished", Toast.LENGTH_LONG).show()
+                Toast.makeText(context?.applicationContext, "Task finished",
+                    Toast.LENGTH_LONG).show()
             }
         }.start()
+    }
+
+    private fun updateTimerAnimation(currentTimeInMillis: Long, startTimeInMillis: Long,
+                                     endTimeInMillis: Long) {
+        if (currentTimeInMillis <= startTimeInMillis) {
+            binding.timerAnimation.progress = 100
+        }
+        else if(currentTimeInMillis >= endTimeInMillis) {
+            binding.timerAnimation.progress = 0
+        }
+        else{
+            val difference = (endTimeInMillis - currentTimeInMillis).toFloat()
+            val totalTime = (endTimeInMillis - startTimeInMillis).toFloat()
+
+            binding.timerAnimation.progress = ((difference / totalTime) * 100).toInt()
+        }
     }
 }
