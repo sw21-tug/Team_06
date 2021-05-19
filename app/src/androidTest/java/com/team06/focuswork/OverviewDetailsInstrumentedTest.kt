@@ -4,6 +4,7 @@ import android.view.Gravity
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.NoMatchingViewException
@@ -246,5 +247,59 @@ class OverviewDetailsInstrumentedTest {
 
         onView(withId(R.id.fragment_container_overview))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deletetest() {
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.HOUR, 1)
+        Thread.sleep(400)
+
+        addTask(startDate, endDate)
+
+        onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
+
+        onView(withId(R.id.fragment_container_taskdetails))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.menu_detail_delete))
+            .perform(click())
+
+        onView(withId(android.R.id.button1))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+    }
+
+    @Test
+    fun edittest() {
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.HOUR, 1)
+        Thread.sleep(400)
+
+        addTask(startDate, endDate)
+
+        onView(withTagValue(`is`("Task:0" as Any?))).perform(click())
+
+        onView(withId(R.id.fragment_container_taskdetails))
+            .check(matches(isDisplayed()))
+
+        var title =
+        var description =
+
+        onView(withId(R.id.menu_detail_edit))
+            .perform(click())
+
+        onView(withId(R.id.fragment_container_new_task))
+            .check(matches(isDisplayed()))
+
+        Espresso.onView(withId(R.id.taskName))
+            .check(matches(withText()))
+
+
+
     }
 }

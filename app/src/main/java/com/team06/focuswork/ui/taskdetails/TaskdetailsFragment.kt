@@ -82,25 +82,26 @@ class TaskdetailsFragment : Fragment() {
         })
 
     }
+
     private fun onDeleteItem() {
         val deleteDialog: AlertDialog? = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setPositiveButton(R.string.delete_dialog_confirm_delete,
-                        DialogInterface.OnClickListener { dialog, _ ->
-                            onConfirmDelete()
-                            dialog.dismiss()
-                        })
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        onConfirmDelete()
+                        dialog.dismiss()
+                    })
 
                 setNegativeButton(R.string.delete_dialog_cancel,
-                        DialogInterface.OnClickListener { dialog, _ ->
-                            dialog.cancel()
-                        })
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.cancel()
+                    })
             }
 
             // 2. Chain together various setter methods to set the dialog characteristics
             builder.setMessage(R.string.delete_dialog_description)
-                    .setTitle(R.string.delete_dialog_title)
+                .setTitle(R.string.delete_dialog_title)
 
             // Create the AlertDialog
             builder.create()
