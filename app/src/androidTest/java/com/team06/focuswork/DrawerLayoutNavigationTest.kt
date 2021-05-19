@@ -35,14 +35,6 @@ class DrawerLayoutNavigationTest {
         openLayoutDrawer()
 
         onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_new_task))
-        onView(withId(R.id.fragment_container_new_task))
-            .check(matches(isDisplayed()))
-        Thread.sleep(200)
-
-        openLayoutDrawer()
-
-        onView(withId(R.id.nav_view))
             .perform(NavigationViewActions.navigateTo(R.id.nav_timer))
         onView(withId(R.id.fragment_container_timer))
             .check(matches(isDisplayed()))

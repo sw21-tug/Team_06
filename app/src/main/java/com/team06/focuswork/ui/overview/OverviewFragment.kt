@@ -92,9 +92,13 @@ class OverviewFragment : Fragment() {
         createNotifChannel()
         binding.notifButton.setOnClickListener { sendNotif() }
 
-        fireStoreUtil.retrieveTasks(this::setTasks)
-
-        when (filter) {
+        fireStoreUtil.retrieveTasks(this::setTasks, filter)
+        val fab: FloatingActionButton = binding.fab
+        fab.setOnClickListener { _ ->
+            tasksViewModel.setSelectedTask(null)
+            findNavController().navigate(R.id.nav_new_task)
+        }
+        when(filter){
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
             else -> {
@@ -120,11 +124,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
-        val fab: FloatingActionButton = binding.fab
-        fab.setOnClickListener { _ ->
-            tasksViewModel.setSelectedTask(null)
-            findNavController().navigate(R.id.nav_new_task)
-        }
+
         tasksViewModel.allTasks.observe(requireActivity(), Observer {
                 tasks -> currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {

@@ -107,6 +107,6 @@ class TaskdetailsFragment : Fragment() {
 
     private fun onConfirmDelete() {
         fireBaseStore.deleteTask(tasksViewModel.currentTask.value!!)
-        findNavController().navigate(R.id.action_nav_taskdetails_to_nav_overview)
+        findNavController().navigateUp()
     }
 }

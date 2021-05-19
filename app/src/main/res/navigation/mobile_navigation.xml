@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_overview_to_nav_taskdetails"
             app:destination="@id/nav_taskdetails"/>
+        <action
+            android:id="@+id/action_nav_overview_to_nav_new_task"
+            app:destination="@id/nav_new_task" />
     </fragment>
 
     <fragment
@@ -36,4 +39,8 @@
         android:name="com.team06.focuswork.ui.taskdetails.TaskdetailsFragment"
         android:label="Taskdetails"
         tools:layout="@layout/fragment_taskdetails" >
+        <action
+            android:id="@+id/action_nav_taskdetails_to_nav_new_task"
+            app:destination="@id/nav_new_task" />
+    </fragment>
 </navigation>
