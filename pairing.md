@@ -11,11 +11,11 @@ Dev 8: Schreilechner Lukas Marcellus <br/>
 
 | Syntax      | Dev 1   	  | Dev 2   	  | Dev 3   	  | Dev 4   	  | Dev 5   	  | Dev 6   	  | Dev 7   	  | Dev 8   	  |
 | :---        |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |    :----:   |
-| Dev 1       | X           | HH:MM       | HH:MM       | 06:00       | HH:MM       | 08:10       | 06:45       | HH:MM       |
-| Dev 2       | HH:MM       | X           | 13:30       | 09:15       | 05:55       | HH:MM       | HH:MM       | HH:MM       |
-| Dev 3       | HH:MM       | 13:30       | X           | 07:00       | HH:MM       | HH:MM       | 07:48       | HH:MM       |
-| Dev 4       | 06:00       | 09:15       | 07:00       | X           | HH:MM       | HH:MM       | HH:MM       | HH:MM       |
-| Dev 5       | HH:MM       | 05:55       | HH:MM       | HH:MM       | X           | HH:MM       | HH:MM       | 08:45       |
-| Dev 6       | 08:10       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | X           | HH:MM       | 07:30       |
-| Dev 7       | 06:45       | HH:MM       | 07:48       | HH:MM       | HH:MM       | HH:MM       | X           | 07:30       |
-| Dev 8       | HH:MM       | HH:MM       | HH:MM       | HH:MM       | 08:45       | 07:30       | 07:30       | X           |
+| Dev 1       | X           | HH:MM       | 04:00       | 06:00       | 05:15       | 08:10       | 06:45       | HH:MM       |
+| Dev 2       | HH:MM       | X           | 13:30       | 09:15       | 05:55       | HH:MM       | HH:MM       | 09:00       |
+| Dev 3       | 04:00       | 13:30       | X           | 07:00       | HH:MM       | HH:MM       | 07:48       | HH:MM       |
+| Dev 4       | 06:00       | 09:15       | 07:00       | X           | HH:MM       | 04:00       | 07:55       | HH:MM       |
+| Dev 5       | 05:15       | 05:55       | HH:MM       | HH:MM       | X           | HH:MM       | HH:MM       | 08:45       |
+| Dev 6       | 08:10       | HH:MM       | HH:MM       | 04:00       | HH:MM       | X           | HH:MM       | 07:30       |
+| Dev 7       | 06:45       | HH:MM       | 07:48       | 07:55       | HH:MM       | HH:MM       | X           | 07:30       |
+| Dev 8       | HH:MM       | 08:00       | HH:MM       | HH:MM       | 08:45       | 07:30       | 07:30       | X           |
