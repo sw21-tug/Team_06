@@ -39,12 +39,14 @@
         <item>Day</item>
         <item>Week</item>
         <item>Month</item>
+        <item>All</item>
     </string-array>
 
     <string-array name="overview_time_frame_values">
         <item>day</item>
         <item>week</item>
         <item>month</item>
+        <item>all</item>
     </string-array>
 
     <string-array name="language_entries">

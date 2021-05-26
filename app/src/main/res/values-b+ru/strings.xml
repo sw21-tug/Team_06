@@ -38,6 +38,7 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
+    <string name="all_title">все задачи</string>
     <!-- String related to Details Fragment -->
     <string name="menu_item_edit">Редактировать</string>
     <string name="menu_item_delete">Удалить</string>
