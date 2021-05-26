@@ -99,7 +99,6 @@ class NewTaskInstrumentedTest {
         val endDates = arrayOf(endDate, endDateSecondTask)
 
         for (i in taskName.indices) {
-            onView(withId(R.id.taskCreate)).check(matches(not(isEnabled())))
             setupTaskStrings(taskName[i], taskDescription[i])
             setTimeValues(startDates[i], endDates[i])
             onView(withId(R.id.taskCreate)).check(matches(isEnabled())).perform(click())

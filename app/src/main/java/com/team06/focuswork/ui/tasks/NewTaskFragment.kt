@@ -28,7 +28,7 @@ import java.util.*
 
 class NewTaskFragment : Fragment() {
 
-    private lateinit var workingTask: Task;
+    private var workingTaskId: String = ""
     var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
     var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
@@ -64,6 +64,7 @@ class NewTaskFragment : Fragment() {
                 taskDescriptionView.setText(task.taskDescription)
                 startCalendar.value = task.startTime
                 endCalendar.value = task.endTime
+                workingTaskId = task.id
 
                 (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_edit_task)
                 binding.taskCreate.text = getString(R.string.action_save_task)
@@ -88,11 +89,12 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun saveTask() {
-        workingTask = Task(
+        val workingTask = Task(
             binding.taskName.text.toString(),
             binding.taskDescription.text.toString(),
             startCalendar.value!!,
             endCalendar.value!!)
+        workingTask.id = workingTaskId
         fireBaseStore.saveTask(workingTask, tasksViewModel::setSelectedTask)
     }
 

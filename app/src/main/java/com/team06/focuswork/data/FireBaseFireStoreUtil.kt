@@ -92,14 +92,24 @@ class FireBaseFireStoreUtil {
         map["endTime"] = CalendarTimestampUtil.toTimeStamp(task.endTime)
         val db = FirebaseFirestore.getInstance()
         LoginRepository.getUser()?.userId?.let {
-            db.collection("User")
+            val collection = db.collection("User")
                 .document(it)
                 .collection("Task")
-                .add(map)
-                .addOnSuccessListener { documentReference ->
-                    task.id = documentReference.id
-                    callback(task)
-                }
+            if(task.id.isEmpty()) {
+                //create new task, because there exists no task yet
+                collection
+                    .add(map)
+                    .addOnSuccessListener { documentReference ->
+                        task.id = documentReference.id
+                        callback(task)
+                    }
+            } else {
+                //use existing task, because there exists a task already
+                collection
+                    .document(task.id)
+                    .set(map)
+                callback(task)
+            }
         }
     }
 
