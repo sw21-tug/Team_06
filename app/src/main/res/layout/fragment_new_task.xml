@@ -97,13 +97,29 @@
         android:layout_gravity="start"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="20dp"
         android:enabled="false"
         android:text="@string/action_create_task"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/taskSaveTemplate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskEndDate"
+        app:layout_constraintVertical_bias="0.971" />
+
+    <Button
+        android:id="@+id/taskSaveTemplate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="48dp"
+        android:enabled="false"
+        android:text="@string/save_template"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

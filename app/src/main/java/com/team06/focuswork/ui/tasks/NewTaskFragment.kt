@@ -1,6 +1,11 @@
 package com.team06.focuswork.ui.tasks
 
+import android.app.AlertDialog.*
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +88,35 @@ class NewTaskFragment : Fragment() {
             saveTask()
             findNavController().navigateUp()
         }
+        binding.taskSaveTemplate.setOnClickListener {saveTemplate()}
+    }
+
+    private fun saveTemplate() {
+        val alertBuilder: Builder = Builder(requireContext())
+        alertBuilder.setTitle("Title")
+
+        val input = EditText(requireContext())
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        alertBuilder.setView(input)
+
+        alertBuilder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+            onTemplateSavedOK(input.text.toString())})
+        alertBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+
+        alertBuilder.show()
+    }
+
+    private fun onTemplateSavedOK(title: String) {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val template = mutableSetOf(binding.taskName.text.toString(),
+                binding.taskDescription.text.toString())
+        if (!sharedPref.contains("template_$title")) {
+            with(sharedPref.edit()) {
+                putStringSet("template_$title", template)
+                apply()
+            }
+        } else
+            showToast(getString(R.string.template_exists_toast))
     }
 
     private fun saveTask() {
@@ -168,22 +202,25 @@ class NewTaskFragment : Fragment() {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
             !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
                 view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+        view.findViewById<Button>(R.id.taskSaveTemplate).isEnabled =
+                !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
+                        view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {
         val cal = if (startBundle) startCalendar.value else endCalendar.value
         return if (isDate) bundleOf(
-            Pair("YEAR", cal?.get(Calendar.YEAR)),
-            Pair("MONTH", cal?.get(Calendar.MONTH)),
-            Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
-            Pair(
-                "MIN_DATE",
-                if (startBundle) System.currentTimeMillis() - 1000
-                else startCalendar.value?.timeInMillis
-            )
+                Pair("YEAR", cal?.get(Calendar.YEAR)),
+                Pair("MONTH", cal?.get(Calendar.MONTH)),
+                Pair("DAY", cal?.get(Calendar.DAY_OF_MONTH)),
+                Pair(
+                        "MIN_DATE",
+                        if (startBundle) System.currentTimeMillis() - 1000
+                        else startCalendar.value?.timeInMillis
+                )
         ) else bundleOf(
-            Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
-            Pair("MINUTE", cal?.get(Calendar.MINUTE))
+                Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
+                Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
     }
 }

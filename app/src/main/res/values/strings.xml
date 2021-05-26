@@ -101,6 +101,8 @@
 
     <string name="title_edit_task">Edit Task</string>
     <string name="action_save_task">Save Task</string>
+    <string name="save_template">Save Template</string>
+    <string name="template_exists_toast">Task template already exists</string>
 
     <string name="logout_dialog_title">Logout</string>
     <string name="logout_dialog_description">Do you really want to logout?</string>
