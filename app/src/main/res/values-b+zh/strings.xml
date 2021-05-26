@@ -38,6 +38,7 @@
     <string name="saturday">周六</string>
     <string name="sunday">星期日</string>
     <string name="erroneous_config">警告！错误的配置，默认为周！</string>
+    <string name="all_title">所有任務</string>
     <!-- String related to Details Fragment -->
     <string name="menu_item_edit">编辑</string>
     <string name="menu_item_delete">删除</string>
