@@ -15,7 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DrawerLayoutNavigationTest {
+class DrawerLayoutNavigationUtilTest {
 
     @get:Rule
     var activityRule: ActivityScenarioRule<MainActivity> =
@@ -31,22 +31,6 @@ class DrawerLayoutNavigationTest {
     fun testDrawerLayoutNavigation() {
         onView(withId(R.id.fragment_container_overview))
             .check(matches(isDisplayed()))
-
-        openLayoutDrawer()
-
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_new_task))
-        onView(withId(R.id.fragment_container_new_task))
-            .check(matches(isDisplayed()))
-        Thread.sleep(200)
-
-        openLayoutDrawer()
-
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_timer))
-        onView(withId(R.id.fragment_container_timer))
-            .check(matches(isDisplayed()))
-        Thread.sleep(200)
 
         openLayoutDrawer()
 

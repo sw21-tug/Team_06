@@ -25,6 +25,15 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:actionButtonStyle">@style/customActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/customActionButtonStyle</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+
+        <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
     </style>
 
     <style name="Theme.FocusWork.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -52,6 +61,15 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:actionButtonStyle">@style/customActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/customActionButtonStyle</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+
+        <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
     </style>
     <style name="Theme.FocusWork.Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- This is the Light Blue theme. -->
@@ -78,6 +96,15 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:actionButtonStyle">@style/customActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/customActionButtonStyle</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+
+        <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
     </style>
     <style name="Theme.FocusWork.DarkBlue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- This is the Dark Blue theme. -->
@@ -104,6 +131,15 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:actionButtonStyle">@style/customActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/customActionButtonStyle</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
+
+        <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
     </style>
 
     <style name="Theme.FocusWork.NoActionBar">
@@ -114,4 +150,16 @@
     <style name="Theme.FocusWork.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.FocusWork.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="customActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:scaleX">0.75</item>
+        <item name="android:scaleY">0.75</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="AlertButtonStyle">
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
+    </style>
+
 </resources>

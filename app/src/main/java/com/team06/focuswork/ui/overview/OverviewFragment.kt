@@ -27,6 +27,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
@@ -35,7 +36,9 @@ import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentDayBinding
 import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.databinding.FragmentWeekBinding
+import com.team06.focuswork.databinding.FragmentMonthBinding
 import com.team06.focuswork.model.TasksViewModel
+import com.team06.focuswork.ui.util.FilterUtil
 import java.text.SimpleDateFormat
 import java.util.*
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
@@ -74,6 +77,10 @@ class OverviewFragment : Fragment() {
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
+            Filter.MONTH -> {
+                dynamicBinding = FragmentMonthBinding.inflate(layoutInflater, layout, false)
+                layout.addView((dynamicBinding as FragmentMonthBinding).fragmentContainerMonth)
+            }
             else -> {
                 showToast(R.string.erroneous_config)
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
@@ -91,12 +98,18 @@ class OverviewFragment : Fragment() {
         binding.notifButton.setOnClickListener(this::sendNotif)
 
         fireStoreUtil.retrieveTasks(this::setTasks)
-
-        when (filter) {
+        val fab: FloatingActionButton = binding.fab
+        fab.setOnClickListener { _ ->
+            tasksViewModel.setSelectedTask(null)
+            findNavController().navigate(R.id.action_nav_overview_to_nav_new_task)
+        }
+        when(filter){
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
+            Filter.MONTH -> initializeMonthView()
             else -> {
                 //TODO: Error handling
+                initializeWeekView()
             }
         }
     }
@@ -110,49 +123,32 @@ class OverviewFragment : Fragment() {
     private fun initializeDayView() {
         val localBinding = dynamicBinding as FragmentDayBinding
 
-        initDayUI(localBinding)
-
-        recyclerView = localBinding.recyclerViewWeek
+        localBinding.textViewDay.text = FilterUtil.getDayText(Calendar.getInstance(), requireContext())
+        recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
+        tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
-            currentTasks.removeAll(currentTasks)
+        tasksViewModel.allTasks.observe(requireActivity(), Observer {
+                tasks -> currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if (filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
+                if (FilterUtil.filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
-    }
-
-    private fun initDayUI(binding: FragmentDayBinding) {
-        val cal = Calendar.getInstance()
-
-        val dayName = SimpleDateFormat("EEEE").format(cal.time)
-        val text = SpannableString(
-            String.format(
-                "%s %s, %d.%d.", getString(R.string.day_tasks_for),
-                dayName, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1
-            )
-        )
-        text.setSpan(
-            StyleSpan(Typeface.BOLD), getString(R.string.day_tasks_for).length + 1,
-            dayName.length + getString(R.string.day_tasks_for).length + 2,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        binding.textviewTitle.text = text
     }
 
     private fun initializeWeekView() {
         val localBinding = dynamicBinding as FragmentWeekBinding
 
-        initWeekUI(localBinding)
+        localBinding.textViewWeek.text =
+            FilterUtil.getWeekText(Calendar.getInstance(), Calendar.getInstance())
         initWeekButtons(localBinding)
 
-        recyclerView = localBinding.recyclerViewWeek
+        recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
@@ -160,41 +156,41 @@ class OverviewFragment : Fragment() {
         tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
-                if (filterForDay(selectedDay, it.startTime, it.endTime))
+                if (showEntireWeek && FilterUtil.filterForWeek(
+                        selectedDay,
+                        it.startTime,
+                        it.endTime
+                    ) ||
+                    !showEntireWeek && FilterUtil.filterForDay(
+                        selectedDay,
+                        it.startTime,
+                        it.endTime
+                    )
+                )
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
 
-    private fun initWeekUI(binding: FragmentWeekBinding) {
-        val calMon = Calendar.getInstance()
-        setMonday(calMon)
-        val monday = SimpleDateFormat("EEEE").format(calMon.time)
+    private fun initializeMonthView() {
+        val localBinding = dynamicBinding as FragmentMonthBinding
 
-        val calSun = Calendar.getInstance()
-        setMonday(calSun)
-        calSun.add(Calendar.DATE, 6)
-        val sunday = SimpleDateFormat("EEEE").format(calSun.time)
+        localBinding.textviewMonth.text = FilterUtil.getMonthText(Calendar.getInstance(), requireContext())
+        recyclerView = localBinding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        localBinding.progressbar.visibility = View.GONE
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        val text = SpannableString(
-            String.format(
-                "%s, %2d.%2d.  -  %s, %2d.%2d.",
-                monday, calMon.get(Calendar.DAY_OF_MONTH), calMon.get(Calendar.MONTH) + 1,
-                sunday, calSun.get(Calendar.DAY_OF_MONTH), calSun.get(Calendar.MONTH) + 1
-            )
-        )
-
-        text.setSpan(
-            StyleSpan(Typeface.BOLD), 0,
-            monday.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        text.setSpan(
-            StyleSpan(Typeface.BOLD), monday.length + 13,
-            monday.length + sunday.length + 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        binding.textviewRange.text = text
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+            currentTasks.removeAll(currentTasks)
+            tasks.iterator().forEach {
+                if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
+                    currentTasks.add(it)
+            }
+            (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
+        })
     }
 
     private fun initWeekButtons(binding: FragmentWeekBinding) {
@@ -203,81 +199,47 @@ class OverviewFragment : Fragment() {
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonMonday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonTuesday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 1)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonWednesday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 2)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonThursday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 3)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonFriday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 4)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSaturday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 5)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSunday.setOnClickListener {
-            setMonday(selectedDay)
+            FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 6)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
     }
-
-    private fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
-        if (showEntireWeek) return filterForWeek(day, start, end)
-
-        //We don't care about the year-to-day conversion being accurate
-        //since we only care about what day comes first, meaning leaving 1 day unsused
-        //for most years is of no consequence
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val currentDay = day.get(Calendar.DAY_OF_YEAR) +
-            day.get(Calendar.YEAR) * 366
-
-        return currentDay in startDay..endDay
-    }
-
-    //week can just be any day within the week
-    private fun filterForWeek(week: Calendar, start: Calendar, end: Calendar): Boolean {
-        setMonday(week)
-
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val currentDay = week.get(Calendar.DAY_OF_YEAR) +
-            week.get(Calendar.YEAR) * 366
-
-        return (currentDay in startDay..endDay) || (currentDay + 1 in startDay..endDay) ||
-            (currentDay + 2 in startDay..endDay) || (currentDay + 3 in startDay..endDay) ||
-            (currentDay + 4 in startDay..endDay) || (currentDay + 5 in startDay..endDay) ||
-            (currentDay + 6 in startDay..endDay)
-    }
-
 
     private fun sendNotif(@Suppress("UNUSED_PARAMETER") view :View) {
         sendTimerFinishedNotif(requireContext())
@@ -308,24 +270,5 @@ class OverviewFragment : Fragment() {
 
     private fun showToast(@StringRes string: Int) {
         Toast.makeText(context, string, Toast.LENGTH_LONG).show()
-    }
-
-    companion object Overview {
-        //This is needed because setting the field Calendar.DAY_OF_WEEK has flimsy behaviour
-        fun setMonday(cal: Calendar): Calendar {
-            var delta = 0
-            when (cal.get(Calendar.DAY_OF_WEEK)) {
-                Calendar.MONDAY -> delta = 0
-                Calendar.TUESDAY -> delta = -1
-                Calendar.WEDNESDAY -> delta = -2
-                Calendar.THURSDAY -> delta = -3
-                Calendar.FRIDAY -> delta = -4
-                Calendar.SATURDAY -> delta = -5
-                Calendar.SUNDAY -> delta = -6
-            }
-
-            cal.add(Calendar.DAY_OF_MONTH, delta)
-            return cal
-        }
     }
 }

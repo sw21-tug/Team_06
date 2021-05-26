@@ -7,4 +7,6 @@ data class Task(
     var taskDescription: String,
     var startTime: Calendar,
     var endTime: Calendar
-)
+) {
+    var id: String = ""
+}

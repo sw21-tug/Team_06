@@ -19,12 +19,13 @@
     <string name="task_end_date_and_time">任务结束</string>
     <string name="action_create_task">创建任务</string>
     <string name="action_sign_in_short">登入</string>
+    <string name="task_not_saved_toast">不幸的是，該任務無法保存！</string>
     <!-- Strings related to Timer Fragment -->
     <string name="timer_countdown">00:00</string>
     <string name="timer_start_button">启动计时器</string>
+    <!-- Strings related to Timer -->
+    <string name="timer_format">(hh:mm)</string>
     <string name="timer_finished">计时器已结束！</string>
-    <string name="no_task_selected">请选择一个任务！</string>
-
     <!-- Strings related to Day Overview -->
     <string name="day_title">今天的任务</string>
     <string name="day_tasks_for">任务：</string>
@@ -38,6 +39,10 @@
     <string name="saturday">周六</string>
     <string name="sunday">星期日</string>
     <string name="erroneous_config">警告！错误的配置，默认为周！</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">编辑</string>
+    <string name="menu_item_delete">删除</string>
+    <string name="month_title">这个月的任务</string>
 
     <string name="menu_settings">设定值</string>
 
@@ -61,6 +66,11 @@
     <string name="colorAccent_title">口音颜色</string>
 
     <!-- Login/Registration -->
+    <string name="login_email_hint">陈小名</string>
+    <string name="logo_image_description">形象標識</string>
+    <string name="focus_work_title">重點工作</string>
+    <string name="add_new_task">添加新任務</string>
+    <string name="notification">通知</string>
     <string name="prompt_first_name">名</string>
     <string name="prompt_last_name">姓</string>
     <string name="prompt_email">电子邮件</string>
@@ -77,5 +87,13 @@
 
     <string name="notification_title">您的任务已经完成！</string>
     <string name="notification_message">您为其设置计时器的任务已完成。</string>
+    <string name="login_error_message">無法登錄用戶</string>
 
+    <string name="delete_dialog_title">删除任务</string>
+    <string name="delete_dialog_description">你真的想删除这个任务吗？</string>
+    <string name="delete_dialog_cancel">取消</string>
+    <string name="delete_dialog_confirm_delete">删除</string>
+
+    <string name="title_edit_task">编辑任务</string>
+    <string name="action_save_task">保存任务</string>
 </resources>
