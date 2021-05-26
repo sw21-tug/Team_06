@@ -15,7 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DrawerLayoutNavigationTest {
+class DrawerLayoutNavigationUtilTest {
 
     @get:Rule
     var activityRule: ActivityScenarioRule<MainActivity> =

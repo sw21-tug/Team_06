@@ -15,6 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.team06.focuswork.espressoUtil.NavigationUtil
 import org.junit.After
 import org.junit.Assert
 import org.junit.Rule
@@ -30,100 +31,45 @@ class LanguageInstrumentedTest {
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
 
+    private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val navigator = NavigationUtil()
+
     @After
     fun cleanUp() {
-        // reset the locale to English
         setLocale("en", "US")
-    }
-
-    @Suppress("DEPRECATION")
-    private fun setLocale(language: String, country: String) {
-        //parts taken from https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android
-
-        val locale = Locale(language, country)
-        // here we update locale for date formatters
-        Locale.setDefault(locale)
-        // here we update locale for app resources
-
-        val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-        val res: Resources = context.resources
-        val config: Configuration = res.configuration
-        config.setLocale(locale)
-
-        res.updateConfiguration(
-            config,
-            res.displayMetrics
-        )
-
-    }
-
-    private fun assertLanguageIsEnglish() {
-        //This is needed since accessing R.strings.menu_overview will always get the displayed text
-        //However, we want to know whether English is currently being displayed.
-        var text = "Overview"
-
-        val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-
-        Assert.assertEquals(text, context.getString(R.string.menu_overview))
-    }
-
-    private fun assertLanguageIsChinese() {
-        //This is needed since accessing R.strings.menu_overview will always get the displayed text
-        //However, we want to know whether Chinese is currently being displayed.
-        var text = "概述"
-
-        val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-
-        Assert.assertEquals(text, context.getString(R.string.menu_overview))
-    }
-
-    private fun assertLanguageIsRussian() {
-        //This is needed since accessing R.strings.menu_overview will always get the displayed text
-        //However, we want to know whether Russian is currently being displayed.
-        var text = "обзор"
-
-        val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-
-        Assert.assertEquals(text, context.getString(R.string.menu_overview))
     }
 
     @Test
     fun englishLocaleTest() {
         setLocale("en", "US")
-        assertLanguageIsEnglish()
+        Assert.assertEquals("Overview", context.getString(R.string.menu_overview))
     }
 
     @Test
     fun chineseLocaleTest() {
         setLocale("zh", "CN")
-        assertLanguageIsChinese()
+        Assert.assertEquals("概述", context.getString(R.string.menu_overview))
     }
 
     @Test
     fun russianLocaleTest() {
         setLocale("ru", "RU")
-        assertLanguageIsRussian()
+        Assert.assertEquals("обзор", context.getString(R.string.menu_overview))
     }
 
-    private fun navigateToOverview() {
-        onView(withId(R.id.drawer_layout))
-            .perform(DrawerActions.open())
+    private fun setLocale(language: String, country: String) {
+        //parts taken from https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android
+        val locale = Locale(language, country) // here we update locale for date formatters
+        Locale.setDefault(locale) // here we update locale for app resources
 
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_overview));
-    }
-
-    private fun navigateToSettings() {
-        onView(withId(R.id.drawer_layout))
-            .perform(DrawerActions.open())
-
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_settings));
+        val res: Resources = context.resources
+        res.configuration.setLocale(locale)
+        context = context.createConfigurationContext(res.configuration)
     }
 
     @Test
     fun settingsSelectEnglishTest() {
-        navigateToSettings()
+        navigator.navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(
@@ -132,23 +78,16 @@ class LanguageInstrumentedTest {
                 )
             )
 
-        val array = InstrumentationRegistry.getInstrumentation()
-            .targetContext.resources.getStringArray(R.array.language_entries)
-
-        onView(withText(array[0]))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-            .perform(click());
-
-        navigateToOverview()
-        Thread.sleep(400) //fix flaky test?
-        onView(withId(R.id.toolbar))
-            .check(matches(hasDescendant(withText("Overview"))))
+        val array = context.resources.getStringArray(R.array.language_entries)
+        onView(withText(array[0])).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
+        navigator.navigateToOverview()
+        Thread.sleep(400)
+        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("Overview"))))
     }
 
     @Test
     fun settingsSelectRussianTest() {
-        navigateToSettings()
+        navigator.navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(
@@ -157,23 +96,16 @@ class LanguageInstrumentedTest {
                 )
             )
 
-        val array = InstrumentationRegistry.getInstrumentation()
-            .targetContext.resources.getStringArray(R.array.language_entries)
-
-        onView(withText(array[1]))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-            .perform(click());
-
-        navigateToOverview()
-        Thread.sleep(400) //fix flaky test?
-        onView(withId(R.id.toolbar))
-            .check(matches(hasDescendant(withText("обзор"))))
+        val array = context.resources.getStringArray(R.array.language_entries)
+        onView(withText(array[1])).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
+        navigator.navigateToOverview()
+        Thread.sleep(400)
+        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("обзор"))))
     }
 
     @Test
     fun settingsSelectChineseTest() {
-        navigateToSettings()
+        navigator.navigateToSettings()
 
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(
@@ -182,17 +114,10 @@ class LanguageInstrumentedTest {
                 )
             )
 
-        val array = InstrumentationRegistry.getInstrumentation()
-            .targetContext.resources.getStringArray(R.array.language_entries)
-
-        onView(withText(array[2]))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-            .perform(click());
-
-        navigateToOverview()
-        Thread.sleep(400) //fix flaky test?
-        onView(withId(R.id.toolbar))
-            .check(matches(hasDescendant(withText("概述"))))
+        val array = context.resources.getStringArray(R.array.language_entries)
+        onView(withText(array[2])).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
+        navigator.navigateToOverview()
+        Thread.sleep(400)
+        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("概述"))))
     }
 }

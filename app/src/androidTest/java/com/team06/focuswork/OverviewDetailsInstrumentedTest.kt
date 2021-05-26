@@ -23,6 +23,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.data.LoginRepository
+import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.overview.OverviewFragment
 import io.mockk.every
@@ -48,9 +49,7 @@ class OverviewDetailsInstrumentedTest {
 
     @Before
     fun init() {
-        // Mock Test User
-        mockkObject(LoginRepository)
-        every { LoginRepository.getUser() } answers { user }
+        MockUtil.mockUser(user)
     }
 
     private fun navigateToTaskDetail() {
