@@ -96,6 +96,7 @@ class FireBaseFireStoreUtil {
                 .document(it)
                 .collection("Task")
             if(task.id.isEmpty()) {
+                //create new task, because there exists no task yet
                 collection
                     .add(map)
                     .addOnSuccessListener { documentReference ->
@@ -103,6 +104,7 @@ class FireBaseFireStoreUtil {
                         callback(task)
                     }
             } else {
+                //use existing task, because there exists a task already
                 collection
                     .document(task.id)
                     .set(map)
