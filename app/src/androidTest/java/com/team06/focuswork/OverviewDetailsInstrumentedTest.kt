@@ -326,4 +326,31 @@ class OverviewDetailsInstrumentedTest {
         onView(withId(R.id.fragment_container_overview))
             .check(matches(isDisplayed()))
     }
+
+    @Test
+    fun testAllView() {
+        navigateToSettings()
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.overviewTimeFrame_title)), click()
+                )
+            )
+
+        val array = InstrumentationRegistry.getInstrumentation()
+            .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
+
+        onView(withText(array[3]))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        navigateToOverview()
+        Thread.sleep(400)
+
+        onView(withId(R.id.text_view_all))
+        onView(withId(R.id.fragment_container_overview))
+            .check(matches(isDisplayed()))
+    }
 }
