@@ -36,10 +36,7 @@ import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.FireBaseFireStoreUtil.Filter
 import com.team06.focuswork.data.Task
-import com.team06.focuswork.databinding.FragmentDayBinding
-import com.team06.focuswork.databinding.FragmentOverviewBinding
-import com.team06.focuswork.databinding.FragmentWeekBinding
-import com.team06.focuswork.databinding.FragmentMonthBinding
+import com.team06.focuswork.databinding.*
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
 import java.text.SimpleDateFormat
@@ -82,6 +79,10 @@ class OverviewFragment : Fragment() {
                 dynamicBinding = FragmentMonthBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentMonthBinding).fragmentContainerMonth)
             }
+            Filter.ALL -> {
+                dynamicBinding = FragmentAllTasksBinding.inflate(layoutInflater, layout, false)
+                layout.addView((dynamicBinding as FragmentAllTasksBinding).fragmentContainerAll)
+            }
             else -> {
                 showToast(R.string.erroneous_config)
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
@@ -108,6 +109,7 @@ class OverviewFragment : Fragment() {
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
             Filter.MONTH -> initializeMonthView()
+            Filter.ALL -> initializeAllView()
             else -> {
                 //TODO: Error handling
                 initializeWeekView()
@@ -242,6 +244,23 @@ class OverviewFragment : Fragment() {
         }
     }
 
+    private fun initializeAllView(){
+        val localBinding = dynamicBinding as FragmentAllTasksBinding
+
+        recyclerView = localBinding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        localBinding.progressbar.visibility = View.GONE
+        recyclerView.adapter = TaskAdapter(requireContext(), this)
+        tasksViewModel.setSelectedTask(null)
+
+        tasksViewModel.allTasks.observe(requireActivity(), Observer {
+            tasks -> currentTasks.removeAll(currentTasks)
+            currentTasks.addAll(0, tasks)
+            (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
+        })
+    }
+
     private fun createNotifChannel() {
         // based on this tutorial
         // https://www.youtube.com/watch?v=B5dgmvbrHgs
@@ -308,6 +327,7 @@ class OverviewFragment : Fragment() {
             "day" -> this.filter = Filter.DAY
             "week" -> this.filter = Filter.WEEK
             "month" -> this.filter = Filter.MONTH
+            "all" -> this.filter = Filter.ALL
             else -> {
                 this.filter = Filter.WEEK
             }

@@ -8,7 +8,7 @@ import java.util.*
 
 class FireBaseFireStoreUtil {
     enum class Filter {
-        NONE, DAY, WEEK, MONTH
+        NONE, DAY, WEEK, MONTH, ALL
     }
 
     private val fireBaseStore = FirebaseFirestore.getInstance()

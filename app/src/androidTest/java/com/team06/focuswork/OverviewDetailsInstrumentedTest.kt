@@ -4,7 +4,6 @@ import android.view.Gravity
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.NoMatchingViewException
@@ -22,13 +21,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.model.LoggedInUser
-import com.team06.focuswork.ui.overview.OverviewFragment
-import io.mockk.every
-import io.mockk.mockkObject
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
@@ -329,6 +323,33 @@ class OverviewDetailsInstrumentedTest {
             .check(matches(withText("editedSimpleTask")))
         pressBack()
         Thread.sleep(400)
+        onView(withId(R.id.fragment_container_overview))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun testAllView() {
+        navigateToSettings()
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(R.string.overviewTimeFrame_title)), click()
+                )
+            )
+
+        val array = InstrumentationRegistry.getInstrumentation()
+            .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
+
+        onView(withText(array[3]))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        navigateToOverview()
+        Thread.sleep(400)
+
+        onView(withId(R.id.text_view_all))
         onView(withId(R.id.fragment_container_overview))
             .check(matches(isDisplayed()))
     }
