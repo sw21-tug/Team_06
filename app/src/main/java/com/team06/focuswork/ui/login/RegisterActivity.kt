@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.databinding.ActivityRegisterBinding
@@ -97,6 +98,11 @@ class RegisterActivity : ThemedAppCompatActivity() {
                 updateUiWithUser()
             }
             setResult(Activity.RESULT_OK)
+
+            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+                .putString("USER", username.text.toString()).apply()
+            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+                .putString("PASS", password.text.toString()).apply()
 
             //Complete and destroy login activity once successful
             finish()

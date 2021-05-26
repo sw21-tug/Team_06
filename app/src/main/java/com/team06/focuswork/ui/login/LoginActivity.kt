@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.databinding.ActivityLoginBinding
 import com.team06.focuswork.ThemedAppCompatActivity
@@ -31,10 +33,29 @@ class LoginActivity : ThemedAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindComponents()
+        autoLogin()
         setUpLoginFormState()
         setUpLoginResult()
         setUpTextListeners()
         setUpSubmitButtons()
+        autoLogin()
+    }
+
+    private fun autoLogin(): Boolean{
+        var user = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getString("USER", null)
+        var pass = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getString("PASS", null)
+
+        if(user != null && pass != null) {
+            Log.d("AutoLogin", user)
+            Log.d("AutoLogin", pass)
+            loginViewModel.login(user, pass)
+            return true
+        }
+
+        Log.d("AutoLogin", "Null!")
+        return false
     }
 
     private fun bindComponents() {
@@ -115,6 +136,11 @@ class LoginActivity : ThemedAppCompatActivity() {
                 updateUiWithUser()
             }
             setResult(Activity.RESULT_OK)
+
+            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+                .putString("USER", username.text.toString()).apply()
+            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+                .putString("PASS", password.text.toString()).apply()
 
             //Complete and destroy login activity once successful
             finish()
