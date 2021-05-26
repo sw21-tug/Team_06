@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">专注工作</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+    <string name="nav_header_title">重点工作</string>
+    <string name="nav_header_subtitle">战队06-格拉茨大学</string>
     <string name="nav_header_desc">导航标题</string>
 
     <string name="menu_overview">概述</string>
@@ -86,7 +87,7 @@
     <string name="login_failed">"登录失败"</string>
 
     <string name="notification_title">您的任务已经完成！</string>
-    <string name="notification_message">该文本比原始消息长得多。</string>
+    <string name="notification_message">您为其设置计时器的任务已完成。</string>
     <string name="login_error_message">無法登錄用戶</string>
 
     <string name="delete_dialog_title">删除任务</string>

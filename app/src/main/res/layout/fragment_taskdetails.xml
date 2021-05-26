@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.taskdetails.TaskdetailsFragment"
-    android:background="@color/white"
     android:id="@+id/fragment_container_taskdetails">
 
 

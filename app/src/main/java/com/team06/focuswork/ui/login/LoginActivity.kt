@@ -12,13 +12,13 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.databinding.ActivityLoginBinding
+import com.team06.focuswork.ThemedAppCompatActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : ThemedAppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding

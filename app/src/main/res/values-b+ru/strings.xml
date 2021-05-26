@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Сосредоточенная работа</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+    <string name="nav_header_title">Сосредоточенная работа</string>
+    <string name="nav_header_subtitle">Команда 06 - ТУ Грац</string>
     <string name="nav_header_desc">Заголовок навигации</string>
 
     <string name="menu_overview">обзор</string>
@@ -86,7 +87,7 @@
     <string name="login_failed">"Ошибка входа"</string>
 
     <string name="notification_title">Ваша задача выполнена!</string>
-    <string name="notification_message">Этот текст намного длиннее исходного сообщения.</string>
+    <string name="notification_message">Задание, для которого вы установили таймер, выполнено.</string>
     <string name="login_error_message">Не удалось войти пользователю</string>
 
     <string name="delete_dialog_title">Удалить задачу</string>

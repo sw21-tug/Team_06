@@ -1,7 +1,5 @@
 package com.team06.focuswork.ui.overview
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
@@ -21,7 +19,6 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -41,6 +38,8 @@ import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
 import java.text.SimpleDateFormat
 import java.util.*
+import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
+import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
 
 class OverviewFragment : Fragment() {
 
@@ -96,8 +95,8 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        createNotifChannel()
-        binding.notifButton.setOnClickListener { sendNotif() }
+        createNotifChannels(requireContext())
+        binding.notifButton.setOnClickListener(this::sendNotif)
 
         fireStoreUtil.retrieveTasks(this::setTasks)
         val fab: FloatingActionButton = binding.fab
@@ -255,59 +254,14 @@ class OverviewFragment : Fragment() {
         tasksViewModel.setSelectedTask(null)
 
         tasksViewModel.allTasks.observe(requireActivity(), Observer {
-            tasks -> currentTasks.removeAll(currentTasks)
+                tasks -> currentTasks.removeAll(currentTasks)
             currentTasks.addAll(0, tasks)
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
 
-    private fun createNotifChannel() {
-        // based on this tutorial
-        // https://www.youtube.com/watch?v=B5dgmvbrHgs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Timer finished"
-            val descriptionText = "The timer for your task has finished."
-            val important = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("TIMER_NOTIF_ID", name, important).apply {
-                description = descriptionText;
-            }
-            val notificationManager = getSystemService(
-                requireContext(),
-                NotificationManager::class.java
-            ) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    private fun sendNotif() {
-        // based on this tutorial
-        // out first notification, navigates back to app by clicking on it
-        // https://www.youtube.com/watch?v=B5dgmvbrHgs
-        val intent = Intent(requireContext(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(requireContext(), 0, intent, 0)
-
-        val notificationSound: Uri = RingtoneManager.getDefaultUri(
-            RingtoneManager
-                .TYPE_NOTIFICATION
-        )
-
-        val builder = NotificationCompat.Builder(requireContext(), "TIMER_NOTIF_ID")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText("The task {...} you have set has finished.")
-            .setStyle(
-                NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_message))
-            )
-            .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setSound(notificationSound)
-
-        with(NotificationManagerCompat.from(requireContext())) {
-            notify(101, builder.build())
-        }
+    private fun sendNotif(@Suppress("UNUSED_PARAMETER") view :View) {
+        sendTimerFinishedNotif(requireContext())
     }
 
     fun onClickTaskItem(task: Task) {

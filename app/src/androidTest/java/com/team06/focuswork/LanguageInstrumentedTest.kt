@@ -1,14 +1,11 @@
 package com.team06.focuswork
 
 import android.content.Context
-import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.DrawerActions
-import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -37,6 +34,20 @@ class LanguageInstrumentedTest {
     @After
     fun cleanUp() {
         setLocale("en", "US")
+
+        // set app language to Engish as well
+        Thread.sleep(200)
+        navigator.navigateToSettings()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(actionOnItem<RecyclerView.ViewHolder>(
+                hasDescendant(withText(R.string.language_title)), click()))
+
+        val array = InstrumentationRegistry.getInstrumentation()
+            .targetContext.resources.getStringArray(R.array.language_entries)
+        onView(withText(array[0]))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click());
     }
 
     @Test

@@ -10,15 +10,14 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
-import com.team06.focuswork.databinding.ActivityLoginBinding
 import com.team06.focuswork.databinding.ActivityRegisterBinding
+import com.team06.focuswork.ThemedAppCompatActivity
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : ThemedAppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var firstname: EditText
