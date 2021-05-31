@@ -29,23 +29,18 @@ class DrawerLayoutNavigationUtilTest {
 
     @Test
     fun testDrawerLayoutNavigation() {
-        onView(withId(R.id.fragment_container_overview))
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
 
         openLayoutDrawer()
 
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_settings))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_settings))
+        onView(withId(androidx.preference.R.id.recycler_view)).check(matches(isDisplayed()))
         Thread.sleep(200)
 
         openLayoutDrawer()
 
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_overview))
-        onView(withId(R.id.fragment_container_overview))
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_overview))
+        onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
     }
 
 }

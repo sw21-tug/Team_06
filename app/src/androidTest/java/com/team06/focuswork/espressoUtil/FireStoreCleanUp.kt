@@ -19,4 +19,9 @@ object FireStoreCleanUp {
         tasks.forEach { util.deleteTask(it) }
         asyncTaskFinished = true
     }
+
+    //private fun deleteUser()
 }
+
+//Test Users: NewTaskInstrumentedTest: id = dggkbNlMM7QqSWjj8Nii
+//            LogIninstrumentedTest: username = "test@gmail.com", password = "password"

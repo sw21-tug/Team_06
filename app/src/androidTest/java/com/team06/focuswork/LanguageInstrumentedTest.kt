@@ -34,20 +34,13 @@ class LanguageInstrumentedTest {
     @After
     fun cleanUp() {
         setLocale("en", "US")
-
-        // set app language to Engish as well
         Thread.sleep(200)
-        navigator.navigateToSettings()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(actionOnItem<RecyclerView.ViewHolder>(
-                hasDescendant(withText(R.string.language_title)), click()))
+        navigateToLanguageSettings()
 
-        val array = InstrumentationRegistry.getInstrumentation()
+        val languages = InstrumentationRegistry.getInstrumentation()
             .targetContext.resources.getStringArray(R.array.language_entries)
-        onView(withText(array[0]))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-            .perform(click());
+        onView(withText(languages[0])).inRoot(isDialog()).check(matches(isDisplayed()))
+            .perform(click())
     }
 
     @Test
@@ -78,17 +71,19 @@ class LanguageInstrumentedTest {
         context = context.createConfigurationContext(res.configuration)
     }
 
-    @Test
-    fun settingsSelectEnglishTest() {
+    private fun navigateToLanguageSettings() {
         navigator.navigateToSettings()
-
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(
                 actionOnItem<RecyclerView.ViewHolder>(
                     hasDescendant(withText(R.string.language_title)), click()
                 )
             )
+    }
 
+    @Test
+    fun settingsSelectEnglishTest() {
+        navigateToLanguageSettings()
         val array = context.resources.getStringArray(R.array.language_entries)
         onView(withText(array[0])).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
         navigator.navigateToOverview()
@@ -98,15 +93,7 @@ class LanguageInstrumentedTest {
 
     @Test
     fun settingsSelectRussianTest() {
-        navigator.navigateToSettings()
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                actionOnItem<RecyclerView.ViewHolder>(
-                    hasDescendant(withText(R.string.language_title)), click()
-                )
-            )
-
+        navigateToLanguageSettings()
         val array = context.resources.getStringArray(R.array.language_entries)
         onView(withText(array[1])).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
         navigator.navigateToOverview()
@@ -116,15 +103,7 @@ class LanguageInstrumentedTest {
 
     @Test
     fun settingsSelectChineseTest() {
-        navigator.navigateToSettings()
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                actionOnItem<RecyclerView.ViewHolder>(
-                    hasDescendant(withText(R.string.language_title)), click()
-                )
-            )
-
+        navigateToLanguageSettings()
         val array = context.resources.getStringArray(R.array.language_entries)
         onView(withText(array[2])).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
         navigator.navigateToOverview()

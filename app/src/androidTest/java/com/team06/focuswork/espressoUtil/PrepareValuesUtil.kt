@@ -3,6 +3,7 @@ package com.team06.focuswork.espressoUtil
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.*
@@ -45,5 +46,11 @@ class PrepareValuesUtil {
             .inRoot(RootMatchers.isDialog())
             .check(matches(isDisplayed()))
             .perform(click())
+    }
+
+    fun setLoginData(username: String, password: String) {
+        onView(withId(R.id.username)).perform(clearText(), typeText(username))
+        onView(withId(R.id.password)).perform(clearText(), typeText(password))
+        onView(isRoot()).perform(closeSoftKeyboard())
     }
 }

@@ -22,6 +22,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.espressoUtil.MockUtil
+import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.model.LoggedInUser
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.not
@@ -39,6 +40,7 @@ class OverviewDetailsInstrumentedTest {
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
 
+    private val navigator = NavigationUtil()
     private val user = LoggedInUser("SfuvPQ8Uf2wistKapXBQ")
 
     @Before
@@ -47,18 +49,9 @@ class OverviewDetailsInstrumentedTest {
     }
 
     private fun navigateToTaskDetail() {
-        onView(withId(R.id.fragment_container_overview))
-            .check(matches(isDisplayed()))
+        navigator.navigateToOverview()
 
-        onView(withId(R.id.drawer_layout))
-            .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
-            .perform(DrawerActions.open()); // Open Drawer
-
-        onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_overview))
-
-        onView(withId(R.id.fragment_container_overview))
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
         Thread.sleep(1000)
 
         try {
@@ -83,12 +76,9 @@ class OverviewDetailsInstrumentedTest {
     }
 
     private fun setupTaskStrings(taskName: String, taskDescription: String) {
-        onView(withId(R.id.taskName))
-            .perform(ViewActions.clearText(), ViewActions.typeText(taskName))
-        onView(withId(R.id.taskDescription))
-            .perform(ViewActions.clearText(), ViewActions.typeText(taskDescription))
-        onView(isRoot())
-            .perform(ViewActions.closeSoftKeyboard())
+        onView(withId(R.id.taskName)).perform(clearText(), typeText(taskName))
+        onView(withId(R.id.taskDescription)).perform(clearText(), typeText(taskDescription))
+        onView(isRoot()).perform(closeSoftKeyboard())
     }
 
     private fun setStartDateValues(cal: Calendar) {
