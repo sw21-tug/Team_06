@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_new_task_template"
-        android:title="@string/menu_item_template"
+        android:title="@string/menu_item_load_template"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_delete_task_template"
-        android:title="@string/delete_template"
+        android:title="@string/menu_item_delete_template"
         app:showAsAction="never" />
 </menu>

@@ -2,13 +2,10 @@ package com.team06.focuswork.ui.tasks
 
 import android.app.AlertDialog.*
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.*
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
@@ -102,20 +99,35 @@ class NewTaskFragment : Fragment() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun showTemplates(deleteTemplate: Boolean): Boolean {
+    private fun showTemplates(loadTemplate: Boolean): Boolean {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return false
         val keys = sharedPref.all.keys
         val keyNames = keys.filter { key -> key.subSequence(0, 9) == "template_" }
             .map { key -> key.substring(9) }.toTypedArray()
 
         val alertBuilder = Builder(context)
-        if (deleteTemplate) {
+        if (loadTemplate) {
             alertBuilder.setTitle("Choose your template")
             alertBuilder.setItems(keyNames) { _, which ->
                 val template = sharedPref
                     .getStringSet("template_${keyNames[which]}", setOf("", ""))
-                binding.taskName.setText(template?.elementAt(0))
-                binding.taskDescription.setText(template?.elementAt(1))
+                var taskName = ""
+                var taskDescription = ""
+                if(template?.elementAt(0)?.get(0)?.equals('n')!!
+                    && template?.elementAt(1)?.get(0)?.equals('d')!!)
+                {
+                    taskName = template?.elementAt(0).substring(1)
+                    taskDescription = template?.elementAt(1).substring(1)
+                }
+                else if (template?.elementAt(0)?.get(0)?.equals('d')!!
+                    && template?.elementAt(1)?.get(0)?.equals('n')!!)
+                {
+                    taskName = template?.elementAt(1).substring(1)
+                    taskDescription = template?.elementAt(0).substring(1)
+                }
+
+                binding.taskName.setText(taskName)
+                binding.taskDescription.setText(taskDescription)
             }
         } else {
             alertBuilder.setTitle("Delete your template")
@@ -137,6 +149,7 @@ class NewTaskFragment : Fragment() {
         alertBuilder.setTitle("Title")
 
         val input = EditText(requireContext())
+        input.id = R.id.templateTitle
         input.inputType = InputType.TYPE_CLASS_TEXT
         alertBuilder.setView(input)
 
@@ -151,7 +164,9 @@ class NewTaskFragment : Fragment() {
     private fun onTemplateSavedOK(title: String) {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val template = mutableSetOf(
-            binding.taskName.text.toString(), binding.taskDescription.text.toString()
+            // we have 'n' or 'd' as first character, to know which is name and which is description
+            // because sharedPreferences returns and unordered Set
+            "n" + binding.taskName.text.toString(), "d" + binding.taskDescription.text.toString()
         )
         if (!sharedPref.contains("template_$title")) {
             with(sharedPref.edit()) {
