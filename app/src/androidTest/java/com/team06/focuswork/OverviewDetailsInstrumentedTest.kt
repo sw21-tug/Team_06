@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.team06.focuswork.espressoUtil.FireStoreCleanUp
 import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
@@ -44,6 +45,7 @@ class OverviewDetailsInstrumentedTest {
         endDate.add(Calendar.HOUR, 1)
         startDate.add(Calendar.MONTH, 1)
         endDate.add(Calendar.MONTH, 1)
+        FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 
     private fun setupTaskStrings(taskName: String, taskDescription: String) {
@@ -132,7 +134,9 @@ class OverviewDetailsInstrumentedTest {
 
         onView(withId(R.id.fragment_container_taskdetails)).check(matches(isDisplayed()))
         onView(withId(R.id.title_taskdetails)).check(matches(withText("editedSimpleTask")))
-        pressBack()
+        onView(withId(R.id.menu_detail_delete)).perform(click())
+        onView(withId(android.R.id.button1))
+            .inRoot(RootMatchers.isDialog()).check(matches(isDisplayed())).perform(click())
         Thread.sleep(400)
 
         onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
