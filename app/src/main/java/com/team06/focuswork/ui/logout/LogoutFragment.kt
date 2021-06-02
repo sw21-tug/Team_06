@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.team06.focuswork.R
 import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.ui.login.LoginActivity
@@ -61,6 +62,9 @@ class LogoutFragment : Fragment() {
     private fun onConfirmLogout(){
         var logoutViewModel = ViewModelProvider(this, LogoutViewModelFactory())
                 .get(LogoutViewModel::class.java)
+
+        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
+        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
 
         logoutViewModel.logout()
 
