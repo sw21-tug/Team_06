@@ -50,7 +50,7 @@ class ThemeInstrumentedTest {
 
     fun withBackgroundColor(color: Int): Matcher<View?>? {
         Checks.checkNotNull(color)
-        return object : BoundedMatcher<View?, View>(EditText::class.java) {
+        return object : BoundedMatcher<View?, View>(View::class.java) {
             var actual = 0
             override fun matchesSafely(view: View): Boolean {
                 //val localBinding = dynamicBinding as FragmentDayBinding
@@ -59,6 +59,7 @@ class ThemeInstrumentedTest {
                 //String.format("#%06X", (0xFFFFFF and draw.color))
 
                 actual = (view.rootView.background as ColorDrawable).color
+                Log.d("ThemeTest", "Color is: $color and actual is: $actual")
                 return color == actual
             }
 
