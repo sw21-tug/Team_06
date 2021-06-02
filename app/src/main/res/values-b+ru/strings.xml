@@ -46,6 +46,7 @@
     <string name="month_title">задачи на этот месяц</string>
 
     <string name="menu_settings">Настройки</string>
+    <string name="menu_logout">Выход из системы</string>
 
     <!-- Preference Titles -->
     <string name="overview_header">обзор</string>
@@ -97,5 +98,10 @@
 
     <string name="action_save_task">Сохранить задание</string>
     <string name="title_edit_task">Редактирование задачи</string>
+
+    <string name="logout_dialog_title">Выход из системы</string>
+    <string name="logout_dialog_description">Вы действительно хотите выйти из системы?</string>
+    <string name="logout_dialog_cancel">Отмена</string>
+    <string name="logout_dialog_confirm">Подтвердить</string>
 
 </resources>

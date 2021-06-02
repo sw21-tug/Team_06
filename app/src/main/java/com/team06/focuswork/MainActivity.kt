@@ -42,7 +42,7 @@ class MainActivity : ThemedAppCompatActivity(), SharedPreferences.OnSharedPrefer
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_overview, R.id.nav_settings
+                R.id.nav_overview, R.id.nav_settings, R.id.nav_logout
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

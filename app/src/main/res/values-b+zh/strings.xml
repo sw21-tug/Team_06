@@ -46,6 +46,7 @@
     <string name="month_title">这个月的任务</string>
 
     <string name="menu_settings">设定值</string>
+    <string name="menu_logout">登出</string>
 
     <!-- Preference Titles -->
     <string name="overview_header">概述</string>
@@ -97,4 +98,10 @@
 
     <string name="title_edit_task">编辑任务</string>
     <string name="action_save_task">保存任务</string>
+
+    <string name="logout_dialog_title">登出</string>
+    <string name="logout_dialog_description">你真的想注销吗？</string>
+    <string name="logout_dialog_cancel">取消</string>
+    <string name="logout_dialog_confirm">确认</string>
+
 </resources>
