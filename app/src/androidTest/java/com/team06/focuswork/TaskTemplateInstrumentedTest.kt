@@ -11,6 +11,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.model.LoggedInUser
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,6 +27,9 @@ class TaskTemplateInstrumentedTest {
     private val navigator = NavigationUtil()
     private val user = LoggedInUser("dggkbNlMM7QqSWjj8Nii")
     private val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+    private val taskName = "TestTaskname"
+    private val taskDescription = "TestTaskDescription"
+    private val templateName = "TestTemplate"
 
     @Before
     fun init() {
@@ -39,32 +43,65 @@ class TaskTemplateInstrumentedTest {
         onView(isRoot()).perform(closeSoftKeyboard())
     }
 
-    @Test
-    fun createTaskTemplateTest() {
-
-        val taskName = "TestTaskname"
-        val taskDescription = "TestTaskDescription"
+    private fun createTemplate(taskName: String, taskDescription: String) {
         setupTaskStrings(taskName, taskDescription)
 
         // Save as template
-        val templateName = "TestTemplate"
         onView(withId(R.id.taskSaveTemplate)).perform(click())
         onView(withId(R.id.templateTitle)).perform(clearText(), typeText(templateName))
         onView(isRoot()).perform(closeSoftKeyboard())
-        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click())
 
         // Clear task fields
         onView(withId(R.id.taskName)).perform(clearText())
         onView(withId(R.id.taskDescription)).perform(clearText())
+    }
 
-        // Load template
+    private fun loadTemplate() {
         openActionBarOverflowOrOptionsMenu(targetContext)
         onView(withText(R.string.menu_item_load_template)).perform(click())
         onView(withText(templateName)).perform(click())
+    }
+
+    private fun deleteTemplate() {
+        openActionBarOverflowOrOptionsMenu(targetContext)
+        onView(withText(R.string.menu_item_delete_template)).perform(click())
+        onView(withText(templateName)).perform(click())
+    }
+
+    @Test
+    fun createTaskTemplateTest() {
+        createTemplate(taskName, taskDescription)
+        loadTemplate()
 
         // Assert template has been loaded
-        Thread.sleep(1000)
         onView(withId(R.id.taskName)).check(matches(withText(taskName)))
         onView(withId(R.id.taskDescription)).check(matches(withText(taskDescription)))
+
+        deleteTemplate()
+
+        //Assert template was deleted
+        openActionBarOverflowOrOptionsMenu(targetContext)
+        onView(withText(R.string.menu_item_load_template))
+            .check(matches(not(hasDescendant(withText(templateName)))))
+    }
+
+    @Test
+    fun noDuplicateTemplateTest() {
+        createTemplate(taskName, taskDescription)
+        loadTemplate()
+        createTemplate(taskName, taskDescription)
+        loadTemplate()
+
+        // Assert template has been loaded
+        onView(withId(R.id.taskName)).check(matches(withText(taskName)))
+        onView(withId(R.id.taskDescription)).check(matches(withText(taskDescription)))
+
+        deleteTemplate()
+
+        //Assert template was deleted
+        openActionBarOverflowOrOptionsMenu(targetContext)
+        onView(withText(R.string.menu_item_load_template))
+            .check(matches(not(hasDescendant(withText(templateName)))))
     }
 }

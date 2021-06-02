@@ -111,23 +111,8 @@ class NewTaskFragment : Fragment() {
             alertBuilder.setItems(keyNames) { _, which ->
                 val template = sharedPref
                     .getStringSet("template_${keyNames[which]}", setOf("", ""))
-                var taskName = ""
-                var taskDescription = ""
-                if(template?.elementAt(0)?.get(0)?.equals('n')!!
-                    && template?.elementAt(1)?.get(0)?.equals('d')!!)
-                {
-                    taskName = template?.elementAt(0).substring(1)
-                    taskDescription = template?.elementAt(1).substring(1)
-                }
-                else if (template?.elementAt(0)?.get(0)?.equals('d')!!
-                    && template?.elementAt(1)?.get(0)?.equals('n')!!)
-                {
-                    taskName = template?.elementAt(1).substring(1)
-                    taskDescription = template?.elementAt(0).substring(1)
-                }
-
-                binding.taskName.setText(taskName)
-                binding.taskDescription.setText(taskDescription)
+                binding.taskName.setText(template?.find { it[0] == 'n' }?.substring(1))
+                binding.taskDescription.setText(template?.find { it[0] == 'd' }?.substring(1))
             }
         } else {
             alertBuilder.setTitle("Delete your template")
@@ -173,7 +158,7 @@ class NewTaskFragment : Fragment() {
                 putStringSet("template_$title", template)
                 apply()
             }
-        } else{
+        } else {
             showToast(getString(R.string.template_exists_toast))
         }
     }
