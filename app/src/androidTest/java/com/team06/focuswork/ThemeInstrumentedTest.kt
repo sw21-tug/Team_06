@@ -18,6 +18,7 @@ import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.espressoUtil.ThemeUtil
+import com.team06.focuswork.espressoUtil.ThemeUtil.withBackgroundColor
 import com.team06.focuswork.model.LoggedInUser
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -43,30 +44,12 @@ class ThemeInstrumentedTest {
     private val accents = InstrumentationRegistry.getInstrumentation()
         .targetContext.resources.getStringArray(R.array.color_accent_entries)
 
+    private val backgroundColourDark = 0xFF232323.toInt()
+    private val backgroundColourLight = 0xFFE9E9E9.toInt()
+
     @Before
     fun init() {
         MockUtil.mockUser(user)
-    }
-
-    fun withBackgroundColor(color: Int): Matcher<View?>? {
-        Checks.checkNotNull(color)
-        return object : BoundedMatcher<View?, View>(View::class.java) {
-            var actual = 0
-            override fun matchesSafely(view: View): Boolean {
-                //val localBinding = dynamicBinding as FragmentDayBinding
-                //val root = view.rootView
-                //val draw = root.background as ColorDrawable
-                //String.format("#%06X", (0xFFFFFF and draw.color))
-
-                actual = (view.rootView.background as ColorDrawable).color
-                Log.d("ThemeTest", "Color is: $color and actual is: $actual")
-                return color == actual
-            }
-
-            override fun describeTo(description: Description) {
-                description.appendText("with Background color: Got $actual but expected $color")
-            }
-        }
     }
 
     @Test
@@ -76,11 +59,16 @@ class ThemeInstrumentedTest {
         navigator.navigateToOverview()
         Thread.sleep(400)
 
-        val backgroundColour = ThemeUtil.getThemeBackground(
-            InstrumentationRegistry.getInstrumentation().targetContext,
-            R.style.Theme_FocusWork_Dark
-        )
-        Log.d("ThemeTest", "" + backgroundColour)
-        onView(withId(R.id.recycler_view)).check(matches(withBackgroundColor(backgroundColour)))
+        onView(withId(R.id.recycler_view)).check(matches(withBackgroundColor(backgroundColourDark)))
+    }
+
+    @Test
+    fun testLightBackground() {
+        navigator.chooseSetting(R.string.colorBackground_title, backgrounds[0])
+        //navigator.chooseSetting(R.string.colorAccent_title, accents[1])
+        navigator.navigateToOverview()
+        Thread.sleep(400)
+
+        onView(withId(R.id.recycler_view)).check(matches(withBackgroundColor(backgroundColourLight)))
     }
 }
