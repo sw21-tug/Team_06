@@ -1,6 +1,5 @@
 package com.team06.focuswork.data
 
-import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.team06.focuswork.model.LoggedInUser
 import com.team06.focuswork.ui.util.CalendarTimestampUtil
@@ -21,11 +20,8 @@ class FireBaseFireStoreUtil {
 
 
     fun retrieveUser(username: String, password: String): LoggedInUser {
-        val fetchUserAsync = fireBaseStore
-            .collection(userCollection)
-            .whereEqualTo(emailField, username)
-            .whereEqualTo(passwordField, password)
-            .get()
+        val fetchUserAsync = fireBaseStore.collection(userCollection)
+            .whereEqualTo(emailField, username).whereEqualTo(passwordField, password).get()
 
         while (!fetchUserAsync.isComplete);
         val documents = fetchUserAsync.result?.documents?.get(0)?.id ?: throw Throwable()
@@ -33,11 +29,9 @@ class FireBaseFireStoreUtil {
     }
 
     fun retrieveTasks(callback: (tasks: List<Task>) -> Unit) {
-        val taskCollection = FirebaseFirestore.getInstance()
-            .collection(userCollection)
+        val taskCollection = fireBaseStore.collection(userCollection)
             .document((LoginRepository.getUser() ?: return).userId)
-            .collection(taskCollection)
-            .orderBy("startTime")
+            .collection(taskCollection).orderBy("startTime")
 
         taskCollection.get().addOnSuccessListener { tasks ->
             val taskList: MutableList<Task> = mutableListOf()
@@ -58,10 +52,8 @@ class FireBaseFireStoreUtil {
     }
 
     fun checkForExistingUser(username: String) {
-        val fetchUserAsync = fireBaseStore
-            .collection(userCollection)
-            .whereEqualTo(emailField, username)
-            .get()
+        val fetchUserAsync = fireBaseStore.collection(userCollection)
+            .whereEqualTo(emailField, username).get()
 
         while (!fetchUserAsync.isComplete);
         val documents = fetchUserAsync.result?.documents ?: throw Throwable()
@@ -92,35 +84,22 @@ class FireBaseFireStoreUtil {
         map["endTime"] = CalendarTimestampUtil.toTimeStamp(task.endTime)
         val db = FirebaseFirestore.getInstance()
         LoginRepository.getUser()?.userId?.let {
-            val collection = db.collection("User")
-                .document(it)
-                .collection("Task")
+            val collection = db.collection("User").document(it).collection("Task")
             if(task.id.isEmpty()) {
-                //create new task, because there exists no task yet
-                collection
-                    .add(map)
-                    .addOnSuccessListener { documentReference ->
-                        task.id = documentReference.id
-                        callback(task)
-                    }
+                collection.add(map).addOnSuccessListener { documentReference ->
+                    task.id = documentReference.id
+                    callback(task)
+                }
             } else {
-                //use existing task, because there exists a task already
-                collection
-                    .document(task.id)
-                    .set(map)
+                collection.document(task.id).set(map)
                 callback(task)
             }
         }
     }
 
     fun deleteTask(currentTask: Task) {
-        val db = FirebaseFirestore.getInstance()
-        LoginRepository.getUser()?.userId?.let {
-            db.collection("User")
-                .document(it)
-                .collection("Task")
-                .document(currentTask.id)
-                .delete()
-        }
+        val userId = LoginRepository.getUser()?.userId ?: return
+        fireBaseStore.collection("User")
+            .document(userId).collection("Task").document(currentTask.id).delete()
     }
 }

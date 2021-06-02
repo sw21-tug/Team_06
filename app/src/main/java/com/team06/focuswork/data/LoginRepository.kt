@@ -10,18 +10,8 @@ import com.team06.focuswork.model.LoggedInUser
 object LoginRepository {
     private val dataSource: LoginDataSource = LoginDataSource()
 
-    // in-memory cache of the loggedInUser object
     private var user: LoggedInUser? = null
     fun getUser(): LoggedInUser? = user
-
-    val isLoggedIn: Boolean
-        get() = user != null
-
-    init {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        user = null
-    }
 
     fun logout() {
         user = null
@@ -40,8 +30,6 @@ object LoginRepository {
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
         this.user = loggedInUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
 
     fun register(

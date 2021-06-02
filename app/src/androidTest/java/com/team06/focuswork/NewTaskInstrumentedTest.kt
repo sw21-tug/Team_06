@@ -1,12 +1,8 @@
 package com.team06.focuswork
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -15,14 +11,12 @@ import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.model.LoggedInUser
-import org.hamcrest.CoreMatchers.*
-import org.junit.AfterClass
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
-
 
 @RunWith(AndroidJUnit4::class)
 class NewTaskInstrumentedTest {
@@ -68,10 +62,6 @@ class NewTaskInstrumentedTest {
         onView(withId(R.id.taskCreate)).check(matches(isEnabled())).perform(click())
         onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
 
-        //enable listing of all tasks
-        //onView(allOf(withId(R.id.task_item_title), withText("createSimpleTask")))
-        //    .check(matches(isDisplayed()))
-
         FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 
@@ -107,13 +97,7 @@ class NewTaskInstrumentedTest {
             navigator.clickOnNewTaskButton()
         }
 
-        //enable listing of all tasks
-        //navigator.navigateToOverview()
-        //onView(allOf(withId(R.id.task_item_title), withText("My Second Task")))
-        //    .check(matches(isDisplayed()))
-        //onView(allOf(withId(R.id.task_item_title), withText("My Second Task")))
-        //    .check(matches(isDisplayed()))
-
+        navigator.navigateToOverview()
         FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 }

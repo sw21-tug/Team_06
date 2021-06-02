@@ -30,13 +30,11 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val layout = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.task_item_view, parent, false)
+            .from(parent.context).inflate(R.layout.task_item_view, parent, false)
         return TaskViewHolder(layout)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-
         val item = list[position]
         val dateFormat: java.text.DateFormat? = DateFormat.getTimeFormat(holder.view.context)
 
@@ -60,9 +58,7 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     }
 
     private fun chooseBackGround(drawableId: Int): Drawable? = ResourcesCompat.getDrawable(
-        context.resources,
-        drawableId,
-        null
+        context.resources, drawableId, null
     )
 
     private fun showToast(message: String) {

@@ -1,8 +1,6 @@
 package com.team06.focuswork.data
 
-import android.content.res.Resources
 import android.util.Log
-import com.team06.focuswork.R
 import com.team06.focuswork.model.LoggedInUser
 import java.io.IOException
 

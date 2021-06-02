@@ -1,24 +1,13 @@
 package com.team06.focuswork.ui.overview
 
-import android.app.PendingIntent
-import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Typeface
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -28,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.FireBaseFireStoreUtil.Filter
@@ -36,7 +24,8 @@ import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.*
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
-import java.text.SimpleDateFormat
+import com.team06.focuswork.ui.util.FilterUtil.filterForDay
+import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
 import java.util.*
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
@@ -56,9 +45,7 @@ class OverviewFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
         val layout = binding.fragmentContainerOverview
@@ -104,7 +91,7 @@ class OverviewFragment : Fragment() {
             tasksViewModel.setSelectedTask(null)
             findNavController().navigate(R.id.action_nav_overview_to_nav_new_task)
         }
-        when(filter){
+        when (filter) {
             Filter.DAY -> initializeDayView()
             Filter.WEEK -> initializeWeekView()
             Filter.MONTH -> initializeMonthView()
@@ -125,7 +112,8 @@ class OverviewFragment : Fragment() {
     private fun initializeDayView() {
         val localBinding = dynamicBinding as FragmentDayBinding
 
-        localBinding.textViewDay.text = FilterUtil.getDayText(Calendar.getInstance(), requireContext())
+        localBinding.textViewDay.text =
+            FilterUtil.getDayText(Calendar.getInstance(), requireContext())
         recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -133,12 +121,10 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer {
-                tasks -> currentTasks.removeAll(currentTasks)
-            tasks.iterator().forEach {
-                if (FilterUtil.filterForDay(Calendar.getInstance(), it.startTime, it.endTime))
-                    currentTasks.add(it)
-            }
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+            currentTasks.removeAll(currentTasks)
+            tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
+                .forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
@@ -155,30 +141,22 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
-            tasks.iterator().forEach {
-                if (showEntireWeek && FilterUtil.filterForWeek(
-                        selectedDay,
-                        it.startTime,
-                        it.endTime
-                    ) ||
-                    !showEntireWeek && FilterUtil.filterForDay(
-                        selectedDay,
-                        it.startTime,
-                        it.endTime
-                    )
-                )
-                    currentTasks.add(it)
-            }
+            tasks.filter {task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
 
+    private fun taskInWeek(task: Task) : Boolean =
+        showEntireWeek && filterForWeek(selectedDay, task.startTime, task.endTime) ||
+            !showEntireWeek && filterForDay(selectedDay, task.startTime, task.endTime)
+
     private fun initializeMonthView() {
         val localBinding = dynamicBinding as FragmentMonthBinding
 
-        localBinding.textviewMonth.text = FilterUtil.getMonthText(Calendar.getInstance(), requireContext())
+        localBinding.textviewMonth.text =
+            FilterUtil.getMonthText(Calendar.getInstance(), requireContext())
         recyclerView = localBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -243,7 +221,7 @@ class OverviewFragment : Fragment() {
         }
     }
 
-    private fun initializeAllView(){
+    private fun initializeAllView() {
         val localBinding = dynamicBinding as FragmentAllTasksBinding
 
         recyclerView = localBinding.recyclerView
@@ -253,14 +231,14 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer {
-                tasks -> currentTasks.removeAll(currentTasks)
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+            currentTasks.removeAll(currentTasks)
             currentTasks.addAll(0, tasks)
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
 
-    private fun sendNotif(@Suppress("UNUSED_PARAMETER") view :View) {
+    private fun sendNotif(@Suppress("UNUSED_PARAMETER") view: View) {
         sendTimerFinishedNotif(requireContext())
     }
 

@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_taskdetails"
-        android:name="com.team06.focuswork.ui.taskdetails.TaskdetailsFragment"
+        android:name="com.team06.focuswork.ui.taskdetails.TaskDetailsFragment"
         android:label="Taskdetails"
         tools:layout="@layout/fragment_taskdetails" >
         <action
