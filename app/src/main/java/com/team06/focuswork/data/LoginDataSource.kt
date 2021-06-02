@@ -19,10 +19,6 @@ class LoginDataSource {
         Result.Error(IOException("Error logging in", e))
     }
 
-    fun logout() {
-
-    }
-
     fun register(
         firstname: String, lastname: String, username: String, password: String
     ): Result<LoggedInUser> = try {

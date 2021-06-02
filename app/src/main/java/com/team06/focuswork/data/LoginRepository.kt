@@ -15,7 +15,6 @@ object LoginRepository {
 
     fun logout() {
         user = null
-        dataSource.logout()
     }
 
     fun login(username: String, password: String): Result<LoggedInUser> {

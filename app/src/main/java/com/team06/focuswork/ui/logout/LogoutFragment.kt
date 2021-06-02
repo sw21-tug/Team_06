@@ -22,7 +22,7 @@ class LogoutFragment : Fragment() {
     private lateinit var binding: FragmentOverviewBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
 
@@ -32,22 +32,22 @@ class LogoutFragment : Fragment() {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setPositiveButton(
-                        R.string.logout_dialog_confirm,
-                        DialogInterface.OnClickListener { dialog, _ ->
-                            onConfirmLogout()
-                            dialog.dismiss()
-                        })
+                    R.string.logout_dialog_confirm,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        onConfirmLogout()
+                        dialog.dismiss()
+                    })
 
                 setNegativeButton(
-                        R.string.logout_dialog_cancel,
-                        DialogInterface.OnClickListener { dialog, _ ->
-                            dialog.cancel()
-                        })
+                    R.string.logout_dialog_cancel,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.cancel()
+                    })
             }
 
             // 2. Chain together various setter methods to set the dialog characteristics
             builder.setMessage(R.string.logout_dialog_description)
-                    .setTitle(R.string.logout_dialog_title)
+                .setTitle(R.string.logout_dialog_title)
 
             // Create the AlertDialog
             builder.create()
@@ -55,13 +55,12 @@ class LogoutFragment : Fragment() {
 
         deleteDialog?.show()
 
-
         return binding.root
     }
 
-    private fun onConfirmLogout(){
+    private fun onConfirmLogout() {
         var logoutViewModel = ViewModelProvider(this, LogoutViewModelFactory())
-                .get(LogoutViewModel::class.java)
+            .get(LogoutViewModel::class.java)
 
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
