@@ -100,7 +100,8 @@
     <string name="title_edit_task">Редактирование задачи</string>
     <string name="save_template">сохранить шаблон</string>
     <string name="template_exists_toast">Шаблон задачи уже существует</string>
-    <string name="menu_item_template">Шаблон</string>
+    <string name="menu_item_template">Новый шаблон</string>
+    <string name="delete_template">Удалить шаблон</string>
 
     <string name="logout_dialog_title">Выход из системы</string>
     <string name="logout_dialog_description">Вы действительно хотите выйти из системы?</string>

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.*
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -96,24 +97,35 @@ class NewTaskFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.menu_new_task_template -> showTemplates()
+        R.id.menu_new_task_template -> showTemplates(true)
+        R.id.menu_delete_task_template -> showTemplates(false)
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun showTemplates(): Boolean {
+    private fun showTemplates(deleteTemplate: Boolean): Boolean {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return false
         val keys = sharedPref.all.keys
         val keyNames = keys.filter { key -> key.subSequence(0, 9) == "template_" }
             .map { key -> key.substring(9) }.toTypedArray()
 
         val alertBuilder = Builder(context)
-        alertBuilder.setTitle("Choose your template")
-
-        alertBuilder.setItems(keyNames) { _, which ->
-            val template = sharedPref.getStringSet("template_${keyNames[which]}", setOf("", ""))
-            binding.taskName.setText(template?.elementAt(0))
-            binding.taskDescription.setText(template?.elementAt(1))
+        if (deleteTemplate) {
+            alertBuilder.setTitle("Choose your template")
+            alertBuilder.setItems(keyNames) { _, which ->
+                val template = sharedPref
+                    .getStringSet("template_${keyNames[which]}", setOf("", ""))
+                binding.taskName.setText(template?.elementAt(0))
+                binding.taskDescription.setText(template?.elementAt(1))
+            }
+        } else {
+            alertBuilder.setTitle("Delete your template")
+            alertBuilder.setItems(keyNames) { _, which ->
+                val editor = sharedPref.edit()
+                editor.remove("template_${keyNames[which]}")
+                editor.apply()
+            }
         }
+
 
         val dialog: android.app.AlertDialog = alertBuilder.create()
         dialog.show()
@@ -128,9 +140,9 @@ class NewTaskFragment : Fragment() {
         input.inputType = InputType.TYPE_CLASS_TEXT
         alertBuilder.setView(input)
 
-        alertBuilder.setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
+        alertBuilder.setPositiveButton("OK") { _, _ ->
             onTemplateSavedOK(input.text.toString())
-        })
+        }
         alertBuilder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
 
         alertBuilder.show()
@@ -139,16 +151,16 @@ class NewTaskFragment : Fragment() {
     private fun onTemplateSavedOK(title: String) {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val template = mutableSetOf(
-            binding.taskName.text.toString(),
-            binding.taskDescription.text.toString()
+            binding.taskName.text.toString(), binding.taskDescription.text.toString()
         )
         if (!sharedPref.contains("template_$title")) {
             with(sharedPref.edit()) {
                 putStringSet("template_$title", template)
                 apply()
             }
-        } else
+        } else{
             showToast(getString(R.string.template_exists_toast))
+        }
     }
 
     private fun saveTask() {
@@ -254,5 +266,9 @@ class NewTaskFragment : Fragment() {
             Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
             Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
+    }
+
+    private fun showToast(string: String) {
+        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
     }
 }
