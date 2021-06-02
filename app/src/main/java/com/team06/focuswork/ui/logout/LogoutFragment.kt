@@ -2,13 +2,19 @@ package com.team06.focuswork.ui.logout
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.databinding.FragmentOverviewBinding
+import com.team06.focuswork.ui.login.LoginActivity
+import com.team06.focuswork.ui.login.LoginViewModel
+import com.team06.focuswork.ui.login.LoginViewModelFactory
 
 class LogoutFragment : Fragment() {
 
@@ -18,6 +24,8 @@ class LogoutFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
+
+        findNavController().navigate(R.id.nav_overview)
 
         val deleteDialog: AlertDialog? = activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -32,7 +40,6 @@ class LogoutFragment : Fragment() {
                 setNegativeButton(
                         R.string.logout_dialog_cancel,
                         DialogInterface.OnClickListener { dialog, _ ->
-                            onDismissLogout()
                             dialog.cancel()
                         })
             }
@@ -52,10 +59,13 @@ class LogoutFragment : Fragment() {
     }
 
     private fun onConfirmLogout(){
-        //ToDo: functionality
-    }
+        var logoutViewModel = ViewModelProvider(this, LogoutViewModelFactory())
+                .get(LogoutViewModel::class.java)
 
-    private fun onDismissLogout(){
-        //ToDo: functionality
+        logoutViewModel.logout()
+
+        val mainIntent = Intent(activity, LoginActivity::class.java)
+        activity?.startActivity(mainIntent)
+        activity?.finish()
     }
 }
