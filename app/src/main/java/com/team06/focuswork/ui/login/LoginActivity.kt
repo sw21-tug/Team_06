@@ -42,9 +42,9 @@ class LoginActivity : ThemedAppCompatActivity() {
     }
 
     private fun autoLogin(): Boolean{
-        var user = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val user = PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .getString("USER", null)
-        var pass = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val pass = PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .getString("PASS", null)
 
         if(user != null && pass != null) {
@@ -85,17 +85,11 @@ class LoginActivity : ThemedAppCompatActivity() {
 
     private fun setUpTextListeners() {
         username.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                username.text.toString(),
-                password.text.toString()
-            )
+            loginViewModel.loginDataChanged(username.text.toString(), password.text.toString())
         }
 
         password.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                username.text.toString(),
-                password.text.toString()
-            )
+            loginViewModel.loginDataChanged(username.text.toString(), password.text.toString())
         }
 
         password.setOnEditorActionListener { _, actionId, _ ->

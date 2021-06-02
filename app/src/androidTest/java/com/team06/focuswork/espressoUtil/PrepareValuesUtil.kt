@@ -53,4 +53,12 @@ class PrepareValuesUtil {
         onView(withId(R.id.password)).perform(clearText(), typeText(password))
         onView(isRoot()).perform(closeSoftKeyboard())
     }
+
+    fun setRegisterData(firstname: String, lastname: String, username: String, password: String) {
+        onView(withId(R.id.firstname)).perform(typeText(firstname))
+        onView(withId(R.id.lastname)).perform(clearText(), typeText(lastname))
+        onView(withId(R.id.username)).perform(clearText(), typeText(username))
+        onView(withId(R.id.password)).perform(clearText(), typeText(password))
+        onView(isRoot()).perform(closeSoftKeyboard())
+    }
 }

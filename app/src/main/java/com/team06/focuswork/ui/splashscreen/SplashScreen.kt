@@ -38,8 +38,7 @@ class SplashScreen : ThemedAppCompatActivity() {
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
-        Handler(Looper.getMainLooper())
-            .postDelayed({ /* Create an Intent that will start the Menu-Activity. */
+        Handler(Looper.getMainLooper()).postDelayed({ /* Create an Intent that will start the Menu-Activity. */
                 val mainIntent = Intent(this@SplashScreen, LoginActivity::class.java)
                 this@SplashScreen.startActivity(mainIntent)
                 finish()

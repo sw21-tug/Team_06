@@ -46,10 +46,7 @@ object NotificationUtil {
                 val channel =
                     NotificationChannel(NOTIFICATION_CHANNEL_IDS[i], name, important).apply {
                         description = descriptionText
-                        setSound(
-                            getNotificationSound(context, i),
-                            audioAttributes
-                        )
+                        setSound(getNotificationSound(context, i), audioAttributes)
                     }
                 notificationManager.createNotificationChannel(channel)
             }

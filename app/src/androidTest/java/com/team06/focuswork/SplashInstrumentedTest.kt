@@ -21,15 +21,8 @@ class SplashInstrumentedTest {
 
     @Test
     fun splashScreenTest() {
-        // Check splash screen logo is shown
-        onView(withId(R.id.logoImage))
-            .check(matches(isDisplayed()))
-
-        // Wait for splash screen to be over
+        onView(withId(R.id.logoImage)).check(matches(isDisplayed()))
         Thread.sleep(3000)
-
-        // Splash screen should now be over
-        onView(withId(R.id.login))
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.login)).check(matches(isDisplayed()))
     }
 }

@@ -6,19 +6,17 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.espressoUtil.FireStoreCleanUp
 import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.model.LoggedInUser
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
-
 
 @RunWith(AndroidJUnit4::class)
 class NewTaskInstrumentedTest {
@@ -27,7 +25,6 @@ class NewTaskInstrumentedTest {
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
 
-    private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val navigator = NavigationUtil()
     private val valueSetter = PrepareValuesUtil()
     private val startDate = GregorianCalendar(2022, 10, 22, 10, 0)
@@ -39,9 +36,6 @@ class NewTaskInstrumentedTest {
     @Before
     fun init() {
         MockUtil.mockUser(user)
-        val view = context.resources.getStringArray(R.array.overview_time_frame_entries).last()
-        navigator.chooseSetting(R.string.overviewTimeFrame_title, view)
-        navigator.navigateToOverview()
         navigator.clickOnNewTaskButton()
     }
 
@@ -67,9 +61,6 @@ class NewTaskInstrumentedTest {
 
         onView(withId(R.id.taskCreate)).check(matches(isEnabled())).perform(click())
         onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
-
-        onView(allOf(withId(R.id.task_item_title), withText("createSimpleTask")))
-            .check(matches(isDisplayed()))
 
         FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
@@ -107,11 +98,6 @@ class NewTaskInstrumentedTest {
         }
 
         navigator.navigateToOverview()
-        onView(allOf(withId(R.id.task_item_title), withText("myFirstTask")))
-            .check(matches(isDisplayed()))
-        onView(allOf(withId(R.id.task_item_title), withText("My Second Task")))
-            .check(matches(isDisplayed()))
-
         FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 }

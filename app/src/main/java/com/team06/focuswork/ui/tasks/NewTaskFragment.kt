@@ -41,9 +41,7 @@ class NewTaskFragment : Fragment() {
     private val tasksViewModel: TasksViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentNewTaskBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -172,10 +170,6 @@ class NewTaskFragment : Fragment() {
             binding.taskEndDate.text = formatDate(cal)
             binding.taskEndTime.text = formatTime(cal)
         })
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(context?.applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
     private fun formatDate(cal: Calendar?): String {

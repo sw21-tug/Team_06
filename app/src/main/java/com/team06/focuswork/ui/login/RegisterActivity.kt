@@ -39,6 +39,21 @@ class RegisterActivity : ThemedAppCompatActivity() {
         setUpSubmitButtons()
     }
 
+    private fun bindComponents() {
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        firstname = binding.firstname
+        lastname = binding.lastname
+        username = binding.username
+        password = binding.password
+        login = binding.login
+        register = binding.register
+        loading = binding.loading
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+            .get(LoginViewModel::class.java)
+    }
+
     private fun setUpSubmitButtons() {
         register.setOnClickListener {
             loading.visibility = View.VISIBLE
@@ -57,28 +72,22 @@ class RegisterActivity : ThemedAppCompatActivity() {
     private fun setUpTextListeners() {
         username.afterTextChanged {
             loginViewModel.registerDataChanged(
-                firstname.text.toString(),
-                lastname.text.toString(),
-                username.text.toString(),
-                password.text.toString()
+                firstname.text.toString(), lastname.text.toString(),
+                username.text.toString(), password.text.toString()
             )
         }
         password.afterTextChanged {
             loginViewModel.registerDataChanged(
-                firstname.text.toString(),
-                lastname.text.toString(),
-                username.text.toString(),
-                password.text.toString()
+                firstname.text.toString(), lastname.text.toString(),
+                username.text.toString(), password.text.toString()
             )
         }
         password.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE ->
                     loginViewModel.register(
-                        firstname.text.toString(),
-                        lastname.text.toString(),
-                        username.text.toString(),
-                        password.text.toString()
+                        firstname.text.toString(), lastname.text.toString(),
+                        username.text.toString(), password.text.toString()
                     )
             }
             false
@@ -128,21 +137,6 @@ class RegisterActivity : ThemedAppCompatActivity() {
                 password.error = getString(registerState.lastnameError)
             }
         })
-    }
-
-    private fun bindComponents() {
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-        firstname = binding.firstname
-        lastname = binding.lastname
-        username = binding.username
-        password = binding.password
-        login = binding.login
-        register = binding.register
-        loading = binding.loading
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
     }
 
     private fun updateUiWithUser() {

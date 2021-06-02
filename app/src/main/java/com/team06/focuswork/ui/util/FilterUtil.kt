@@ -32,12 +32,9 @@ object FilterUtil {
         //We don't care about the year-to-day conversion being accurate
         //since we only care about what day comes first, meaning leaving 1 day unsused
         //for most years is of no consequence
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val currentDay = day.get(Calendar.DAY_OF_YEAR) +
-            day.get(Calendar.YEAR) * 366
+        val startDay = start.get(Calendar.DAY_OF_YEAR) + start.get(Calendar.YEAR) * 366
+        val endDay = end.get(Calendar.DAY_OF_YEAR) + end.get(Calendar.YEAR) * 366
+        val currentDay = day.get(Calendar.DAY_OF_YEAR) + day.get(Calendar.YEAR) * 366
 
         return currentDay in startDay..endDay
     }
@@ -46,12 +43,9 @@ object FilterUtil {
     fun filterForWeek(week: Calendar, start: Calendar, end: Calendar): Boolean {
         setMonday(week)
 
-        val startDay = start.get(Calendar.DAY_OF_YEAR) +
-            start.get(Calendar.YEAR) * 366
-        val endDay = end.get(Calendar.DAY_OF_YEAR) +
-            end.get(Calendar.YEAR) * 366
-        val currentDay = week.get(Calendar.DAY_OF_YEAR) +
-            week.get(Calendar.YEAR) * 366
+        val startDay = start.get(Calendar.DAY_OF_YEAR) + start.get(Calendar.YEAR) * 366
+        val endDay = end.get(Calendar.DAY_OF_YEAR) + end.get(Calendar.YEAR) * 366
+        val currentDay = week.get(Calendar.DAY_OF_YEAR) + week.get(Calendar.YEAR) * 366
 
         return (currentDay in startDay..endDay) || (currentDay + 1 in startDay..endDay) ||
             (currentDay + 2 in startDay..endDay) || (currentDay + 3 in startDay..endDay) ||
