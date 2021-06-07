@@ -57,19 +57,21 @@ class NewTaskFragment : Fragment() {
         taskDescriptionView.doAfterTextChanged { checkTextFilled(view) }
 
         tasksViewModel.currentTask.value.let { task ->
-            if(task != null) {
+            if (task != null) {
                 taskNameView.setText(task.taskName)
                 taskDescriptionView.setText(task.taskDescription)
                 startCalendar.value = task.startTime
                 endCalendar.value = task.endTime
                 workingTaskId = task.id
 
-                (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_edit_task)
+                (activity as AppCompatActivity).supportActionBar?.title =
+                    getString(R.string.title_edit_task)
                 binding.taskCreate.text = getString(R.string.action_save_task)
             } else {
                 endCalendar.value?.add(Calendar.HOUR, 1);
 
-                (activity as AppCompatActivity).supportActionBar?.title =  getString(R.string.menu_new_task)
+                (activity as AppCompatActivity).supportActionBar?.title =
+                    getString(R.string.menu_new_task)
                 binding.taskCreate.text = getString(R.string.action_create_task)
             }
         }
@@ -90,14 +92,15 @@ class NewTaskFragment : Fragment() {
         val workingTask = Task(
             binding.taskName.text.toString(),
             binding.taskDescription.text.toString(),
-            startCalendar.value!!,
-            endCalendar.value!!)
+            startCalendar.value ?: return,
+            endCalendar.value ?: return
+        )
         workingTask.id = workingTaskId
         fireBaseStore.saveTask(workingTask, tasksViewModel::setSelectedTask)
     }
 
     private fun prepareStartTimeTextView(startTimeTextView: TextView) {
-        startTimeTextView.text = formatTime(startCalendar.value)
+        startTimeTextView.text = startCalendar.value?.let { formatTime(it) }
         startTimeTextView.setOnClickListener {
             startTimePicker.arguments = createDateOrTimeBundle(isDate = false, startBundle = true)
             startTimePicker.show(childFragmentManager, TimePickerFragment.TAG)
@@ -105,7 +108,7 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun prepareStartDateTextView(taskStartDate: TextView) {
-        taskStartDate.text = formatDate(startCalendar.value)
+        taskStartDate.text = startCalendar.value?.let { formatDate(it) }
         taskStartDate.setOnClickListener {
             startDatePicker.arguments = createDateOrTimeBundle(isDate = true, startBundle = true)
             startDatePicker.show(childFragmentManager, DatePickerFragment.TAG)
@@ -113,7 +116,7 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun prepareEndTimeTextView(endTimeTextView: TextView) {
-        endTimeTextView.text = formatTime(endCalendar.value)
+        endTimeTextView.text = endCalendar.value?.let { formatTime(it) }
         endTimeTextView.setOnClickListener {
             endTimePicker.arguments = createDateOrTimeBundle(isDate = false, startBundle = false)
             endTimePicker.show(childFragmentManager, TimePickerFragment.TAG)
@@ -121,7 +124,7 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun prepareEndDateTextView(endDateTextView: TextView) {
-        endDateTextView.text = formatDate(endCalendar.value)
+        endDateTextView.text = endCalendar.value?.let { formatDate(it) }
         endDateTextView.setOnClickListener {
             endDatePicker.arguments = createDateOrTimeBundle(isDate = true, startBundle = false)
             endDatePicker.show(childFragmentManager, DatePickerFragment.TAG)
@@ -129,55 +132,39 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun setupObserverCallbacks() {
-        startCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            val cal = it ?: return@Observer
+        startCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer { cal ->
             val nowCal = Calendar.getInstance()
             nowCal.add(Calendar.MINUTE, -1)
             if (cal.before(nowCal)) {
                 cal.add(Calendar.DAY_OF_YEAR, 1)
-                startCalendar.value = cal
+                startCalendar.value = nowCal
             }
-            if (endCalendar.value?.before(cal) ?: return@Observer) {
-                val newEndCal = GregorianCalendar(
-                    startCalendar.value?.get(Calendar.YEAR) ?: return@Observer,
-                    startCalendar.value?.get(Calendar.MONTH) ?: return@Observer,
-                    startCalendar.value?.get(Calendar.DAY_OF_MONTH) ?: return@Observer,
-                    endCalendar.value?.get(Calendar.HOUR_OF_DAY) ?: return@Observer,
-                    endCalendar.value?.get(Calendar.MINUTE) ?: return@Observer
-                )
-                endCalendar.value = newEndCal
-                binding.taskEndDate.text = formatDate(newEndCal)
-                binding.taskEndTime.text = formatTime(newEndCal)
+            if (endCalendar.value?.before(startCalendar.value) ?: return@Observer) {
+                endCalendar.postValue(startCalendar.value?.clone() as GregorianCalendar)
             }
-            binding.taskStartDate.text = formatDate(cal)
-            binding.taskStartTime.text = formatTime(cal)
+            updateTextFields()
         })
-        endCalendar.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            var cal = it ?: return@Observer
+        endCalendar.observe(viewLifecycleOwner, { cal ->
             if (cal.before(startCalendar.value)) {
-                val newEndCal = GregorianCalendar(
-                        startCalendar.value?.get(Calendar.YEAR)!!,
-                        startCalendar.value?.get(Calendar.MONTH)!!,
-                        startCalendar.value?.get(Calendar.DAY_OF_MONTH)!!,
-                        endCalendar.value?.get(Calendar.HOUR_OF_DAY)!!,
-                        endCalendar.value?.get(Calendar.MINUTE)!!)
-                if(newEndCal.before(startCalendar.value)) {
-                    newEndCal.add(Calendar.DAY_OF_YEAR, 1)
-                }
-                endCalendar.value = newEndCal
-                cal = newEndCal
+                endCalendar.value = startCalendar.value?.clone() as GregorianCalendar
             }
-            binding.taskEndDate.text = formatDate(cal)
-            binding.taskEndTime.text = formatTime(cal)
+            updateTextFields()
         })
     }
 
-    private fun formatDate(cal: Calendar?): String {
-        return getDateInstance(MEDIUM).format(cal!!.time)
+    private fun updateTextFields() {
+        binding.taskEndDate.text = endCalendar.value?.let { formatDate(it) }
+        binding.taskEndTime.text = endCalendar.value?.let { formatTime(it) }
+        binding.taskStartDate.text = startCalendar.value?.let { formatDate(it) }
+        binding.taskStartTime.text = startCalendar.value?.let { formatTime(it) }
     }
 
-    private fun formatTime(cal: Calendar?): String {
-        return getTimeInstance(SHORT).format(cal!!.time)
+    private fun formatDate(cal: Calendar): String {
+        return getDateInstance(MEDIUM).format(cal.time)
+    }
+
+    private fun formatTime(cal: Calendar): String {
+        return getTimeInstance(SHORT).format(cal.time)
     }
 
     private fun checkTextFilled(view: View) {

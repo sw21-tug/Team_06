@@ -28,6 +28,7 @@ class TimePickerFragment(
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         calendar.value?.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.value?.set(Calendar.MINUTE, minute)
+        calendar.postValue(calendar.value)
     }
 
     companion object {
