@@ -32,6 +32,7 @@ class DatePickerFragment(
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         calendar.value?.set(year, month, dayOfMonth)
+        calendar.postValue(calendar.value)
     }
 
     companion object {
