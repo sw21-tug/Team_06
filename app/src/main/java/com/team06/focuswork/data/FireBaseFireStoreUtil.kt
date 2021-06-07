@@ -30,7 +30,7 @@ class FireBaseFireStoreUtil {
 
     fun retrieveTasks(callback: (tasks: List<Task>) -> Unit) {
         val taskCollection = fireBaseStore.collection(userCollection)
-            .document((LoginRepository.getUser() ?: return).userId)
+            .document((LoginRepository.user ?: return).userId)
             .collection(taskCollection).orderBy("startTime")
 
         taskCollection.get().addOnSuccessListener { tasks ->
@@ -83,9 +83,9 @@ class FireBaseFireStoreUtil {
         map["startTime"] = CalendarTimestampUtil.toTimeStamp(task.startTime)
         map["endTime"] = CalendarTimestampUtil.toTimeStamp(task.endTime)
         val db = FirebaseFirestore.getInstance()
-        LoginRepository.getUser()?.userId?.let {
+        LoginRepository.user?.userId?.let {
             val collection = db.collection("User").document(it).collection("Task")
-            if(task.id.isEmpty()) {
+            if (task.id.isEmpty()) {
                 collection.add(map).addOnSuccessListener { documentReference ->
                     task.id = documentReference.id
                     callback(task)
@@ -98,7 +98,7 @@ class FireBaseFireStoreUtil {
     }
 
     fun deleteTask(currentTask: Task) {
-        val userId = LoginRepository.getUser()?.userId ?: return
+        val userId = LoginRepository.user?.userId ?: return
         fireBaseStore.collection("User")
             .document(userId).collection("Task").document(currentTask.id).delete()
     }

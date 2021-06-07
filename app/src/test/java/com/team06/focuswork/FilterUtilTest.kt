@@ -6,7 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.*
 
-class FilterUtilUnitTest {
+class FilterUtilTest {
 
     @Test
     fun dayFilterTest() {

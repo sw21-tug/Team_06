@@ -8,10 +8,8 @@ import com.team06.focuswork.model.LoggedInUser
  */
 
 object LoginRepository {
-    private val dataSource: LoginDataSource = LoginDataSource()
-
-    private var user: LoggedInUser? = null
-    fun getUser(): LoggedInUser? = user
+    val dataSource: LoginDataSource = LoginDataSource()
+    var user: LoggedInUser? = null
 
     fun logout() {
         user = null
