@@ -10,7 +10,8 @@ import com.team06.focuswork.model.LoggedInUser
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.*
+import org.mockito.Mock
+import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
@@ -19,18 +20,20 @@ import org.powermock.reflect.Whitebox
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(LoginRepository::class, FirebaseFirestore::class, Log::class)
-class LoginTest {
+class LoginRepositoryTest {
 
+    private val firstname = "Max"
+    private val lastname = "Mustermann"
     private val username = "test@mail.com"
     private val password = "password"
 
     @Mock
-    var fireStoreUtilMock: FireBaseFireStoreUtil? = null
+    private var fireStoreUtilMock: FireBaseFireStoreUtil? = null
 
     @Mock
-    var fireStoreMock: FirebaseFirestore? = null
+    private var fireStoreMock: FirebaseFirestore? = null
 
-    var loginDataSourceSpy: LoginDataSource? = null
+    private var loginDataSourceSpy: LoginDataSource? = null
 
     @Before
     fun init() {
@@ -51,7 +54,7 @@ class LoginTest {
     }
 
     @Test
-    fun logInExistingUser() {
+    fun logInUserSuccessTest() {
         Mockito.`when`(fireStoreUtilMock?.retrieveUser(username, password))
             .thenReturn((LoggedInUser("hash")))
 
@@ -63,12 +66,47 @@ class LoginTest {
     }
 
     @Test
-    fun logInNotExistingUser() {
+    fun logoutUserTest() {
+        Mockito.`when`(fireStoreUtilMock?.retrieveUser(username, password))
+            .thenReturn((LoggedInUser("hash")))
+
+        LoginRepository.login(username, password)
+        LoginRepository.logout()
+
+        assert(LoginRepository.user == null)
+    }
+
+    @Test
+    fun logInUserErrorTest() {
         Mockito.`when`(fireStoreUtilMock?.retrieveUser(username, password))
             .thenAnswer { throw Throwable() }
 
         LoginRepository.login(username, password)
         val result = loginDataSourceSpy?.login(username, password)
+
+        assert(LoginRepository.user == null)
+        assert(result is Result.Error)
+    }
+
+    @Test
+    fun registerUserSuccessTest() {
+        Mockito.`when`(fireStoreUtilMock?.addUser(firstname, lastname, username, password))
+            .thenReturn((LoggedInUser("hash")))
+
+        LoginRepository.register(firstname, lastname, username, password)
+        val result = loginDataSourceSpy?.register(firstname, lastname, username, password)
+
+        assert(LoginRepository.user != null)
+        assert(result is Result.Success)
+    }
+
+    @Test
+    fun registerUserErrorTest() {
+        Mockito.`when`(fireStoreUtilMock?.addUser(firstname, lastname, username, password))
+            .thenAnswer { throw Throwable() }
+
+        LoginRepository.register(firstname, lastname, username, password)
+        val result = loginDataSourceSpy?.register(firstname, lastname, username, password)
 
         assert(LoginRepository.user == null)
         assert(result is Result.Error)
