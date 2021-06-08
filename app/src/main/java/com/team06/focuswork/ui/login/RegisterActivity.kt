@@ -10,13 +10,12 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
-import com.team06.focuswork.databinding.ActivityRegisterBinding
 import com.team06.focuswork.ThemedAppCompatActivity
+import com.team06.focuswork.databinding.ActivityRegisterBinding
 
 class RegisterActivity : ThemedAppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel

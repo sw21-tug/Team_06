@@ -13,15 +13,14 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
-import com.team06.focuswork.databinding.ActivityLoginBinding
 import com.team06.focuswork.ThemedAppCompatActivity
 import com.team06.focuswork.data.LoginDataSource
 import com.team06.focuswork.data.LoginRepository
+import com.team06.focuswork.databinding.ActivityLoginBinding
 
 class LoginActivity : ThemedAppCompatActivity() {
 
@@ -122,8 +121,8 @@ class LoginActivity : ThemedAppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, { loginResult ->
             loading.visibility = View.GONE
             when (loginResult) {
-                LoginViewModel.LoginState.ERROR -> showLoginFailed(R.string.login_failed)
                 LoginViewModel.LoginState.SUCCESS -> updateUiWithUser()
+                else -> showLoginFailed(R.string.login_failed)
             }
         })
     }

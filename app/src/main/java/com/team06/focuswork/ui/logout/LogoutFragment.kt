@@ -1,7 +1,6 @@
 package com.team06.focuswork.ui.logout
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,8 +13,6 @@ import androidx.preference.PreferenceManager
 import com.team06.focuswork.R
 import com.team06.focuswork.databinding.FragmentOverviewBinding
 import com.team06.focuswork.ui.login.LoginActivity
-import com.team06.focuswork.ui.login.LoginViewModel
-import com.team06.focuswork.ui.login.LoginViewModelFactory
 
 class LogoutFragment : Fragment() {
 

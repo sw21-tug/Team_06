@@ -1,7 +1,6 @@
 package com.team06.focuswork.ui.taskdetails
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.format.DateFormat
@@ -14,7 +13,6 @@ import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
-
 import java.util.*
 
 class TaskDetailsFragment : Fragment() {
@@ -135,7 +133,7 @@ class TaskDetailsFragment : Fragment() {
     }
 
     private fun onConfirmDelete() {
-        fireBaseStore.deleteTask(tasksViewModel.currentTask.value!!)
+        tasksViewModel.currentTask.value?.let { fireBaseStore.deleteTask(it) }
         findNavController().navigateUp()
     }
 }
