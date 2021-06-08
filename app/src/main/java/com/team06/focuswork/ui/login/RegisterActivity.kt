@@ -95,46 +95,29 @@ class RegisterActivity : ThemedAppCompatActivity() {
     }
 
     private fun setUpRegisterResult() {
-        loginViewModel.loginResult.observe(this@RegisterActivity, Observer {
-            val loginResult = it ?: return@Observer
+        loginViewModel.loginResult.observe(this@RegisterActivity, { loginResult ->
 
             loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-                return@Observer
+            when (loginResult) {
+                LoginViewModel.LoginState.ERROR -> showLoginFailed(R.string.login_failed)
+                LoginViewModel.LoginState.SUCCESS -> updateUiWithUser()
             }
-            if (loginResult.success != null) {
-                updateUiWithUser()
-            }
-            setResult(Activity.RESULT_OK)
-
-            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
-                .putString("USER", username.text.toString()).apply()
-            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
-                .putString("PASS", password.text.toString()).apply()
-
-            //Complete and destroy login activity once successful
-            finish()
         })
     }
 
     private fun setUpRegisterFormState() {
-        loginViewModel.registerFormState.observe(this@RegisterActivity, Observer {
-            val registerState = it ?: return@Observer
+        loginViewModel.registerFormState.observe(this@RegisterActivity, { registerState ->
 
             // disable login button unless both username / password is valid
-            register.isEnabled = registerState.isDataValid
-            if (registerState.usernameError != null) {
-                username.error = getString(registerState.usernameError)
+            register.isEnabled = registerState == LoginViewModel.FormState.VALID
+            if (registerState == LoginViewModel.FormState.ERR_USERNAME) {
+                username.error = getString(R.string.invalid_username)
             }
-            if (registerState.passwordError != null) {
-                password.error = getString(registerState.passwordError)
-            }
-            if (registerState.firstnameError != null) {
-                password.error = getString(registerState.firstnameError)
-            }
-            if (registerState.lastnameError != null) {
-                password.error = getString(registerState.lastnameError)
+            password.error = when (registerState) {
+                LoginViewModel.FormState.ERR_PASSWORD -> getString(R.string.invalid_password)
+                LoginViewModel.FormState.ERR_FIRSTNAME -> getString(R.string.invalid_firstname)
+                LoginViewModel.FormState.ERR_LASTNAME -> getString(R.string.invalid_lastname)
+                else -> return@observe
             }
         })
     }
@@ -142,6 +125,15 @@ class RegisterActivity : ThemedAppCompatActivity() {
     private fun updateUiWithUser() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        setResult(Activity.RESULT_OK)
+
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+            .putString("USER", username.text.toString()).apply()
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+            .putString("PASS", password.text.toString()).apply()
+
+        //Complete and destroy login activity once successful
+        finish()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
