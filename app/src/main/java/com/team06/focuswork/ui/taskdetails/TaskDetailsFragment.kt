@@ -29,7 +29,7 @@ class TaskDetailsFragment : Fragment() {
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_detail_edit -> {
             findNavController().navigate(R.id.action_nav_taskdetails_to_nav_new_task)
             true
@@ -117,25 +117,17 @@ class TaskDetailsFragment : Fragment() {
         val deleteDialog: AlertDialog? = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setPositiveButton(
-                    R.string.delete_dialog_confirm_delete,
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        onConfirmDelete()
-                        dialog.dismiss()
-                    })
-
-                setNegativeButton(
-                    R.string.delete_dialog_cancel,
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        dialog.cancel()
-                    })
+                setPositiveButton(R.string.delete_dialog_confirm_delete) { dialog, _ ->
+                    onConfirmDelete()
+                    dialog.dismiss()
+                }
+                setNegativeButton(R.string.delete_dialog_cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
             }
 
-            // 2. Chain together various setter methods to set the dialog characteristics
             builder.setMessage(R.string.delete_dialog_description)
                 .setTitle(R.string.delete_dialog_title)
-
-            // Create the AlertDialog
             builder.create()
         }
 

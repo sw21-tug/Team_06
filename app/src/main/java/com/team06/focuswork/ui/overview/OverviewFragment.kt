@@ -87,7 +87,7 @@ class OverviewFragment : Fragment() {
 
         fireStoreUtil.retrieveTasks(this::setTasks)
         val fab: FloatingActionButton = binding.fab
-        fab.setOnClickListener { _ ->
+        fab.setOnClickListener {
             tasksViewModel.setSelectedTask(null)
             findNavController().navigate(R.id.action_nav_overview_to_nav_new_task)
         }
@@ -143,12 +143,12 @@ class OverviewFragment : Fragment() {
 
         tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
-            tasks.filter {task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
+            tasks.filter { task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
 
-    private fun taskInWeek(task: Task) : Boolean =
+    private fun taskInWeek(task: Task): Boolean =
         showEntireWeek && filterForWeek(selectedDay, task.startTime, task.endTime) ||
             !showEntireWeek && filterForDay(selectedDay, task.startTime, task.endTime)
 
@@ -163,7 +163,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
