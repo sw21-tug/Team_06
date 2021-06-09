@@ -98,9 +98,11 @@ class NewTaskFragment : Fragment() {
             endCalendar.value ?: return
         )
         workingTask.id = workingTaskId
-        GlobalScope.launch {
-            delay(workingTask.endTime.timeInMillis - System.currentTimeMillis())
-            NotificationUtil.sendTimerFinishedNotif(requireContext())
+        requireContext().let {
+            GlobalScope.launch {
+                delay(workingTask.endTime.timeInMillis - System.currentTimeMillis())
+                NotificationUtil.sendTimerFinishedNotif(it, workingTask)
+            }
         }
         fireBaseStore.saveTask(workingTask, tasksViewModel::setSelectedTask)
     }

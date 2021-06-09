@@ -111,7 +111,7 @@ class OverviewFragment : Fragment() {
             if(it.endTime.after(Calendar.getInstance())) {
                 GlobalScope.launch {
                     delay(it.endTime.timeInMillis - System.currentTimeMillis())
-                    sendTimerFinishedNotif(requireContext())
+                    sendTimerFinishedNotif(requireContext(), it)
                 }
             }
         }
@@ -132,12 +132,12 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity()) { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
                     .forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        }
+        })
     }
 
     private fun initializeWeekView() {
@@ -152,11 +152,11 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity()) { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        }
+        })
     }
 
     private fun taskInWeek(task: Task): Boolean =
@@ -174,14 +174,14 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity()) { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        }
+        })
     }
 
     private fun initWeekButtons(binding: FragmentWeekBinding) {
