@@ -33,12 +33,6 @@ class LoginInstrumentedTest {
     var activityRule: ActivityScenarioRule<LoginActivity> =
         ActivityScenarioRule(LoginActivity::class.java)
 
-    @After
-    fun removeAutoLogin() {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
-    }
-
     @Before
     fun logOut(){
         try {
@@ -121,7 +115,7 @@ class LoginInstrumentedTest {
         onView(withId(R.id.login)).perform(ViewActions.click())
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
 
-        removeAutoLogin()
+        logOut()
         Thread.sleep(400)
 
         activityRule.scenario.close()

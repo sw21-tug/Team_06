@@ -27,12 +27,6 @@ class RegisterInstrumentedTest {
     private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val valueSetter = PrepareValuesUtil()
 
-    @After
-    fun removeAutoLogin(){
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
-    }
-
     @Before
     fun logOut(){
         try {
