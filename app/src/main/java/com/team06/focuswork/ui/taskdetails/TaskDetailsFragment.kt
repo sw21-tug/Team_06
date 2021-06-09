@@ -1,18 +1,22 @@
 package com.team06.focuswork.ui.taskdetails
 
 import android.app.AlertDialog
+import android.content.Context.POWER_SERVICE
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.PowerManager
 import android.text.format.DateFormat
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
+import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
 import java.util.*
 
 class TaskDetailsFragment : Fragment() {
@@ -58,7 +62,16 @@ class TaskDetailsFragment : Fragment() {
         binding.taskTimer.text = "00:00"
         taskTimer?.cancel()
 
-        tasksViewModel.currentTask.observe(viewLifecycleOwner, {
+        // TODO: hardcoded task
+        val cal_start = Calendar.getInstance()
+        val cal_end = Calendar.getInstance();
+
+        cal_end.add(Calendar.MINUTE, 1)
+
+        val task = Task("TIMERTESTASK", "test timer", cal_start, cal_end)
+
+
+        tasksViewModel.currentTask.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.titleTaskdetails.text = it.taskName
                 binding.descriptionTaskdetails.text = it.taskDescription
@@ -68,8 +81,8 @@ class TaskDetailsFragment : Fragment() {
                 binding.enddateTaskdetails.text = dateFormat.format(it.endTime.time)
                 onStartTimer(it)
             }
-        })
-
+        }
+        tasksViewModel.setSelectedTask(task)
     }
 
     private fun onStartTimer(task: Task) {
@@ -87,12 +100,13 @@ class TaskDetailsFragment : Fragment() {
             }
 
             override fun onFinish() {
-                return // currently no action
 
-                /*
-                    Toast.makeText(context?.applicationContext, "Task finished",
-                        Toast.LENGTH_LONG).show()
-                */
+                var pm: PowerManager? = requireContext().getSystemService(POWER_SERVICE) as PowerManager
+                var isScreenOn = pm!!.isInteractive
+                if (!isScreenOn) {
+                    val wl = pm.newWakeLock(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ACQUIRE_CAUSES_WAKEUP, "FocusWork:notificationLock")
+                }
+                sendTimerFinishedNotif(requireContext());
             }
         }.start()
     }

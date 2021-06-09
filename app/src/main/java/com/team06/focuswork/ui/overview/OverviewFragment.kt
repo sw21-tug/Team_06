@@ -11,6 +11,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -83,8 +84,6 @@ class OverviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         createNotifChannels(requireContext())
-        binding.notifButton.setOnClickListener(this::sendNotif)
-
         fireStoreUtil.retrieveTasks(this::setTasks)
         val fab: FloatingActionButton = binding.fab
         fab.setOnClickListener {
@@ -121,12 +120,12 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity()) { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
-                .forEach { currentTasks.add(it) }
+                    .forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        })
+        }
     }
 
     private fun initializeWeekView() {
@@ -141,11 +140,11 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity()) { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        })
+        }
     }
 
     private fun taskInWeek(task: Task): Boolean =
@@ -163,14 +162,14 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity()) { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
                     currentTasks.add(it)
             }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
-        })
+        }
     }
 
     private fun initWeekButtons(binding: FragmentWeekBinding) {
@@ -236,10 +235,6 @@ class OverviewFragment : Fragment() {
             currentTasks.addAll(0, tasks)
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
-    }
-
-    private fun sendNotif(@Suppress("UNUSED_PARAMETER") view: View) {
-        sendTimerFinishedNotif(requireContext())
     }
 
     fun onClickTaskItem(task: Task) {
