@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.PowerManager
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
@@ -17,6 +18,9 @@ import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class TaskDetailsFragment : Fragment() {
@@ -62,16 +66,7 @@ class TaskDetailsFragment : Fragment() {
         binding.taskTimer.text = "00:00"
         taskTimer?.cancel()
 
-        // TODO: hardcoded task
-        val cal_start = Calendar.getInstance()
-        val cal_end = Calendar.getInstance();
-
-        cal_end.add(Calendar.MINUTE, 1)
-
-        val task = Task("TIMERTESTASK", "test timer", cal_start, cal_end)
-
-
-        tasksViewModel.currentTask.observe(viewLifecycleOwner) {
+        tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.titleTaskdetails.text = it.taskName
                 binding.descriptionTaskdetails.text = it.taskDescription
@@ -81,14 +76,13 @@ class TaskDetailsFragment : Fragment() {
                 binding.enddateTaskdetails.text = dateFormat.format(it.endTime.time)
                 onStartTimer(it)
             }
-        }
-        tasksViewModel.setSelectedTask(task)
+        })
     }
 
     private fun onStartTimer(task: Task) {
         val duration = task.endTime.timeInMillis - Calendar.getInstance().timeInMillis
 
-        taskTimer = object : CountDownTimer(duration, 10 * 1000) {
+        taskTimer = object : CountDownTimer(duration, 500) {
             override fun onTick(millisUntilFinished: Long) {
                 val hours = millisUntilFinished / (60 * 60 * 1000)
                 val minutes = millisUntilFinished / (60 * 1000) % (60)
@@ -100,13 +94,6 @@ class TaskDetailsFragment : Fragment() {
             }
 
             override fun onFinish() {
-
-                var pm: PowerManager? = requireContext().getSystemService(POWER_SERVICE) as PowerManager
-                var isScreenOn = pm!!.isInteractive
-                if (!isScreenOn) {
-                    val wl = pm.newWakeLock(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ACQUIRE_CAUSES_WAKEUP, "FocusWork:notificationLock")
-                }
-                sendTimerFinishedNotif(requireContext());
             }
         }.start()
     }

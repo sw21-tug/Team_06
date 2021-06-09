@@ -27,8 +27,12 @@ import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
 import com.team06.focuswork.ui.util.FilterUtil.filterForDay
 import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
+import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class OverviewFragment : Fragment() {
@@ -103,7 +107,15 @@ class OverviewFragment : Fragment() {
     }
 
     private fun setTasks(tasks: List<Task>) {
-        allTasks.removeAll(allTasks)
+        tasks.forEach{
+            if(it.endTime.after(Calendar.getInstance())) {
+                GlobalScope.launch {
+                    delay(it.endTime.timeInMillis - System.currentTimeMillis())
+                    sendTimerFinishedNotif(requireContext())
+                }
+            }
+        }
+        allTasks.clear()
         allTasks.addAll(tasks)
         tasksViewModel.setTasks(tasks)
     }
