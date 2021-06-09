@@ -79,6 +79,29 @@ class LoginInstrumentedTest {
     }
 
     @Test
+    fun doubleAutoLoginTest() {
+        //There has been a bug where AutoLogin failed if done multiple times in a row
+        //This is the test to ensure the Bug doesn't resurface
+        valueSetter.setLoginData("test@gmail.com", "password")
+        onView(withId(R.id.login)).perform(ViewActions.click())
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+
+        Thread.sleep(400)
+
+        activityRule.scenario.close()
+        ActivityScenario.launch(LoginActivity::class.java)
+
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+
+        Thread.sleep(400)
+
+        activityRule.scenario.close()
+        ActivityScenario.launch(LoginActivity::class.java)
+
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun autoLoginFailedTest() {
         valueSetter.setLoginData("test@gmail.com", "password")
         onView(withId(R.id.login)).perform(ViewActions.click())
