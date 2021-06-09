@@ -11,10 +11,12 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.ui.login.LoginActivity
 import org.hamcrest.Matchers.not
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,6 +25,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class LoginInstrumentedTest {
 
+    private var navigator = NavigationUtil()
     private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val valueSetter = PrepareValuesUtil()
 
@@ -30,11 +33,15 @@ class LoginInstrumentedTest {
     var activityRule: ActivityScenarioRule<LoginActivity> =
         ActivityScenarioRule(LoginActivity::class.java)
 
-    @After
-    fun removeAutoLogin() {
-        Log.d("LoginTest", "Pruning Preferences of Autologin data!")
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
+    @Before
+    fun logOut(){
+        try {
+            //If this passes, we are in the Login Screen!
+            onView(withId(R.id.login)).check(matches(isDisplayed()))
+        } catch (ex: Exception){
+            //If this fails, AutoLogin kicked in, so we want to log out manually!
+            navigator.logout(context)
+        }
     }
 
     @Test
@@ -80,12 +87,35 @@ class LoginInstrumentedTest {
     }
 
     @Test
+    fun doubleAutoLoginTest() {
+        //There has been a bug where AutoLogin failed if done multiple times in a row
+        //This is the test to ensure the Bug doesn't resurface
+        valueSetter.setLoginData("test@gmail.com", "password")
+        onView(withId(R.id.login)).perform(ViewActions.click())
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+
+        Thread.sleep(400)
+
+        activityRule.scenario.close()
+        ActivityScenario.launch(LoginActivity::class.java)
+
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+
+        Thread.sleep(400)
+
+        activityRule.scenario.close()
+        ActivityScenario.launch(LoginActivity::class.java)
+
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun autoLoginFailedTest() {
         valueSetter.setLoginData("test@gmail.com", "password")
         onView(withId(R.id.login)).perform(ViewActions.click())
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
 
-        removeAutoLogin()
+        logOut()
         Thread.sleep(400)
 
         activityRule.scenario.close()

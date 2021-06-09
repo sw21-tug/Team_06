@@ -11,24 +11,31 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.espressoUtil.FireStoreCleanUp
+import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.ui.login.RegisterActivity
 import org.hamcrest.Matchers
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class RegisterInstrumentedTest {
+    private var navigator = NavigationUtil()
     private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val valueSetter = PrepareValuesUtil()
 
-    @After
-    fun removeAutoLogin(){
-        Log.d("LoginTest", "Pruning Preferences of Autologin data!")
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
+    @Before
+    fun logOut(){
+        try {
+            //If this passes, we are in the Login Screen!
+            onView(withId(R.id.login)).check(matches(isDisplayed()))
+        } catch (ex: Exception){
+            //If this fails, AutoLogin kicked in, so we want to log out manually!
+            navigator.logout(context)
+        }
     }
 
     @get:Rule

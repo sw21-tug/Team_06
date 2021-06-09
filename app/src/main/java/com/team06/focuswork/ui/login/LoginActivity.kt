@@ -36,7 +36,6 @@ class LoginActivity : ThemedAppCompatActivity() {
         super.onCreate(savedInstanceState)
         LoginRepository.dataSource = LoginDataSource()
         bindComponents()
-        autoLogin()
         setUpLoginFormState()
         setUpLoginResult()
         setUpTextListeners()
@@ -50,14 +49,12 @@ class LoginActivity : ThemedAppCompatActivity() {
         val pass = PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .getString("PASS", null)
 
-        if (user != null && pass != null) {
-            Log.d("AutoLogin", user)
-            Log.d("AutoLogin", pass)
+        if (!user.isNullOrEmpty() && !pass.isNullOrEmpty()) {
+            loading.visibility = View.VISIBLE
             loginViewModel.login(user, pass)
             return true
         }
 
-        Log.d("AutoLogin", "Null!")
         return false
     }
 
@@ -132,11 +129,12 @@ class LoginActivity : ThemedAppCompatActivity() {
         startActivity(intent)
         setResult(Activity.RESULT_OK)
 
-        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
-            .putString("USER", username.text.toString()).apply()
-        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
-            .putString("PASS", password.text.toString()).apply()
-
+        if(!username.text.toString().isNullOrEmpty() && !password.text.toString().isNullOrEmpty()) {
+            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+                .putString("USER", username.text.toString()).apply()
+            PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+                .putString("PASS", password.text.toString()).apply()
+        }
         //Complete and destroy login activity once successful
         finish()
     }

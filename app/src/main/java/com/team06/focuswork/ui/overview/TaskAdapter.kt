@@ -48,7 +48,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
             chooseBackGround(R.drawable.rectangle_rounded_corners_heavy) else
             chooseBackGround(R.drawable.rectangle_rounded_corners_light)
 
-        Log.d("TaskAdapter", item.taskName)
         holder.taskItem.setOnClickListener {
             showToast(item.taskName + ": " + item.taskDescription)
             overviewFragment.onClickTaskItem(item)
