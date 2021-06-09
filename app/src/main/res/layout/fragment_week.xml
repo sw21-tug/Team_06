@@ -20,7 +20,9 @@
         android:layout_marginEnd="8dp"
         android:text="@string/week_title"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="28sp"
+        app:autoSizeMaxTextSize="30sp"
+        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
