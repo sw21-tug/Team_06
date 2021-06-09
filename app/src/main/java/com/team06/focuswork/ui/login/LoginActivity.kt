@@ -5,16 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ThemedAppCompatActivity
@@ -140,7 +138,14 @@ class LoginActivity : ThemedAppCompatActivity() {
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        val mSnackbar: Snackbar = Snackbar.make(binding.root, resources.getString(errorString), Snackbar.LENGTH_LONG)
+            .setBackgroundTint(ResourcesCompat.getColor(applicationContext.resources, R.color.primary_text, null))
+            .setTextColor(ResourcesCompat.getColor(applicationContext.resources, R.color.white, null))
+
+        val mView = mSnackbar.view
+        val mTextView = mView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        mTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        mSnackbar.show()
     }
 }
 

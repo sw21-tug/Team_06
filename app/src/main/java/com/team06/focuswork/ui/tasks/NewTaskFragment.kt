@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.*
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -15,6 +17,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
@@ -164,7 +167,7 @@ class NewTaskFragment : Fragment() {
                 apply()
             }
         } else {
-            showToast(getString(R.string.template_exists_toast))
+            showSnackbar(R.string.template_exists_toast)
         }
     }
 
@@ -279,7 +282,14 @@ class NewTaskFragment : Fragment() {
         )
     }
 
-    private fun showToast(string: String) {
-        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+    private fun showSnackbar(@StringRes errorString: Int) {
+        val mSnackbar: Snackbar = Snackbar.make(binding.root, resources.getString(errorString), Snackbar.LENGTH_LONG)
+                .setBackgroundTint(ResourcesCompat.getColor(requireContext().resources, R.color.primary_text, null))
+                .setTextColor(ResourcesCompat.getColor(requireContext().resources, R.color.white, null))
+
+        val mView = mSnackbar.view
+        val mTextView = mView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        mTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        mSnackbar.show()
     }
 }

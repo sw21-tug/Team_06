@@ -2,14 +2,12 @@ package com.team06.focuswork.ui.overview
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -20,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.FireBaseFireStoreUtil.Filter
@@ -77,7 +76,7 @@ class OverviewFragment : Fragment() {
                 layout.addView((dynamicBinding as FragmentAllTasksBinding).fragmentContainerAll)
             }
             else -> {
-                showToast(R.string.erroneous_config)
+                showSnackbar(R.string.erroneous_config)
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
@@ -308,7 +307,14 @@ class OverviewFragment : Fragment() {
         }
     }
 
-    private fun showToast(@StringRes string: Int) {
-        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+    private fun showSnackbar(@StringRes string: Int) {
+        val mSnackbar: Snackbar = Snackbar.make(binding.root, resources.getString(string), Snackbar.LENGTH_LONG)
+            .setBackgroundTint(ResourcesCompat.getColor(requireContext().resources, R.color.primary_text, null))
+            .setTextColor(ResourcesCompat.getColor(requireContext().resources, R.color.white, null))
+
+        val mView = mSnackbar.view
+        val mTextView = mView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        mTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        mSnackbar.show()
     }
 }
