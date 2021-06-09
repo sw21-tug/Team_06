@@ -12,6 +12,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
@@ -19,10 +21,13 @@ import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.DatePickerFragment
+import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.TimePickerFragment
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.DateFormat.*
 import java.util.*
-
 
 class NewTaskFragment : Fragment() {
 
@@ -171,6 +176,12 @@ class NewTaskFragment : Fragment() {
             endCalendar.value ?: return
         )
         workingTask.id = workingTaskId
+        requireContext().let {
+            GlobalScope.launch {
+                delay(workingTask.endTime.timeInMillis - System.currentTimeMillis())
+                NotificationUtil.sendTimerFinishedNotif(it, workingTask)
+            }
+        }
         fireBaseStore.saveTask(workingTask, tasksViewModel::setSelectedTask)
     }
 
@@ -219,7 +230,7 @@ class NewTaskFragment : Fragment() {
             }
             updateTextFields()
         })
-        endCalendar.observe(viewLifecycleOwner, { cal ->
+        endCalendar.observe(viewLifecycleOwner, Observer { cal ->
             if (cal.before(startCalendar.value)) {
                 endCalendar.value = startCalendar.value?.clone() as GregorianCalendar
             }
