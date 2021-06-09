@@ -37,6 +37,7 @@ class NewTaskInstrumentedTest {
     fun init() {
         MockUtil.mockUser(user)
         navigator.clickOnNewTaskButton()
+        FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 
     private fun setupTaskStrings(taskName: String, taskDescription: String) {
@@ -52,7 +53,6 @@ class NewTaskInstrumentedTest {
         valueSetter.setTimeValues(R.id.taskEndTime, endDate)
     }
 
-    //endregion
     @Test
     fun createSimpleTaskTest() {
         onView(withId(R.id.taskCreate)).check(matches(not(isEnabled())))
@@ -61,8 +61,6 @@ class NewTaskInstrumentedTest {
 
         onView(withId(R.id.taskCreate)).check(matches(isEnabled())).perform(click())
         onView(withId(R.id.fragment_container_overview)).check(matches(isDisplayed()))
-
-        FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 
     @Test
@@ -98,6 +96,5 @@ class NewTaskInstrumentedTest {
         }
 
         navigator.navigateToOverview()
-        FireStoreCleanUp.deleteAllTasksOfCurrentUser()
     }
 }

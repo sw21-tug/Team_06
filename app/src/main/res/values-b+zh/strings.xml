@@ -98,10 +98,13 @@
 
     <string name="title_edit_task">编辑任务</string>
     <string name="action_save_task">保存任务</string>
+    <string name="save_template">保存模板</string>
+    <string name="template_exists_toast">任务模板已存在</string>
+    <string name="menu_item_load_template">新模板</string>
+    <string name="menu_item_delete_template">刪除模板</string>
 
     <string name="logout_dialog_title">登出</string>
     <string name="logout_dialog_description">你真的想注销吗？</string>
     <string name="logout_dialog_cancel">取消</string>
     <string name="logout_dialog_confirm">确认</string>
-
 </resources>

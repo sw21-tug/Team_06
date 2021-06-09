@@ -1,9 +1,10 @@
 package com.team06.focuswork.ui.tasks
 
+import android.app.AlertDialog.*
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.InputType
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -40,6 +41,7 @@ class NewTaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        setHasOptionsMenu(true)
         binding = FragmentNewTaskBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -82,6 +84,82 @@ class NewTaskFragment : Fragment() {
         binding.taskCreate.setOnClickListener {
             saveTask()
             findNavController().navigateUp()
+        }
+        binding.taskSaveTemplate.setOnClickListener { saveTemplate() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_new_task, menu)
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.menu_new_task_template -> showTemplates(true)
+        R.id.menu_delete_task_template -> showTemplates(false)
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun showTemplates(loadTemplate: Boolean): Boolean {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return false
+        val keys = sharedPref.all.keys
+        val keyNames = keys.filter { key -> key.subSequence(0, 9) == "template_" }
+            .map { key -> key.substring(9) }.toTypedArray()
+
+        val alertBuilder = Builder(context)
+        if (loadTemplate) {
+            alertBuilder.setTitle("Choose your template")
+            alertBuilder.setItems(keyNames) { _, which ->
+                val template = sharedPref
+                    .getStringSet("template_${keyNames[which]}", setOf("", ""))
+                binding.taskName.setText(template?.find { it[0] == 'n' }?.substring(1))
+                binding.taskDescription.setText(template?.find { it[0] == 'd' }?.substring(1))
+            }
+        } else {
+            alertBuilder.setTitle("Delete your template")
+            alertBuilder.setItems(keyNames) { _, which ->
+                val editor = sharedPref.edit()
+                editor.remove("template_${keyNames[which]}")
+                editor.apply()
+            }
+        }
+
+
+        val dialog: android.app.AlertDialog = alertBuilder.create()
+        dialog.show()
+        return true
+    }
+
+    private fun saveTemplate() {
+        val alertBuilder = Builder(requireContext())
+        alertBuilder.setTitle("Title")
+
+        val input = EditText(requireContext())
+        input.id = R.id.templateTitle
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        alertBuilder.setView(input)
+
+        alertBuilder.setPositiveButton("OK") { _, _ ->
+            onTemplateSavedOK(input.text.toString())
+        }
+        alertBuilder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+
+        alertBuilder.show()
+    }
+
+    private fun onTemplateSavedOK(title: String) {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val template = mutableSetOf(
+            // we have 'n' or 'd' as first character, to know which is name and which is description
+            // because sharedPreferences returns and unordered Set
+            "n" + binding.taskName.text.toString(), "d" + binding.taskDescription.text.toString()
+        )
+        if (!sharedPref.contains("template_$title")) {
+            with(sharedPref.edit()) {
+                putStringSet("template_$title", template)
+                apply()
+            }
+        } else {
+            showToast(getString(R.string.template_exists_toast))
         }
     }
 
@@ -168,6 +246,9 @@ class NewTaskFragment : Fragment() {
         view.findViewById<Button>(R.id.taskCreate).isEnabled =
             !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
                 view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+        view.findViewById<Button>(R.id.taskSaveTemplate).isEnabled =
+            !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
+                view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {
@@ -185,5 +266,9 @@ class NewTaskFragment : Fragment() {
             Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
             Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
+    }
+
+    private fun showToast(string: String) {
+        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
     }
 }

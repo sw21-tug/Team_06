@@ -14,12 +14,6 @@ import java.util.*
 
 class PrepareValuesUtil {
 
-    fun setupText(id: Int, taskName: String, taskDescription: String) {
-        onView(withId(R.id.taskName)).perform(clearText(), typeText(taskName))
-        onView(withId(R.id.taskDescription)).perform(clearText(), typeText(taskDescription))
-        onView(isRoot()).perform(closeSoftKeyboard())
-    }
-
     fun setDateValues(id: Int, cal: Calendar) {
         onView(withId(id)).perform(click())
         onView(withClassName(Matchers.equalTo(DatePicker::class.java.name))).perform(
