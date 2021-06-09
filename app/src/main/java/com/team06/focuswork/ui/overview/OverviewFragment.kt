@@ -3,9 +3,11 @@ package com.team06.focuswork.ui.overview
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -174,51 +176,85 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initWeekButtons(binding: FragmentWeekBinding) {
+        // when loading fragment, tasks of the whole week are shown
+        resetAllWeekButtonsBackgrounds(binding)
+        weekButtonSelected(binding, binding.buttonDisplayAll)
+
         binding.buttonDisplayAll.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonDisplayAll)
             showEntireWeek = true
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonMonday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonMonday)
             FilterUtil.setMonday(selectedDay)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonTuesday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonTuesday)
             FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 1)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonWednesday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonWednesday)
             FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 2)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonThursday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonThursday)
             FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 3)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonFriday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonFriday)
             FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 4)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSaturday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonSaturday)
             FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 5)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
         binding.buttonSunday.setOnClickListener {
+            weekButtonSelected(binding, binding.buttonSunday)
             FilterUtil.setMonday(selectedDay)
             selectedDay.add(Calendar.DAY_OF_MONTH, 6)
             showEntireWeek = false
             tasksViewModel.setTasks(allTasks)
         }
+    }
+
+    private fun weekButtonSelected(binding: FragmentWeekBinding, selectedButton: Button) {
+        resetAllWeekButtonsBackgrounds(binding)
+
+        val colorSelected = TypedValue()
+        context?.theme?.resolveAttribute(R.attr.cardBackgroundColor, colorSelected, true)
+        selectedButton.setBackgroundColor(colorSelected.data)
+    }
+
+    private fun resetAllWeekButtonsBackgrounds(binding: FragmentWeekBinding) {
+        val colorTypedValue = TypedValue()
+        context?.theme?.resolveAttribute(R.attr.backgroundColor, colorTypedValue, true)
+
+        binding.buttonDisplayAll.setBackgroundColor(colorTypedValue.data)
+        binding.buttonMonday.setBackgroundColor(colorTypedValue.data)
+        binding.buttonTuesday.setBackgroundColor(colorTypedValue.data)
+        binding.buttonWednesday.setBackgroundColor(colorTypedValue.data)
+        binding.buttonThursday.setBackgroundColor(colorTypedValue.data)
+        binding.buttonFriday.setBackgroundColor(colorTypedValue.data)
+        binding.buttonSaturday.setBackgroundColor(colorTypedValue.data)
+        binding.buttonSunday.setBackgroundColor(colorTypedValue.data)
     }
 
     private fun initializeAllView() {
