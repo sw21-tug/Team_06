@@ -9,6 +9,6 @@ object MockUtil {
     fun mockUser(user: LoggedInUser) {
         // Mock Test User
         mockkObject(LoginRepository)
-        every { LoginRepository.getUser() } answers { user }
+        every { LoginRepository.user } answers { user }
     }
 }

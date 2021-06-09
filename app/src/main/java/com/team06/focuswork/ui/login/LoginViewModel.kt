@@ -1,51 +1,52 @@
 package com.team06.focuswork.ui.login
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.team06.focuswork.R
 import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.data.Result
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
-    private val loginRepository = LoginRepository
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    enum class FormState { ERR_FIRSTNAME, ERR_LASTNAME, ERR_USERNAME, ERR_PASSWORD, VALID }
+    enum class LoginState { ERROR, SUCCESS }
 
-    private val _registerForm = MutableLiveData<RegisterFormState>()
-    val registerFormState: LiveData<RegisterFormState> = _registerForm
+    private val _loginForm = MutableLiveData<FormState>()
+    val loginFormState: LiveData<FormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private val _registerForm = MutableLiveData<FormState>()
+    val registerFormState: LiveData<FormState> = _registerForm
+
+    private val _loginResult = MutableLiveData<LoginState>()
+    val loginResult: LiveData<LoginState> = _loginResult
 
     fun login(username: String, password: String) {
         viewModelScope.launch { // can be launched in a separate asynchronous job
-            val result = loginRepository.login(username, password)
+            val result = LoginRepository.login(username, password)
 
             if (result is Result.Success) {
-                _loginResult.value = LoginResult(success = result.data)
+                _loginResult.value = LoginState.SUCCESS
             } else {
-                _loginResult.value = LoginResult(error = R.string.login_failed)
+                _loginResult.value = LoginState.ERROR
             }
         }
     }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+            _loginForm.value = FormState.ERR_USERNAME
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
+            _loginForm.value = FormState.ERR_PASSWORD
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            _loginForm.value = FormState.VALID
         }
     }
 
     private fun isUserNameValid(username: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(username).matches()
+        return PatternsCompat.EMAIL_ADDRESS.matcher(username).matches()
     }
 
     private fun isPasswordValid(password: String): Boolean {
@@ -54,12 +55,12 @@ class LoginViewModel : ViewModel() {
 
     fun register(firstname: String, lastname: String, username: String, password: String) {
         viewModelScope.launch { // can be launched in a separate asynchronous job
-            val result = loginRepository.register(firstname, lastname, username, password)
+            val result = LoginRepository.register(firstname, lastname, username, password)
 
             if (result is Result.Success) {
-                _loginResult.value = LoginResult(success = result.data)
+                _loginResult.value = LoginState.SUCCESS
             } else {
-                _loginResult.value = LoginResult(error = R.string.login_failed)
+                _loginResult.value = LoginState.ERROR
             }
         }
     }
@@ -68,15 +69,15 @@ class LoginViewModel : ViewModel() {
         firstname: String, lastname: String, username: String, password: String
     ) {
         if (firstname.isBlank()) {
-            _registerForm.value = RegisterFormState(firstnameError = R.string.invalid_firstname)
+            _registerForm.value = FormState.ERR_FIRSTNAME
         } else if (lastname.isBlank()) {
-            _registerForm.value = RegisterFormState(lastnameError = R.string.invalid_lastname)
+            _registerForm.value = FormState.ERR_LASTNAME
         } else if (!isUserNameValid(username)) {
-            _registerForm.value = RegisterFormState(usernameError = R.string.invalid_username)
+            _registerForm.value = FormState.ERR_USERNAME
         } else if (!isPasswordValid(password)) {
-            _registerForm.value = RegisterFormState(passwordError = R.string.invalid_password)
+            _registerForm.value = FormState.ERR_PASSWORD
         } else {
-            _registerForm.value = RegisterFormState(isDataValid = true)
+            _registerForm.value = FormState.VALID
         }
     }
 }

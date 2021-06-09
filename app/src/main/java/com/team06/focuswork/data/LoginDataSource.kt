@@ -9,7 +9,7 @@ import java.io.IOException
  */
 class LoginDataSource {
     private val TAG = "LOGIN_DATA_SOURCE"
-    private val fireStoreUtil = FireBaseFireStoreUtil()
+    val fireStoreUtil = FireBaseFireStoreUtil()
     fun login(username: String, password: String): Result<LoggedInUser> = try {
         val loggedInUser = fireStoreUtil.retrieveUser(username, password)
         Result.Success(loggedInUser)

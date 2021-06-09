@@ -7,7 +7,6 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import com.team06.focuswork.ui.tasks.NewTaskFragment
 import java.util.*
 
 /**

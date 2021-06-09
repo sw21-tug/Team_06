@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ThemedAppCompatActivity
 import com.team06.focuswork.ui.login.LoginActivity
@@ -39,9 +38,9 @@ class SplashScreen : ThemedAppCompatActivity() {
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
         Handler(Looper.getMainLooper()).postDelayed({ /* Create an Intent that will start the Menu-Activity. */
-                val mainIntent = Intent(this@SplashScreen, LoginActivity::class.java)
-                this@SplashScreen.startActivity(mainIntent)
-                finish()
-            }, SPLASH_DISPLAY_LENGTH.toLong())
+            val mainIntent = Intent(this@SplashScreen, LoginActivity::class.java)
+            this@SplashScreen.startActivity(mainIntent)
+            finish()
+        }, SPLASH_DISPLAY_LENGTH.toLong())
     }
 }
