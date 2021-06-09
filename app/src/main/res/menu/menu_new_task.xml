@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_new_task_template"
+        android:title="@string/menu_item_load_template"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_delete_task_template"
+        android:title="@string/menu_item_delete_template"
+        app:showAsAction="never" />
+</menu>

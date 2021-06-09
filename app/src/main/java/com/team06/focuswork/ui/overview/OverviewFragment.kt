@@ -290,7 +290,6 @@ class OverviewFragment : Fragment() {
             PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         val filter = (preferences.getString("overviewTimeFrame", "none")).toString()
-        Log.d("overview", filter)
         when (filter) {
             "day" -> this.filter = Filter.DAY
             "week" -> this.filter = Filter.WEEK

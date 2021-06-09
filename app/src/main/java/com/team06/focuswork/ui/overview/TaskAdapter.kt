@@ -46,7 +46,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
         context.theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true)
         holder.taskItem.setCardBackgroundColor(typedValue.data)
 
-        Log.d("TaskAdapter", item.taskName)
         holder.taskItem.setOnClickListener {
             overviewFragment.onClickTaskItem(item)
         }
