@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
@@ -50,7 +49,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
 
         Log.d("TaskAdapter", item.taskName)
         holder.taskItem.setOnClickListener {
-            showToast(item.taskName + ": " + item.taskDescription)
             overviewFragment.onClickTaskItem(item)
         }
 
@@ -60,10 +58,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     private fun chooseBackGround(drawableId: Int): Drawable? = ResourcesCompat.getDrawable(
         context.resources, drawableId, null
     )
-
-    private fun showToast(message: String) {
-        Toast.makeText(context.applicationContext, message, Toast.LENGTH_LONG).show()
-    }
 
     override fun getItemCount() = list.size
 
