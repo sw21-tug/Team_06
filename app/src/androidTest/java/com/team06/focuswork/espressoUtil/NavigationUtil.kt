@@ -13,6 +13,13 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.team06.focuswork.R
 
 class NavigationUtil {
+    fun logout() {
+        onIdle()
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
+        onView(withId(R.id.nav_view))
+            .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
+    }
+
     fun navigateToOverview() {
         onIdle()
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
