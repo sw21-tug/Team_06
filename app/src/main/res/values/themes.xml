@@ -14,6 +14,7 @@
         <item name="android:colorForeground">#121212</item>
         <item name="android:textColor">#121212</item>
         <item name="android:textColorHint">#333333</item>
+        <item name="cardBackgroundColor">#DFDFDF</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ED413E</item>
@@ -51,6 +52,7 @@
         <item name="android:colorForeground">#EFEFEF</item>
         <item name="android:textColor">#EFEFEF</item>
         <item name="android:textColorHint">#DDDDDD</item>
+        <item name="cardBackgroundColor">#383838</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ED413E</item>
@@ -87,6 +89,7 @@
         <item name="android:colorForeground">#121212</item>
         <item name="android:textColor">#121212</item>
         <item name="android:textColorHint">#333333</item>
+        <item name="cardBackgroundColor">#DFDFDF</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">#4E84F5</item>
@@ -123,6 +126,7 @@
         <item name="android:colorForeground">#EFEFEF</item>
         <item name="android:textColor">#EFEFEF</item>
         <item name="android:textColorHint">#DDDDDD</item>
+        <item name="cardBackgroundColor">#383838</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">#4E84F5</item>
