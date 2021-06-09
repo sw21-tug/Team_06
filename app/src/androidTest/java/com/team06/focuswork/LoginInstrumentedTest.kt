@@ -11,10 +11,12 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.ui.login.LoginActivity
 import org.hamcrest.Matchers.not
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,6 +25,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class LoginInstrumentedTest {
 
+    private var navigator = NavigationUtil()
     private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val valueSetter = PrepareValuesUtil()
 
@@ -34,6 +37,17 @@ class LoginInstrumentedTest {
     fun removeAutoLogin() {
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
+    }
+
+    @Before
+    fun logOut(){
+        try {
+            //If this passes, we are in the Login Screen!
+            onView(withId(R.id.login)).check(matches(isDisplayed()))
+        } catch (ex: Exception){
+            //If this fails, AutoLogin kicked in, so we want to log out manually!
+            navigator.logout(context)
+        }
     }
 
     @Test
