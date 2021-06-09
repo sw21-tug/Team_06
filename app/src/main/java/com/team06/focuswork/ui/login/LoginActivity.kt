@@ -5,22 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ThemedAppCompatActivity
 import com.team06.focuswork.data.LoginDataSource
 import com.team06.focuswork.data.LoginRepository
 import com.team06.focuswork.databinding.ActivityLoginBinding
+import com.team06.focuswork.ui.util.SnackBarUtil
 
 class LoginActivity : ThemedAppCompatActivity() {
 
@@ -119,7 +119,7 @@ class LoginActivity : ThemedAppCompatActivity() {
             loading.visibility = View.GONE
             when (loginResult) {
                 LoginViewModel.LoginState.SUCCESS -> updateUiWithUser()
-                else -> showLoginFailed(R.string.login_failed)
+                else -> SnackBarUtil.showSnackBar(binding.root, R.string.login_failed, this)
             }
         })
     }
@@ -129,7 +129,9 @@ class LoginActivity : ThemedAppCompatActivity() {
         startActivity(intent)
         setResult(Activity.RESULT_OK)
 
-        if(!username.text.toString().isNullOrEmpty() && !password.text.toString().isNullOrEmpty()) {
+        if (!username.text.toString().isNullOrEmpty() && !password.text.toString()
+                .isNullOrEmpty()
+        ) {
             PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
                 .putString("USER", username.text.toString()).apply()
             PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
@@ -139,9 +141,6 @@ class LoginActivity : ThemedAppCompatActivity() {
         finish()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
-    }
 }
 
 /**

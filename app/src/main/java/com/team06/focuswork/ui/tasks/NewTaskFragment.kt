@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.*
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -15,12 +17,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.DatePickerFragment
+import com.team06.focuswork.ui.util.SnackBarUtil
 import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.TimePickerFragment
 import kotlinx.coroutines.GlobalScope
@@ -164,7 +168,9 @@ class NewTaskFragment : Fragment() {
                 apply()
             }
         } else {
-            showToast(getString(R.string.template_exists_toast))
+            SnackBarUtil.showSnackBar(
+                binding.root, R.string.template_exists_toast, requireActivity()
+            )
         }
     }
 
@@ -277,9 +283,5 @@ class NewTaskFragment : Fragment() {
             Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
             Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
-    }
-
-    private fun showToast(string: String) {
-        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
     }
 }

@@ -2,14 +2,11 @@ package com.team06.focuswork.ui.overview
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -32,6 +29,7 @@ import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
 import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
+import com.team06.focuswork.ui.util.SnackBarUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -77,7 +75,9 @@ class OverviewFragment : Fragment() {
                 layout.addView((dynamicBinding as FragmentAllTasksBinding).fragmentContainerAll)
             }
             else -> {
-                showToast(R.string.erroneous_config)
+                SnackBarUtil.showSnackBar(
+                    binding.root, R.string.erroneous_config, requireActivity()
+                )
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
@@ -306,9 +306,5 @@ class OverviewFragment : Fragment() {
                 this.filter = Filter.WEEK
             }
         }
-    }
-
-    private fun showToast(@StringRes string: Int) {
-        Toast.makeText(context, string, Toast.LENGTH_LONG).show()
     }
 }
