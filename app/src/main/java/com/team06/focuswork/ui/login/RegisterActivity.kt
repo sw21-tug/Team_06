@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.annotation.StringRes
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ThemedAppCompatActivity
 import com.team06.focuswork.databinding.ActivityRegisterBinding
+import com.team06.focuswork.ui.util.SnackBarUtil
 
 class RegisterActivity : ThemedAppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
@@ -94,11 +92,12 @@ class RegisterActivity : ThemedAppCompatActivity() {
 
     private fun setUpRegisterResult() {
         loginViewModel.loginResult.observe(this@RegisterActivity, { loginResult ->
-
             loading.visibility = View.GONE
             when (loginResult) {
-                LoginViewModel.LoginState.ERROR -> showLoginFailed(R.string.login_failed)
                 LoginViewModel.LoginState.SUCCESS -> updateUiWithUser()
+                else -> SnackBarUtil.showSnackBar(
+                    binding.root, R.string.login_failed, this
+                )
             }
         })
     }
@@ -132,16 +131,5 @@ class RegisterActivity : ThemedAppCompatActivity() {
 
         //Complete and destroy login activity once successful
         finish()
-    }
-
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val mSnackbar: Snackbar = Snackbar.make(binding.root, resources.getString(errorString), Snackbar.LENGTH_LONG)
-                .setBackgroundTint(ResourcesCompat.getColor(applicationContext.resources, R.color.primary_text, null))
-                .setTextColor(ResourcesCompat.getColor(applicationContext.resources, R.color.white, null))
-
-        val mView = mSnackbar.view
-        val mTextView = mView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-        mTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        mSnackbar.show()
     }
 }

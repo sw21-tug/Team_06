@@ -24,6 +24,7 @@ import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.DatePickerFragment
+import com.team06.focuswork.ui.util.SnackBarUtil
 import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.TimePickerFragment
 import kotlinx.coroutines.GlobalScope
@@ -167,7 +168,9 @@ class NewTaskFragment : Fragment() {
                 apply()
             }
         } else {
-            showSnackbar(R.string.template_exists_toast)
+            SnackBarUtil.showSnackBar(
+                binding.root, R.string.template_exists_toast, requireActivity()
+            )
         }
     }
 
@@ -280,16 +283,5 @@ class NewTaskFragment : Fragment() {
             Pair("HOUR", cal?.get(Calendar.HOUR_OF_DAY)),
             Pair("MINUTE", cal?.get(Calendar.MINUTE))
         )
-    }
-
-    private fun showSnackbar(@StringRes errorString: Int) {
-        val mSnackbar: Snackbar = Snackbar.make(binding.root, resources.getString(errorString), Snackbar.LENGTH_LONG)
-                .setBackgroundTint(ResourcesCompat.getColor(requireContext().resources, R.color.primary_text, null))
-                .setTextColor(ResourcesCompat.getColor(requireContext().resources, R.color.white, null))
-
-        val mView = mSnackbar.view
-        val mTextView = mView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-        mTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        mSnackbar.show()
     }
 }

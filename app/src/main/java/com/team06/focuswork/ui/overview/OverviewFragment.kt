@@ -2,12 +2,11 @@ package com.team06.focuswork.ui.overview
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.StringRes
-import androidx.core.content.res.ResourcesCompat
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.FireBaseFireStoreUtil.Filter
@@ -31,6 +29,7 @@ import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
 import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
+import com.team06.focuswork.ui.util.SnackBarUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -76,7 +75,9 @@ class OverviewFragment : Fragment() {
                 layout.addView((dynamicBinding as FragmentAllTasksBinding).fragmentContainerAll)
             }
             else -> {
-                showSnackbar(R.string.erroneous_config)
+                SnackBarUtil.showSnackBar(
+                    binding.root, R.string.erroneous_config, requireActivity()
+                )
                 dynamicBinding = FragmentWeekBinding.inflate(layoutInflater, layout, false)
                 layout.addView((dynamicBinding as FragmentWeekBinding).container)
             }
@@ -305,16 +306,5 @@ class OverviewFragment : Fragment() {
                 this.filter = Filter.WEEK
             }
         }
-    }
-
-    private fun showSnackbar(@StringRes string: Int) {
-        val mSnackbar: Snackbar = Snackbar.make(binding.root, resources.getString(string), Snackbar.LENGTH_LONG)
-            .setBackgroundTint(ResourcesCompat.getColor(requireContext().resources, R.color.primary_text, null))
-            .setTextColor(ResourcesCompat.getColor(requireContext().resources, R.color.white, null))
-
-        val mView = mSnackbar.view
-        val mTextView = mView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-        mTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        mSnackbar.show()
     }
 }
