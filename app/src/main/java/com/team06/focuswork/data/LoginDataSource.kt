@@ -26,7 +26,7 @@ class LoginDataSource {
         val loggedInUser = fireStoreUtil.addUser(firstname, lastname, username, password)
         Result.Success(loggedInUser)
     } catch (e: Throwable) {
-        Log.e(TAG, "Unfortunately the task could not be saved!$username")
+        Log.e(TAG, "Unfortunately the user could not be registered! Username: $username, Password: $password")
         e.printStackTrace()
         Result.Error(IOException("Error logging in", e))
     }
