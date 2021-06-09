@@ -26,7 +26,6 @@ class RegisterInstrumentedTest {
 
     @After
     fun removeAutoLogin(){
-        Log.d("LoginTest", "Pruning Preferences of Autologin data!")
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove("PASS").apply()
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove("USER").apply()
     }

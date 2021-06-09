@@ -55,7 +55,6 @@ class LoginActivity : ThemedAppCompatActivity() {
             return true
         }
 
-        Log.d("AutoLogin", "Null!")
         return false
     }
 
