@@ -88,7 +88,7 @@
     <string name="login_failed">"Ошибка входа"</string>
 
     <string name="notification_title">Ваша задача выполнена!</string>
-    <string name="notification_message">Задание, для которого вы установили таймер, выполнено.</string>
+    <string name="notification_message">"Задача %1$s завершена. "</string>
     <string name="login_error_message">Не удалось войти пользователю</string>
 
     <string name="delete_dialog_title">Удалить задачу</string>

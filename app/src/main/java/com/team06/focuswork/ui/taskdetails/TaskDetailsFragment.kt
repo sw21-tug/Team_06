@@ -1,18 +1,26 @@
 package com.team06.focuswork.ui.taskdetails
 
 import android.app.AlertDialog
+import android.content.Context.POWER_SERVICE
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.PowerManager
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentTaskdetailsBinding
 import com.team06.focuswork.model.TasksViewModel
+import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class TaskDetailsFragment : Fragment() {
@@ -58,7 +66,7 @@ class TaskDetailsFragment : Fragment() {
         binding.taskTimer.text = "00:00"
         taskTimer?.cancel()
 
-        tasksViewModel.currentTask.observe(viewLifecycleOwner, {
+        tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.titleTaskdetails.text = it.taskName
                 binding.descriptionTaskdetails.text = it.taskDescription
@@ -69,13 +77,12 @@ class TaskDetailsFragment : Fragment() {
                 onStartTimer(it)
             }
         })
-
     }
 
     private fun onStartTimer(task: Task) {
         val duration = task.endTime.timeInMillis - Calendar.getInstance().timeInMillis
 
-        taskTimer = object : CountDownTimer(duration, 10 * 1000) {
+        taskTimer = object : CountDownTimer(duration, 500) {
             override fun onTick(millisUntilFinished: Long) {
                 val hours = millisUntilFinished / (60 * 60 * 1000)
                 val minutes = millisUntilFinished / (60 * 1000) % (60)
@@ -87,12 +94,6 @@ class TaskDetailsFragment : Fragment() {
             }
 
             override fun onFinish() {
-                return // currently no action
-
-                /*
-                    Toast.makeText(context?.applicationContext, "Task finished",
-                        Toast.LENGTH_LONG).show()
-                */
             }
         }.start()
     }

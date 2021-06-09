@@ -88,7 +88,7 @@
     <string name="login_failed">"登录失败"</string>
 
     <string name="notification_title">您的任务已经完成！</string>
-    <string name="notification_message">您为其设置计时器的任务已完成。</string>
+    <string name="notification_message">任务 %1$s 已完成。</string>
     <string name="login_error_message">無法登錄用戶</string>
 
     <string name="delete_dialog_title">删除任务</string>

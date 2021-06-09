@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.data.Task
 
 object NotificationUtil {
     //The channel names have to be in the same order as the values/entries in the settings
@@ -76,7 +77,7 @@ object NotificationUtil {
         return NOTIFICATION_CHANNEL_IDS[0]
     }
 
-    fun sendTimerFinishedNotif(context: Context) {
+    fun sendTimerFinishedNotif(context: Context, task: Task) {
         // based off this tutorial
         // navigates back to app by clicking on it
         // https://www.youtube.com/watch?v=B5dgmvbrHgs
@@ -92,10 +93,10 @@ object NotificationUtil {
         )
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(context.getString(R.string.notification_title))
-            .setContentText(context.getString(R.string.notification_message))
+            .setContentText(String.format(context.getString(R.string.notification_message), task.taskName))
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
-                    context.getString(R.string.notification_message)
+                    String.format(context.getString(R.string.notification_message), task.taskName)
                 )
             )
             .setContentIntent(pendingIntent)

@@ -13,6 +13,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,8 +29,12 @@ import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
 import com.team06.focuswork.ui.util.FilterUtil.filterForDay
 import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
+import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class OverviewFragment : Fragment() {
@@ -85,8 +90,6 @@ class OverviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         createNotifChannels(requireContext())
-        binding.notifButton.setOnClickListener(this::sendNotif)
-
         fireStoreUtil.retrieveTasks(this::setTasks)
         val fab: FloatingActionButton = binding.fab
         fab.setOnClickListener {
@@ -106,7 +109,15 @@ class OverviewFragment : Fragment() {
     }
 
     private fun setTasks(tasks: List<Task>) {
-        allTasks.removeAll(allTasks)
+        tasks.forEach{
+            if(it.endTime.after(Calendar.getInstance())) {
+                GlobalScope.launch {
+                    delay(it.endTime.timeInMillis - System.currentTimeMillis())
+                    sendTimerFinishedNotif(requireContext(), it)
+                }
+            }
+        }
+        allTasks.clear()
         allTasks.addAll(tasks)
         tasksViewModel.setTasks(tasks)
     }
@@ -123,10 +134,10 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
-                .forEach { currentTasks.add(it) }
+                    .forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
@@ -143,7 +154,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -165,7 +176,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
@@ -272,10 +283,6 @@ class OverviewFragment : Fragment() {
             currentTasks.addAll(0, tasks)
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
-    }
-
-    private fun sendNotif(@Suppress("UNUSED_PARAMETER") view: View) {
-        sendTimerFinishedNotif(requireContext())
     }
 
     fun onClickTaskItem(task: Task) {

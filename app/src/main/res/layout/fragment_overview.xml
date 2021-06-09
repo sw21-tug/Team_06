@@ -21,14 +21,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <Button
-        android:id="@+id/notif_button"
-        android:layout_width="115dp"
-        android:layout_height="63dp"
-        android:text="@string/notification"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
