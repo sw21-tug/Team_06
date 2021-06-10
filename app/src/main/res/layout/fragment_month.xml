@@ -11,6 +11,7 @@
     android:paddingBottom="@dimen/fragment_vertical_margin">
 
 
+
     <TextView
         android:id="@+id/textview_month"
         android:layout_width="0dp"
