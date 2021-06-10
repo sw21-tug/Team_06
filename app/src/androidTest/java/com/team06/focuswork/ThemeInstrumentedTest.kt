@@ -1,33 +1,20 @@
 package com.team06.focuswork
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import android.view.View
-import android.widget.EditText
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.internal.util.Checks
 import androidx.test.platform.app.InstrumentationRegistry
 import com.team06.focuswork.espressoUtil.MockUtil
 import com.team06.focuswork.espressoUtil.NavigationUtil
-import com.team06.focuswork.espressoUtil.PrepareValuesUtil
-import com.team06.focuswork.espressoUtil.ThemeUtil
 import com.team06.focuswork.espressoUtil.ThemeUtil.withAccentColor
 import com.team06.focuswork.espressoUtil.ThemeUtil.withBackgroundColor
 import com.team06.focuswork.model.LoggedInUser
-import org.hamcrest.Description
-import org.hamcrest.Matcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)

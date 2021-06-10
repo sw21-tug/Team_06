@@ -1,13 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FocusWork</string>
 
-    <string name="nav_header_title">Focus Work</string>
     <string name="nav_header_subtitle">Team 06 - TU Graz</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="menu_overview">Overview</string>
     <string name="menu_new_task">New Task</string>
-    <string name="menu_timer">Start Task Timer</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_task_name">Task Name</string>
     <string name="prompt_task_description">Task Description</string>
@@ -21,11 +19,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <!-- Strings related to Timer -->
     <string name="timer_format">(hh:mm)</string>
-    <string name="task_not_saved_toast">Unfortunately the task could not be saved!</string>
     <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
-    <string name="timer_start_button">Start Timer</string>
-    <string name="timer_finished">Timer has finished!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Tasks for Today</string>
     <string name="day_tasks_for">Tasks for:</string>
@@ -88,11 +82,6 @@
     <string name="login_email_hint">max.mustermann@gmail.at</string>
     <string name="logo_image_description">Logo image</string>
     <string name="focus_work_title">Focus Work</string>
-    <string name="add_new_task">Add new task</string>
-    <string name="startTime" tools:ignore="MissingTranslation">0:00</string>
-    <string name="notification">Notification</string>
-    <string name="textview_range" tools:ignore="MissingTranslation">TextView</string>
-    <string name="login_error_message">"Couldn't log in user "</string>
 
     <string name="delete_dialog_title">Delete task</string>
     <string name="delete_dialog_description">Do you really want to delete the task?</string>
@@ -110,5 +99,9 @@
     <string name="logout_dialog_description">Do you really want to logout?</string>
     <string name="logout_dialog_cancel">Cancel</string>
     <string name="logout_dialog_confirm">Confirm</string>
+    <string name="new_task_button_desc">New Task Button</string>
+    <string name="timer_display_desc">Timer Display</string>
+    <string name="time_remaining">времени осталось</string>
+    <string name="timer_default_value">00:00</string>
 
 </resources>

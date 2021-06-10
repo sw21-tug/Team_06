@@ -1,5 +1,5 @@
 <resources>
-    <!-- Notifation Sound Preference -->
+    <!-- Notification Sound Preference -->
     <string-array name="notification_sound_entries">
         <item>System Default</item>
         <item>Classic</item>

@@ -18,11 +18,11 @@ class NavigationUtil {
         onIdle()
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
         onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
+            .perform(NavigationViewActions.navigateTo(R.id.nav_logout))
 
 
-        onView(withText(context.getString(R.string.logout_dialog_confirm))).inRoot(
-            RootMatchers.isDialog()).check(matches(isDisplayed())).perform(ViewActions.click())
+        onView(withText(context.getString(R.string.logout_dialog_confirm))).inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed())).perform(ViewActions.click())
         onIdle()
     }
 
@@ -30,14 +30,14 @@ class NavigationUtil {
         onIdle()
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
         onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_overview));
+            .perform(NavigationViewActions.navigateTo(R.id.nav_overview))
     }
 
     fun navigateToSettings() {
         onIdle()
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
         onView(withId(R.id.nav_view))
-            .perform(NavigationViewActions.navigateTo(R.id.nav_settings));
+            .perform(NavigationViewActions.navigateTo(R.id.nav_settings))
     }
 
     fun clickOnNewTaskButton() {

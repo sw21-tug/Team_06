@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +24,6 @@ import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
 import com.team06.focuswork.ui.util.FilterUtil.filterForDay
 import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
-import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
 import com.team06.focuswork.ui.util.SnackBarUtil
@@ -102,18 +99,17 @@ class OverviewFragment : Fragment() {
             Filter.MONTH -> initializeMonthView()
             Filter.ALL -> initializeAllView()
             else -> {
-                //TODO: Error handling
                 initializeWeekView()
             }
         }
     }
 
     private fun setTasks(tasks: List<Task>) {
-        tasks.forEach{
-            if(it.endTime.after(Calendar.getInstance())) {
+        tasks.forEach { task ->
+            if (task.endTime.after(Calendar.getInstance())) {
                 GlobalScope.launch {
-                    delay(it.endTime.timeInMillis - System.currentTimeMillis())
-                    sendTimerFinishedNotif(requireContext(), it)
+                    delay(task.endTime.timeInMillis - System.currentTimeMillis())
+                    sendTimerFinishedNotif(requireContext(), task)
                 }
             }
         }
@@ -134,10 +130,10 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
-                    .forEach { currentTasks.add(it) }
+                .forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
@@ -154,7 +150,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -176,7 +172,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
@@ -278,7 +274,7 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             currentTasks.addAll(0, tasks)
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -296,8 +292,7 @@ class OverviewFragment : Fragment() {
         val preferences: SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        val filter = (preferences.getString("overviewTimeFrame", "none")).toString()
-        when (filter) {
+        when ((preferences.getString("overviewTimeFrame", "none")).toString()) {
             "day" -> this.filter = Filter.DAY
             "week" -> this.filter = Filter.WEEK
             "month" -> this.filter = Filter.MONTH

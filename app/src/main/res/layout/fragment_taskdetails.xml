@@ -20,7 +20,8 @@
         android:paddingTop="15dp"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/description_taskdetails"
@@ -29,7 +30,8 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:textSize="22sp"/>
+        android:textSize="22sp"
+        android:textIsSelectable="true" />
 
     <FrameLayout
         android:id="@+id/frameLayoutTime"
@@ -45,7 +47,8 @@
             android:layout_gravity="start"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:textIsSelectable="true" />
 
         <TextView
             android:id="@+id/endtime_taskdetails"
@@ -54,7 +57,8 @@
             android:layout_gravity="end"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:textIsSelectable="true" />
 
     </FrameLayout>
 
@@ -73,7 +77,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textIsSelectable="true" />
 
         <TextView
             android:id="@+id/enddate_taskdetails"
@@ -83,7 +88,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textIsSelectable="true" />
 
     </FrameLayout>
     <Space
@@ -110,14 +116,15 @@
                 app:srcCompat="@drawable/ic_timer"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
-                android:layout_margin="2dp"/>
+                android:layout_margin="2dp"
+                android:contentDescription="@string/timer_display_desc"/>
             <TextView
                 android:id="@+id/taskTimerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="none"
-                android:text="time remaining"
+                android:text="@string/time_remaining"
                 android:textSize="22sp" />
         </LinearLayout>
 
@@ -146,7 +153,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:textSize="34sp"
-            android:text="00:00"
+            android:text="@string/timer_default_value"
             app:layout_constraintBottom_toBottomOf="@+id/timer_animation"
             app:layout_constraintEnd_toEndOf="@+id/timer_animation"
             app:layout_constraintStart_toStartOf="@+id/timer_animation"

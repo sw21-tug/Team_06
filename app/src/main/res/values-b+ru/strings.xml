@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">Сосредоточенная работа</string>
 
-    <string name="nav_header_title">Сосредоточенная работа</string>
     <string name="nav_header_subtitle">Команда 06 - ТУ Грац</string>
     <string name="nav_header_desc">Заголовок навигации</string>
 
     <string name="menu_overview">обзор</string>
     <string name="menu_new_task">Новое задание</string>
-    <string name="menu_timer">Таймер запуска задачи</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_task_name">Название задачи</string>
     <string name="prompt_task_description">Описание задания</string>
@@ -19,13 +17,9 @@
     <string name="task_end_date_and_time">Конец задачи</string>
     <string name="action_create_task">Создать задачу</string>
     <string name="action_sign_in_short">Войти</string>
-    <string name="task_not_saved_toast">К сожалению, сохранить задачу не удалось!</string>
     <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
-    <string name="timer_start_button">Таймер запуска</string>
     <!-- Strings related to Timer -->
     <string name="timer_format">(чч:мм)</string>
-    <string name="timer_finished">Таймер закончился!</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">Задачи на сегодня</string>
     <string name="day_tasks_for">Задачи для:</string>
@@ -71,8 +65,6 @@
     <string name="login_email_hint">Иванов</string>
     <string name="logo_image_description">Изображение логотипа</string>
     <string name="focus_work_title">Сосредоточенная работа</string>
-    <string name="add_new_task">Добавить новую задачу</string>
-    <string name="notification">Уведомление</string>
     <string name="prompt_first_name">Фамилия</string>
     <string name="prompt_last_name">имя</string>
     <string name="prompt_email">Электронное письмо</string>
@@ -89,7 +81,6 @@
 
     <string name="notification_title">Ваша задача выполнена!</string>
     <string name="notification_message">"Задача %1$s завершена. "</string>
-    <string name="login_error_message">Не удалось войти пользователю</string>
 
     <string name="delete_dialog_title">Удалить задачу</string>
     <string name="delete_dialog_description">Вы действительно хотите удалить задание?</string>
@@ -107,5 +98,9 @@
     <string name="logout_dialog_description">Вы действительно хотите выйти из системы?</string>
     <string name="logout_dialog_cancel">Отмена</string>
     <string name="logout_dialog_confirm">Подтвердить</string>
+    <string name="new_task_button_desc">Кнопка новой задачи</string>
+    <string name="timer_display_desc">Дисплей таймера</string>
+    <string name="time_remaining">time remaining</string>
+    <string name="timer_default_value">00:00</string>
 
 </resources>

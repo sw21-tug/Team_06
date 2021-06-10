@@ -1,3 +1,5 @@
+@file:Suppress("KDocUnresolvedReference")
+
 package com.team06.focuswork.ui.util
 
 import android.app.DatePickerDialog
@@ -5,15 +7,9 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DatePicker.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DatePickerFragment(
     private val calendar: MutableLiveData<Calendar>
 ) : DialogFragment(), DatePickerDialog.OnDateSetListener {
@@ -35,6 +31,6 @@ class DatePickerFragment(
     }
 
     companion object {
-        const val TAG = "DatePickerDialog"
+        const val TAG: String = "DatePickerDialog"
     }
 }

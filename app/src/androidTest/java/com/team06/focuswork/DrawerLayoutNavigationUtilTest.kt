@@ -24,7 +24,7 @@ class DrawerLayoutNavigationUtilTest {
     private fun openLayoutDrawer() {
         onView(withId(R.id.drawer_layout))
             .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
-            .perform(DrawerActions.open()); // Open Drawer
+            .perform(DrawerActions.open()) // Open Drawer
     }
 
     @Test

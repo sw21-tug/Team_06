@@ -2,7 +2,6 @@ package com.team06.focuswork.ui.overview
 
 import android.content.Context
 import android.text.format.DateFormat
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -17,10 +16,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val list = overviewFragment.getAllTasks()
-
-    init {
-        Log.d("TaskAdapter", list.toString())
-    }
 
     class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val taskItem: MaterialCardView = view.findViewById(R.id.task_item)
@@ -53,6 +48,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
         holder.taskItem.tag = "Task:$position"
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount(): Int = list.size
 
 }

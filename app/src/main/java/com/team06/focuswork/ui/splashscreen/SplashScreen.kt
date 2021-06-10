@@ -15,7 +15,7 @@ import com.team06.focuswork.ui.login.LoginActivity
 
 class SplashScreen : ThemedAppCompatActivity() {
 
-    private val SPLASH_DISPLAY_LENGTH = 2200
+    private val splashDisplayLength = 2200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +41,6 @@ class SplashScreen : ThemedAppCompatActivity() {
             val mainIntent = Intent(this@SplashScreen, LoginActivity::class.java)
             this@SplashScreen.startActivity(mainIntent)
             finish()
-        }, SPLASH_DISPLAY_LENGTH.toLong())
+        }, splashDisplayLength.toLong())
     }
 }

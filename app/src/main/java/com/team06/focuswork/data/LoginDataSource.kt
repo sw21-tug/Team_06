@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.team06.focuswork.data
 
 import android.util.Log
@@ -9,12 +11,15 @@ import java.io.IOException
  */
 class LoginDataSource {
     private val TAG = "LOGIN_DATA_SOURCE"
-    val fireStoreUtil = FireBaseFireStoreUtil()
+    private val fireStoreUtil = FireBaseFireStoreUtil()
     fun login(username: String, password: String): Result<LoggedInUser> = try {
         val loggedInUser = fireStoreUtil.retrieveUser(username, password)
         Result.Success(loggedInUser)
     } catch (e: Throwable) {
-        Log.e(TAG, "Unfortunately the user could not be logged in! Username: $username, Password: $password")
+        Log.e(
+            TAG,
+            "Unfortunately the user could not be logged in! Username: $username, Password: $password"
+        )
         e.printStackTrace()
         Result.Error(IOException("Error logging in", e))
     }
@@ -26,7 +31,10 @@ class LoginDataSource {
         val loggedInUser = fireStoreUtil.addUser(firstname, lastname, username, password)
         Result.Success(loggedInUser)
     } catch (e: Throwable) {
-        Log.e(TAG, "Unfortunately the user could not be registered! Username: $username, Password: $password")
+        Log.e(
+            TAG,
+            "Unfortunately the user could not be registered! Username: $username, Password: $password"
+        )
         e.printStackTrace()
         Result.Error(IOException("Error logging in", e))
     }

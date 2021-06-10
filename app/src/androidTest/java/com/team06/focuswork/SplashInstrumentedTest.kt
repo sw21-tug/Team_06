@@ -27,7 +27,7 @@ class SplashInstrumentedTest {
         try {
             //Passes if AutoLogin Fails
             onView(withId(R.id.login)).check(matches(isDisplayed()))
-        } catch (ex: Exception){
+        } catch (ex: Exception) {
             //Fails if AutoLogin happens, so we need to check the main View instead
             onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
         }

@@ -30,7 +30,7 @@ object FilterUtil {
     fun filterForDay(day: Calendar, start: Calendar, end: Calendar): Boolean {
 
         //We don't care about the year-to-day conversion being accurate
-        //since we only care about what day comes first, meaning leaving 1 day unsused
+        //since we only care about what day comes first, meaning leaving 1 day unused
         //for most years is of no consequence
         val startDay = start.get(Calendar.DAY_OF_YEAR) + start.get(Calendar.YEAR) * 366
         val endDay = end.get(Calendar.DAY_OF_YEAR) + end.get(Calendar.YEAR) * 366
@@ -56,7 +56,7 @@ object FilterUtil {
     fun filterForMonth(month: Calendar, start: Calendar, end: Calendar): Boolean {
         //This is highly awkward, yet the best way to efficiently ensure that changing
         //DAY_OF_MONTH doesn't change MONTH itself (which it sometimes did in my tests)
-        var m = month.get(Calendar.MONTH)
+        val m = month.get(Calendar.MONTH)
         month.set(Calendar.DAY_OF_MONTH, 1)
         month.set(Calendar.MONTH, m)
 

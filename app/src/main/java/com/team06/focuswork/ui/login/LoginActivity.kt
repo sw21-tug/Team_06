@@ -7,13 +7,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.annotation.StringRes
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
 import com.team06.focuswork.ThemedAppCompatActivity
@@ -129,8 +125,7 @@ class LoginActivity : ThemedAppCompatActivity() {
         startActivity(intent)
         setResult(Activity.RESULT_OK)
 
-        if (!username.text.toString().isNullOrEmpty() && !password.text.toString()
-                .isNullOrEmpty()
+        if (username.text.toString().isNotEmpty() && password.text.toString().isNotEmpty()
         ) {
             PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
                 .putString("USER", username.text.toString()).apply()
