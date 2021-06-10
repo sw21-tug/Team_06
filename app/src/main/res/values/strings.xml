@@ -101,7 +101,7 @@
     <string name="logout_dialog_confirm">Confirm</string>
     <string name="new_task_button_desc">New Task Button</string>
     <string name="timer_display_desc">Timer Display</string>
-    <string name="time_remaining">времени осталось</string>
+    <string name="time_remaining">time remaining</string>
     <string name="timer_default_value">00:00</string>
 
 </resources>

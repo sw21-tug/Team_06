@@ -66,27 +66,14 @@ class RegisterActivity : ThemedAppCompatActivity() {
     }
 
     private fun setUpTextListeners() {
-        username.afterTextChanged {
-            loginViewModel.registerDataChanged(
-                firstname.text.toString(), lastname.text.toString(),
-                username.text.toString(), password.text.toString()
-            )
-        }
-        password.afterTextChanged {
-            loginViewModel.registerDataChanged(
-                firstname.text.toString(), lastname.text.toString(),
-                username.text.toString(), password.text.toString()
-            )
-        }
-        password.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE ->
-                    loginViewModel.register(
-                        firstname.text.toString(), lastname.text.toString(),
-                        username.text.toString(), password.text.toString()
-                    )
+        val registerFields = arrayListOf(username, password, firstname, lastname)
+        registerFields.forEach { field ->
+            field.afterTextChanged {
+                loginViewModel.registerDataChanged(
+                    firstname.text.toString(), lastname.text.toString(),
+                    username.text.toString(), password.text.toString()
+                )
             }
-            false
         }
     }
 
@@ -107,13 +94,15 @@ class RegisterActivity : ThemedAppCompatActivity() {
 
             // disable login button unless both username / password is valid
             register.isEnabled = registerState == LoginViewModel.FormState.VALID
-            if (registerState == LoginViewModel.FormState.ERR_USERNAME) {
-                username.error = getString(R.string.invalid_username)
-            }
-            password.error = when (registerState) {
-                LoginViewModel.FormState.ERR_PASSWORD -> getString(R.string.invalid_password)
-                LoginViewModel.FormState.ERR_FIRSTNAME -> getString(R.string.invalid_firstname)
-                LoginViewModel.FormState.ERR_LASTNAME -> getString(R.string.invalid_lastname)
+            when (registerState) {
+                LoginViewModel.FormState.ERR_USERNAME -> username.error =
+                    getString(R.string.invalid_username)
+                LoginViewModel.FormState.ERR_PASSWORD -> password.error =
+                    getString(R.string.invalid_password)
+                LoginViewModel.FormState.ERR_FIRSTNAME -> firstname.error =
+                    getString(R.string.invalid_firstname)
+                LoginViewModel.FormState.ERR_LASTNAME -> lastname.error =
+                    getString(R.string.invalid_lastname)
                 else -> return@observe
             }
         })

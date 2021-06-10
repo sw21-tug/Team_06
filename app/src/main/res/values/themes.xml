@@ -74,6 +74,7 @@
 
         <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
+        <item name="popupMenuBackground">@color/black</item>
     </style>
     <style name="Theme.FocusWork.Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- This is the Light Blue theme. -->
