@@ -76,7 +76,7 @@ While this application is planned to be a local app, in a later stage it will al
 | FW-041 All tasks overview | Overview showing all available tasks |
 | FW-042 Log out | User can now log out inside the app |
 | FW-043 Refactor code after sprint 4 session 1 | Refactoring of code |
-| FW-044 New task input does not get updated on the screen |  |
+| FW-044 New task input does not get updated on the screen | Tasks are now updated in all fragments |
 | FW-045 Refactor code after sprint 4 session 2 | Refactoring of code |
 | FW-046 Fix flakey auto-login behaviour | Auto-login is now working again at every app start |
 | FW-047 Fix UI Design | Several UI design fixes |
