@@ -82,7 +82,8 @@ While this application is planned to be a local app, in a later stage it will al
 | FW-047 Fix UI Design | Several UI design fixes |
 | FW-048 Beautify Toast messages | Toast messages are now displayed in a better form (usability) |
 | FW-049 Background on Android API 28 and older | Change API settings for Android |
-
+| FW-050 Refactor Code after sprint 4 session 3 |  Refactoring of code |
+| FW-051 Fix last bugs before release | Some minor bugs were fixed for the final release |
 
 
 
