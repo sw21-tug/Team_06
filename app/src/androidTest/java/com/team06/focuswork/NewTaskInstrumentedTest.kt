@@ -56,7 +56,7 @@ class NewTaskInstrumentedTest {
     @Test
     fun createSimpleTaskTest() {
         onView(withId(R.id.taskCreate)).check(matches(not(isEnabled())))
-        setupTaskStrings("createSimpleTask", "SimpleTaskDescription");
+        setupTaskStrings("createSimpleTask", "SimpleTaskDescription")
         setTimeValues(startDate, endDate)
 
         onView(withId(R.id.taskCreate)).check(matches(isEnabled())).perform(click())
@@ -74,7 +74,7 @@ class NewTaskInstrumentedTest {
     @Test
     fun createTaskWithoutDescriptionTest() {
         onView(withId(R.id.taskCreate)).check(matches(not(isEnabled())))
-        setupTaskStrings("TaskName no Desc", "");
+        setupTaskStrings("TaskName no Desc", "")
         setTimeValues(startDate, endDate)
         onView(withId(R.id.taskCreate)).check(matches(not(isEnabled())))
     }

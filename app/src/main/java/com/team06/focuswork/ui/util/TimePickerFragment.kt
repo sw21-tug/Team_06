@@ -10,11 +10,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DatePicker.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TimePickerFragment(
     private val calendar: MutableLiveData<Calendar>
 ) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
@@ -32,6 +27,6 @@ class TimePickerFragment(
     }
 
     companion object {
-        const val TAG = "TimePickerDialog"
+        const val TAG: String = "TimePickerDialog"
     }
 }

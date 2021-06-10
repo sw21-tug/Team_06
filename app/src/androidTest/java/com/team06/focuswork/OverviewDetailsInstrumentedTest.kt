@@ -1,7 +1,6 @@
 package com.team06.focuswork
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers
@@ -34,8 +33,8 @@ class OverviewDetailsInstrumentedTest {
     private val user = LoggedInUser("SfuvPQ8Uf2wistKapXBQ")
     private val views = InstrumentationRegistry.getInstrumentation()
         .targetContext.resources.getStringArray(R.array.overview_time_frame_entries)
-    private lateinit var startDate : Calendar
-    private lateinit var endDate : Calendar
+    private lateinit var startDate: Calendar
+    private lateinit var endDate: Calendar
 
     @Before
     fun init() {

@@ -6,26 +6,21 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.*
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.team06.focuswork.R
 import com.team06.focuswork.data.FireBaseFireStoreUtil
 import com.team06.focuswork.data.Task
 import com.team06.focuswork.databinding.FragmentNewTaskBinding
 import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.DatePickerFragment
-import com.team06.focuswork.ui.util.SnackBarUtil
 import com.team06.focuswork.ui.util.NotificationUtil
+import com.team06.focuswork.ui.util.SnackBarUtil
 import com.team06.focuswork.ui.util.TimePickerFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -36,8 +31,8 @@ import java.util.*
 class NewTaskFragment : Fragment() {
 
     private var workingTaskId: String = ""
-    var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
-    var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+    private var startCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+    private var endCalendar: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
 
     private val startDatePicker = DatePickerFragment(startCalendar)
     private val startTimePicker = TimePickerFragment(startCalendar)
@@ -76,7 +71,7 @@ class NewTaskFragment : Fragment() {
                     getString(R.string.title_edit_task)
                 binding.taskCreate.text = getString(R.string.action_save_task)
             } else {
-                endCalendar.value?.add(Calendar.HOUR, 1);
+                endCalendar.value?.add(Calendar.HOUR, 1)
 
                 (activity as AppCompatActivity).supportActionBar?.title =
                     getString(R.string.menu_new_task)
@@ -102,7 +97,7 @@ class NewTaskFragment : Fragment() {
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_new_task_template -> showTemplates(true)
         R.id.menu_delete_task_template -> showTemplates(false)
         else -> super.onOptionsItemSelected(item)
@@ -236,7 +231,7 @@ class NewTaskFragment : Fragment() {
             }
             updateTextFields()
         })
-        endCalendar.observe(viewLifecycleOwner, Observer { cal ->
+        endCalendar.observe(viewLifecycleOwner, { cal ->
             if (cal.before(startCalendar.value)) {
                 endCalendar.value = startCalendar.value?.clone() as GregorianCalendar
             }

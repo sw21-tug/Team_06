@@ -2,7 +2,6 @@ package com.team06.focuswork.ui.overview
 
 import android.content.Context
 import android.text.format.DateFormat
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -49,6 +48,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
         holder.taskItem.tag = "Task:$position"
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount(): Int = list.size
 
 }

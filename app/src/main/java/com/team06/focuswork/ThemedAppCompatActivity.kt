@@ -92,7 +92,7 @@ open class ThemedAppCompatActivity : AppCompatActivity(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == "language") {
             val languageValue: String = (sharedPreferences?.getString(key, "en")).toString()
-            onChangedLanguage(languageValue);
+            onChangedLanguage(languageValue)
         } else if (key == "colorBackground" || key == "colorAccent") {
             applyTheme()
 

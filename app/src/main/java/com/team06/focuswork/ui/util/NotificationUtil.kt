@@ -93,7 +93,12 @@ object NotificationUtil {
         )
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(context.getString(R.string.notification_title))
-            .setContentText(String.format(context.getString(R.string.notification_message), task.taskName))
+            .setContentText(
+                String.format(
+                    context.getString(R.string.notification_message),
+                    task.taskName
+                )
+            )
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
                     String.format(context.getString(R.string.notification_message), task.taskName)

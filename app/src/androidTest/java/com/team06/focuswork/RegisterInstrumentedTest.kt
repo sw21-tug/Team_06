@@ -1,8 +1,6 @@
 package com.team06.focuswork
 
 import android.content.Context
-import android.util.Log
-import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -15,7 +13,6 @@ import com.team06.focuswork.espressoUtil.NavigationUtil
 import com.team06.focuswork.espressoUtil.PrepareValuesUtil
 import com.team06.focuswork.ui.login.RegisterActivity
 import org.hamcrest.Matchers
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,11 +25,11 @@ class RegisterInstrumentedTest {
     private val valueSetter = PrepareValuesUtil()
 
     @Before
-    fun logOut(){
+    fun logOut() {
         try {
             //If this passes, we are in the Login Screen!
             onView(withId(R.id.login)).check(matches(isDisplayed()))
-        } catch (ex: Exception){
+        } catch (ex: Exception) {
             //If this fails, AutoLogin kicked in, so we want to log out manually!
             navigator.logout(context)
         }

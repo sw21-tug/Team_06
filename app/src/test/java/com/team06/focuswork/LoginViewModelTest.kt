@@ -39,8 +39,8 @@ class LoginViewModelTest {
     @ExperimentalCoroutinesApi
     val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 
-    lateinit var resultSucces: Result.Success<LoggedInUser>
-    lateinit var resultError: Result.Error
+    private lateinit var resultSuccess: Result.Success<LoggedInUser>
+    private lateinit var resultError: Result.Error
 
     @Before
     fun init() {
@@ -91,8 +91,8 @@ class LoginViewModelTest {
 
     @Test
     fun loginSuccessTest(): Unit = testDispatcher.runBlockingTest {
-        resultSucces = Result.Success(LoggedInUser("hash"))
-        every { LoginRepository.login(username, password) } returns resultSucces
+        resultSuccess = Result.Success(LoggedInUser("hash"))
+        every { LoginRepository.login(username, password) } returns resultSuccess
 
         viewModel.login(username, password)
         assertEquals(LoginViewModel.LoginState.SUCCESS, viewModel.loginResult.value)
@@ -111,10 +111,10 @@ class LoginViewModelTest {
 
     @Test
     fun registerSuccessTest(): Unit = testDispatcher.runBlockingTest {
-        resultSucces = Result.Success(LoggedInUser("hash"))
+        resultSuccess = Result.Success(LoggedInUser("hash"))
         every {
             LoginRepository.register(firstname, lastname, username, password)
-        } returns resultSucces
+        } returns resultSuccess
 
         viewModel.register(firstname, lastname, username, password)
         assertEquals(LoginViewModel.LoginState.SUCCESS, viewModel.loginResult.value)

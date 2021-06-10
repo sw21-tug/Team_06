@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +24,6 @@ import com.team06.focuswork.model.TasksViewModel
 import com.team06.focuswork.ui.util.FilterUtil
 import com.team06.focuswork.ui.util.FilterUtil.filterForDay
 import com.team06.focuswork.ui.util.FilterUtil.filterForWeek
-import com.team06.focuswork.ui.util.NotificationUtil
 import com.team06.focuswork.ui.util.NotificationUtil.createNotifChannels
 import com.team06.focuswork.ui.util.NotificationUtil.sendTimerFinishedNotif
 import com.team06.focuswork.ui.util.SnackBarUtil
@@ -133,7 +130,7 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
                 .forEach { currentTasks.add(it) }
@@ -153,7 +150,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { task -> taskInWeek(task) }.forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
@@ -175,7 +172,7 @@ class OverviewFragment : Fragment() {
         localBinding.progressbar.visibility = View.GONE
         recyclerView.adapter = TaskAdapter(requireContext(), this)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.iterator().forEach {
                 if (FilterUtil.filterForMonth(Calendar.getInstance(), it.startTime, it.endTime))
@@ -277,7 +274,7 @@ class OverviewFragment : Fragment() {
         recyclerView.adapter = TaskAdapter(requireContext(), this)
         tasksViewModel.setSelectedTask(null)
 
-        tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
+        tasksViewModel.allTasks.observe(requireActivity(), { tasks ->
             currentTasks.removeAll(currentTasks)
             currentTasks.addAll(0, tasks)
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
