@@ -1,11 +1,13 @@
 <resources>
     <!-- Notification Sound Preference -->
     <string-array name="notification_sound_entries">
+        <item>System Default</item>
         <item>Classic</item>
         <item>Funky</item>
     </string-array>
 
     <string-array name="notification_sound_values">
+        <item>default</item>
         <item>classic</item>
         <item>funky</item>
     </string-array>
@@ -23,13 +25,13 @@
 
     <!-- Color Accent Theme Preference -->
     <string-array name="color_accent_entries">
-        <item>Blue</item>
         <item>Red</item>
+        <item>Blue</item>
     </string-array>
 
     <string-array name="color_accent_values">
-        <item>blue</item>
         <item>red</item>
+        <item>blue</item>
     </string-array>
 
     <!-- Overview Time Frame Preference -->
@@ -37,12 +39,14 @@
         <item>Day</item>
         <item>Week</item>
         <item>Month</item>
+        <item>All</item>
     </string-array>
 
     <string-array name="overview_time_frame_values">
         <item>day</item>
         <item>week</item>
         <item>month</item>
+        <item>all</item>
     </string-array>
 
     <string-array name="language_entries">

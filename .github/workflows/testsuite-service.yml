@@ -31,10 +31,15 @@ jobs:
         run: |
           ./gradlew test
 
+      - name: Upload unit test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_report
+          path: app/build/reports/tests/testDebugUnitTest/
+
       - name: Android Test Report
         uses: asadmansr/android-test-report-action@v1.2.0
         if: ${{ always() }}
-
 
   instrumentation_test:
     name: Instrumentation testsuite
@@ -59,3 +64,8 @@ jobs:
         api-level: 29
         script: ./gradlew connectedCheck
 
+    - name: Upload instrumentation test report
+      uses: actions/upload-artifact@v2
+      with:
+        name: instrumentation_test_report
+        path: app/build/reports/androidTests/connected/

@@ -1,49 +1,46 @@
 <resources>
     <string name="app_name">专注工作</string>
-    <string name="navigation_drawer_open">打开导航抽屉</string>
-    <string name="navigation_drawer_close">关闭导航抽屉</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+    <string name="nav_header_subtitle">战队06-格拉茨大学</string>
     <string name="nav_header_desc">导航标题</string>
-    <string name="action_settings">设定值</string>
 
     <string name="menu_overview">概述</string>
-    <string name="menu_slideshow">幻灯片放映</string>
     <string name="menu_new_task">新任务</string>
-    <string name="menu_timer">启动任务计时器</string>
-    <string name="menu_day_overview">日概述</string>
     <!-- Strings related to new task fragment -->
-    <string name="prompt_title">创建新任务</string>
     <string name="prompt_task_name">任务名称</string>
     <string name="prompt_task_description">任务描述</string>
-    <string name="prompt_task_start">任务开始</string>
     <string name="prompt_task_start_date">01.01.1970</string>
     <string name="prompt_task_start_time">00:00</string>
     <string name="task_start_date_and_time">任务开始</string>
-    <string name="prompt_task_end">任务结束</string>
     <string name="prompt_task_end_date">01.01.1970</string>
     <string name="prompt_task_end_time">00:00</string>
     <string name="task_end_date_and_time">任务结束</string>
-    <string name="task_illegal_start_date_toast">任务开始日期不能是过去的日期！</string>
-    <string name="task_illegal_start_time_toast">任务开始时间不能是过去的时间！</string>
-    <string name="task_illegal_end_date_toast">任务结束日期必须晚于任务开始日期！</string>
-    <string name="task_illegal_end_time_toast">任务结束时间必须晚于任务开始日期！</string>
     <string name="action_create_task">创建任务</string>
     <string name="action_sign_in_short">登入</string>
-    <string name="welcome">"欢迎！"</string>
     <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
-    <string name="timer_start_button">启动计时器</string>
-    <string name="timer_finished">计时器已结束！</string>
-    <string name="no_task_selected">请选择一个任务！</string>
-
+    <!-- Strings related to Timer -->
+    <string name="timer_format">(hh:mm)</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">今天的任务</string>
-    <string name="day_from">从：</string>
-    <string name="day_to">至：</string>
     <string name="day_tasks_for">任务：</string>
+    <string name="week_title">本周任务</string>
+    <string name="all_days">整个星期</string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">星期五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">星期日</string>
+    <string name="erroneous_config">警告！错误的配置，默认为周！</string>
+    <string name="all_title">所有任務</string>
+    <!-- String related to Details Fragment -->
+    <string name="menu_item_edit">编辑</string>
+    <string name="menu_item_delete">删除</string>
+    <string name="month_title">这个月的任务</string>
 
     <string name="menu_settings">设定值</string>
+    <string name="menu_logout">登出</string>
 
     <!-- Preference Titles -->
     <string name="overview_header">概述</string>
@@ -65,9 +62,11 @@
     <string name="colorAccent_title">口音颜色</string>
 
     <!-- Login/Registration -->
+    <string name="login_email_hint">陈小名</string>
+    <string name="logo_image_description">形象標識</string>
+    <string name="focus_work_title">重點工作</string>
     <string name="prompt_first_name">名</string>
     <string name="prompt_last_name">姓</string>
-    <string name="title_activity_login">登录活动</string>
     <string name="prompt_email">电子邮件</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登入</string>
@@ -81,7 +80,26 @@
     <string name="login_failed">"登录失败"</string>
 
     <string name="notification_title">您的任务已经完成！</string>
-    <string name="notification_message">该文本比原始消息长得多。</string>
+    <string name="notification_message">任务 %1$s 已完成。</string>
 
-    <string name="hello_blank_fragment">你好空白片段</string>
+    <string name="delete_dialog_title">删除任务</string>
+    <string name="delete_dialog_description">你真的想删除这个任务吗？</string>
+    <string name="delete_dialog_cancel">取消</string>
+    <string name="delete_dialog_confirm_delete">删除</string>
+
+    <string name="title_edit_task">编辑任务</string>
+    <string name="action_save_task">保存任务</string>
+    <string name="save_template">保存模板</string>
+    <string name="template_exists_toast">任务模板已存在</string>
+    <string name="menu_item_load_template">新模板</string>
+    <string name="menu_item_delete_template">刪除模板</string>
+
+    <string name="logout_dialog_title">登出</string>
+    <string name="logout_dialog_description">你真的想注销吗？</string>
+    <string name="logout_dialog_cancel">取消</string>
+    <string name="logout_dialog_confirm">确认</string>
+    <string name="new_task_button_desc">新建任务按钮</string>
+    <string name="timer_display_desc">计时器显示</string>
+    <string name="time_remaining">剩余时间</string>
+    <string name="timer_default_value">00:00</string>
 </resources>

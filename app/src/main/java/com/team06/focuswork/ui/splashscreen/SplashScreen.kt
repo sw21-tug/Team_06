@@ -8,15 +8,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.ThemedAppCompatActivity
 import com.team06.focuswork.ui.login.LoginActivity
 
 
-class SplashScreen : AppCompatActivity() {
+class SplashScreen : ThemedAppCompatActivity() {
 
-    private val SPLASH_DISPLAY_LENGTH = 2200
+    private val splashDisplayLength = 2200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,20 +30,17 @@ class SplashScreen : AppCompatActivity() {
             PropertyValuesHolder.ofFloat("scaleY", 1.2f)
         )
         scaleDown.duration = 310
-
         scaleDown.repeatCount = ObjectAnimator.INFINITE
         scaleDown.repeatMode = ObjectAnimator.REVERSE
 
         scaleDown.start()
 
-
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
-        Handler(Looper.getMainLooper())
-            .postDelayed({ /* Create an Intent that will start the Menu-Activity. */
-                val mainIntent = Intent(this@SplashScreen, LoginActivity::class.java)
-                this@SplashScreen.startActivity(mainIntent)
-                finish()
-            }, SPLASH_DISPLAY_LENGTH.toLong())
+        Handler(Looper.getMainLooper()).postDelayed({ /* Create an Intent that will start the Menu-Activity. */
+            val mainIntent = Intent(this@SplashScreen, LoginActivity::class.java)
+            this@SplashScreen.startActivity(mainIntent)
+            finish()
+        }, splashDisplayLength.toLong())
     }
 }

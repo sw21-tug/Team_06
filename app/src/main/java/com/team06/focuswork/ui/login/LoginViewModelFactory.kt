@@ -2,8 +2,6 @@ package com.team06.focuswork.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.team06.focuswork.data.LoginDataSource
-import com.team06.focuswork.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

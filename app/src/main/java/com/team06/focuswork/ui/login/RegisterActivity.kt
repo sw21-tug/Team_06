@@ -2,131 +2,123 @@ package com.team06.focuswork.ui.login
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.annotation.StringRes
-import androidx.lifecycle.Observer
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.team06.focuswork.MainActivity
 import com.team06.focuswork.R
+import com.team06.focuswork.ThemedAppCompatActivity
+import com.team06.focuswork.databinding.ActivityRegisterBinding
+import com.team06.focuswork.ui.util.SnackBarUtil
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : ThemedAppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var firstname: EditText
+    private lateinit var lastname: EditText
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+    private lateinit var login: Button
+    private lateinit var register: Button
+    private lateinit var loading: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_register)
+        bindComponents()
+        setUpRegisterFormState()
+        setUpRegisterResult()
+        setUpTextListeners()
+        setUpSubmitButtons()
+    }
 
-        val firstname = findViewById<EditText>(R.id.firstname)
-        val lastname = findViewById<EditText>(R.id.lastname)
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val register = findViewById<Button>(R.id.register)
-        val loading = findViewById<ProgressBar>(R.id.loading)
-
+    private fun bindComponents() {
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        firstname = binding.firstname
+        lastname = binding.lastname
+        username = binding.username
+        password = binding.password
+        login = binding.login
+        register = binding.register
+        loading = binding.loading
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
+    }
 
-        loginViewModel.registerFormState.observe(this@RegisterActivity, Observer {
-            val registerState = it ?: return@Observer
-
-            // disable login button unless both username / password is valid
-            register.isEnabled = registerState.isDataValid
-
-            if (registerState.usernameError != null) {
-                username.error = getString(registerState.usernameError)
-            }
-            if (registerState.passwordError != null) {
-                password.error = getString(registerState.passwordError)
-            }
-            if (registerState.firstnameError != null) {
-                password.error = getString(registerState.firstnameError)
-            }
-            if (registerState.lastnameError != null) {
-                password.error = getString(registerState.lastnameError)
-            }
-        })
-
-        loginViewModel.loginResult.observe(this@RegisterActivity, Observer {
-            val loginResult = it ?: return@Observer
-
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-                return@Observer
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser()
-            }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            finish()
-        })
-
-        username.afterTextChanged {
-            loginViewModel.registerDataChanged(
-                firstname.text.toString(),
-                lastname.text.toString(),
-                username.text.toString(),
-                password.text.toString()
+    private fun setUpSubmitButtons() {
+        register.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            loginViewModel.register(
+                firstname.text.toString(), lastname.text.toString(),
+                username.text.toString(), password.text.toString()
             )
         }
 
-        password.apply {
-            afterTextChanged {
+        login.setOnClickListener {
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setUpTextListeners() {
+        val registerFields = arrayListOf(username, password, firstname, lastname)
+        registerFields.forEach { field ->
+            field.afterTextChanged {
                 loginViewModel.registerDataChanged(
-                    firstname.text.toString(),
-                    lastname.text.toString(),
-                    username.text.toString(),
-                    password.text.toString()
+                    firstname.text.toString(), lastname.text.toString(),
+                    username.text.toString(), password.text.toString()
                 )
             }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.register(
-                            firstname.text.toString(),
-                            lastname.text.toString(),
-                            username.text.toString(),
-                            password.text.toString()
-                        )
-                }
-                false
-            }
-
-            register.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.register(firstname.text.toString(), lastname.text.toString(),
-                                        username.text.toString(), password.text.toString())
-            }
-
-            login.setOnClickListener {
-                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                startActivity(intent)
-                //loading.visibility = View.VISIBLE
-                //loginViewModel.register(username.text.toString(), password.text.toString())
-            }
         }
+    }
+
+    private fun setUpRegisterResult() {
+        loginViewModel.loginResult.observe(this@RegisterActivity, { loginResult ->
+            loading.visibility = View.GONE
+            when (loginResult) {
+                LoginViewModel.LoginState.SUCCESS -> updateUiWithUser()
+                else -> SnackBarUtil.showSnackBar(
+                    binding.root, R.string.login_failed, this
+                )
+            }
+        })
+    }
+
+    private fun setUpRegisterFormState() {
+        loginViewModel.registerFormState.observe(this@RegisterActivity, { registerState ->
+
+            // disable login button unless both username / password is valid
+            register.isEnabled = registerState == LoginViewModel.FormState.VALID
+            when (registerState) {
+                LoginViewModel.FormState.ERR_USERNAME -> username.error =
+                    getString(R.string.invalid_username)
+                LoginViewModel.FormState.ERR_PASSWORD -> password.error =
+                    getString(R.string.invalid_password)
+                LoginViewModel.FormState.ERR_FIRSTNAME -> firstname.error =
+                    getString(R.string.invalid_firstname)
+                LoginViewModel.FormState.ERR_LASTNAME -> lastname.error =
+                    getString(R.string.invalid_lastname)
+                else -> return@observe
+            }
+        })
     }
 
     private fun updateUiWithUser() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
+        setResult(Activity.RESULT_OK)
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+            .putString("USER", username.text.toString()).apply()
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit()
+            .putString("PASS", password.text.toString()).apply()
+
+        //Complete and destroy login activity once successful
+        finish()
     }
 }

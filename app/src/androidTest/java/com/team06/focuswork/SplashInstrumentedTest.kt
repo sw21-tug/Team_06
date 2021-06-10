@@ -10,6 +10,7 @@ import com.team06.focuswork.ui.splashscreen.SplashScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Exception
 
 
 @RunWith(AndroidJUnit4::class)
@@ -21,15 +22,14 @@ class SplashInstrumentedTest {
 
     @Test
     fun splashScreenTest() {
-        // Check splash screen logo is shown
-        onView(withId(R.id.logoImage))
-            .check(matches(isDisplayed()))
-
-        // Wait for splash screen to be over
+        onView(withId(R.id.logoImage)).check(matches(isDisplayed()))
         Thread.sleep(3000)
-
-        // Splash screen should now be over
-        onView(withId(R.id.login))
-            .check(matches(isDisplayed()))
+        try {
+            //Passes if AutoLogin Fails
+            onView(withId(R.id.login)).check(matches(isDisplayed()))
+        } catch (ex: Exception) {
+            //Fails if AutoLogin happens, so we need to check the main View instead
+            onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+        }
     }
 }

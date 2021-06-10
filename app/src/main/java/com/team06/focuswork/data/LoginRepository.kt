@@ -1,6 +1,7 @@
 package com.team06.focuswork.data
 
 import com.team06.focuswork.model.LoggedInUser
+import java.io.IOException
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -8,49 +9,32 @@ import com.team06.focuswork.model.LoggedInUser
  */
 
 object LoginRepository {
-    private val dataSource: LoginDataSource = LoginDataSource()
-
-    // in-memory cache of the loggedInUser object
-    private var user: LoggedInUser? = null
-    fun getUser(): LoggedInUser? = user
-
-    val isLoggedIn: Boolean
-        get() = user != null
-
-    init {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        user = null
-    }
+    var dataSource: LoginDataSource? = null
+    var user: LoggedInUser? = null
 
     fun logout() {
         user = null
-        dataSource.logout()
     }
 
     fun login(username: String, password: String): Result<LoggedInUser> {
-        val result = dataSource.login(username, password)
+        val result = dataSource?.login(username, password)
 
         if (result is Result.Success) {
-            setLoggedInUser(result.data)
+            this.user = result.data
         }
 
-        return result
+        return result ?: Result.Error(IOException("Error logging in"))
     }
 
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-    }
-
-    fun register(firstname: String, lastname: String, username: String, password: String): Result<LoggedInUser> {
-        val result = dataSource.register(firstname, lastname, username, password)
+    fun register(
+        firstname: String, lastname: String, username: String, password: String
+    ): Result<LoggedInUser> {
+        val result = dataSource?.register(firstname, lastname, username, password)
 
         if (result is Result.Success) {
-            setLoggedInUser(result.data)
+            this.user = result.data
         }
 
-        return result
+        return result ?: Result.Error(IOException("Error logging in"))
     }
 }
