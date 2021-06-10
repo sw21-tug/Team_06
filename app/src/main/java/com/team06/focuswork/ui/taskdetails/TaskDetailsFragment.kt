@@ -63,7 +63,7 @@ class TaskDetailsFragment : Fragment() {
         val timeFormat: java.text.DateFormat = DateFormat.getTimeFormat(context)
         val dateFormat: java.text.DateFormat = DateFormat.getDateFormat(context)
 
-        binding.taskTimer.text = "00:00"
+        binding.taskTimer.text = requireContext().getString(R.string.timer_default_value)
         taskTimer?.cancel()
 
         tasksViewModel.currentTask.observe(viewLifecycleOwner, Observer {
@@ -98,7 +98,7 @@ class TaskDetailsFragment : Fragment() {
         }.start()
     }
 
-    private fun updateTimerAnimation(
+    internal fun updateTimerAnimation(
         currentTimeInMillis: Long, startTimeInMillis: Long, endTimeInMillis: Long
     ) {
         when {

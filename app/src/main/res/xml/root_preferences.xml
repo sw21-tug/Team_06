@@ -12,7 +12,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/overview_header">
+    <PreferenceCategory app:title="@string/menu_overview">
 
         <ListPreference
             app:defaultValue="week"

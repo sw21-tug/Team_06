@@ -260,12 +260,10 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun checkTextFilled(view: View) {
-        view.findViewById<Button>(R.id.taskCreate).isEnabled =
-            !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
-                view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
-        view.findViewById<Button>(R.id.taskSaveTemplate).isEnabled =
-            !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
-                view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+        val enabled = !(view.findViewById<TextView>(R.id.taskName).text.isBlank() ||
+            view.findViewById<TextView>(R.id.taskDescription).text.isBlank())
+        view.findViewById<Button>(R.id.taskCreate).isEnabled = enabled
+        view.findViewById<Button>(R.id.taskSaveTemplate).isEnabled = enabled
     }
 
     private fun createDateOrTimeBundle(isDate: Boolean, startBundle: Boolean): Bundle {

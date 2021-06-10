@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">专注工作</string>
 
-    <string name="nav_header_title">重点工作</string>
     <string name="nav_header_subtitle">战队06-格拉茨大学</string>
     <string name="nav_header_desc">导航标题</string>
 
     <string name="menu_overview">概述</string>
     <string name="menu_new_task">新任务</string>
-    <string name="menu_timer">启动任务计时器</string>
     <!-- Strings related to new task fragment -->
     <string name="prompt_task_name">任务名称</string>
     <string name="prompt_task_description">任务描述</string>
@@ -19,13 +17,9 @@
     <string name="task_end_date_and_time">任务结束</string>
     <string name="action_create_task">创建任务</string>
     <string name="action_sign_in_short">登入</string>
-    <string name="task_not_saved_toast">不幸的是，該任務無法保存！</string>
     <!-- Strings related to Timer Fragment -->
-    <string name="timer_countdown">00:00</string>
-    <string name="timer_start_button">启动计时器</string>
     <!-- Strings related to Timer -->
     <string name="timer_format">(hh:mm)</string>
-    <string name="timer_finished">计时器已结束！</string>
     <!-- Strings related to Day Overview -->
     <string name="day_title">今天的任务</string>
     <string name="day_tasks_for">任务：</string>
@@ -71,8 +65,6 @@
     <string name="login_email_hint">陈小名</string>
     <string name="logo_image_description">形象標識</string>
     <string name="focus_work_title">重點工作</string>
-    <string name="add_new_task">添加新任務</string>
-    <string name="notification">通知</string>
     <string name="prompt_first_name">名</string>
     <string name="prompt_last_name">姓</string>
     <string name="prompt_email">电子邮件</string>
@@ -89,7 +81,6 @@
 
     <string name="notification_title">您的任务已经完成！</string>
     <string name="notification_message">任务 %1$s 已完成。</string>
-    <string name="login_error_message">無法登錄用戶</string>
 
     <string name="delete_dialog_title">删除任务</string>
     <string name="delete_dialog_description">你真的想删除这个任务吗？</string>
@@ -107,4 +98,8 @@
     <string name="logout_dialog_description">你真的想注销吗？</string>
     <string name="logout_dialog_cancel">取消</string>
     <string name="logout_dialog_confirm">确认</string>
+    <string name="new_task_button_desc">新建任务按钮</string>
+    <string name="timer_display_desc">计时器显示</string>
+    <string name="time_remaining">剩余时间</string>
+    <string name="timer_default_value">00:00</string>
 </resources>

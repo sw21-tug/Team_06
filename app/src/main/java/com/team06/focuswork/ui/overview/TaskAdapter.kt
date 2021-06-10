@@ -18,10 +18,6 @@ class TaskAdapter(private val context: Context, private val overviewFragment: Ov
 
     private val list = overviewFragment.getAllTasks()
 
-    init {
-        Log.d("TaskAdapter", list.toString())
-    }
-
     class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val taskItem: MaterialCardView = view.findViewById(R.id.task_item)
     }

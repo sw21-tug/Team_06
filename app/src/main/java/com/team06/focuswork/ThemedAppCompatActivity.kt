@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import java.util.*
 
-open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+open class ThemedAppCompatActivity : AppCompatActivity(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,13 +21,13 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
         checkLocale()
 
         // set listener for settings
-        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onDestroy() {
         //Unregister settings listener
-        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         preferences.unregisterOnSharedPreferenceChangeListener(this)
 
         super.onDestroy()
@@ -44,8 +45,7 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
     }
 
     private fun getPreferredTheme(
-        preferenceBackgroundThemeValue: String,
-        preferenceAccentThemeValue: String
+        preferenceBackgroundThemeValue: String, preferenceAccentThemeValue: String
     ): Int {
         return if (preferenceAccentThemeValue == "blue") {
             when (preferenceBackgroundThemeValue) {
@@ -68,14 +68,17 @@ open class ThemedAppCompatActivity : AppCompatActivity(), SharedPreferences.OnSh
      */
     @Suppress("DEPRECATION")
     private fun checkLocale() {
-        val preferences :SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val languageKey = (preferences.getString("language", "en")).toString()
-        if(languageKey.toLowerCase() != resources.configuration.locale.language.toLowerCase())
+        if (languageKey.toLowerCase(Locale.getDefault()) != resources.configuration.locale.language.toLowerCase(
+                Locale.getDefault()
+            )
+        )
             onChangedLanguage(languageKey)
     }
 
     @Suppress("DEPRECATION")
-    private fun onChangedLanguage(languageKey: String){
+    private fun onChangedLanguage(languageKey: String) {
         val myLocale = Locale(languageKey)
         val dm: DisplayMetrics = resources.displayMetrics
         val conf: Configuration = resources.configuration

@@ -102,18 +102,17 @@ class OverviewFragment : Fragment() {
             Filter.MONTH -> initializeMonthView()
             Filter.ALL -> initializeAllView()
             else -> {
-                //TODO: Error handling
                 initializeWeekView()
             }
         }
     }
 
     private fun setTasks(tasks: List<Task>) {
-        tasks.forEach{
-            if(it.endTime.after(Calendar.getInstance())) {
+        tasks.forEach { task ->
+            if (task.endTime.after(Calendar.getInstance())) {
                 GlobalScope.launch {
-                    delay(it.endTime.timeInMillis - System.currentTimeMillis())
-                    sendTimerFinishedNotif(requireContext(), it)
+                    delay(task.endTime.timeInMillis - System.currentTimeMillis())
+                    sendTimerFinishedNotif(requireContext(), task)
                 }
             }
         }
@@ -137,7 +136,7 @@ class OverviewFragment : Fragment() {
         tasksViewModel.allTasks.observe(requireActivity(), Observer { tasks ->
             currentTasks.removeAll(currentTasks)
             tasks.filter { filterForDay(Calendar.getInstance(), it.startTime, it.endTime) }
-                    .forEach { currentTasks.add(it) }
+                .forEach { currentTasks.add(it) }
             (recyclerView.adapter as TaskAdapter).notifyDataSetChanged()
         })
     }
@@ -296,8 +295,7 @@ class OverviewFragment : Fragment() {
         val preferences: SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        val filter = (preferences.getString("overviewTimeFrame", "none")).toString()
-        when (filter) {
+        when ((preferences.getString("overviewTimeFrame", "none")).toString()) {
             "day" -> this.filter = Filter.DAY
             "week" -> this.filter = Filter.WEEK
             "month" -> this.filter = Filter.MONTH
